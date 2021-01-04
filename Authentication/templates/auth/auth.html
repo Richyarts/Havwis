@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!--Form Header-->
+  {{form.username.errors}}
+  {% if form  != None %}
+  <div class="container-fluid">
+    <div class="container-fluid p-8 alert alert-danger">
+      Oops , an unexpected error occurred. Make sure you provide all informations.
+    </div>
+  </div>
+  {% else %}
+    <script>
+      $('.danger').hide();
+    </script>
+  {% endif %}
+  <div class="username_layout">
+  <div class="container-fluid mt-16 text-left">
+    <p class="p text-size-standout text-bold">Choose Username</p>
+    <small class="p text-muted">You can always change it later.</small>
+  </div>
+  <!--Form-->
+  <form action="/auth/register/" method="POST" class="was-validated needs-validation" novalidate>
+    {% csrf_token %}
+  <div class="container-fluid m-16 mt-16 text-center">
+      <input name="username" id="username" class="w-100 p-8 border-muted outline-none r-4" type="text" maxlength="16" placeholder="Username"/>
+      {% for error in form.username %}
+        <p class="float-left text-danger">{{error}}</p>
+      {% endfor %}
+      <button type="button" class="username_layout_button mt-32 p-16 btn-block btn btn-primary">Continue</button>
+    </div>
+  </div>
+  
+  
+  <div class="phone_layout">
+  <!--TableLayout-->
+  <div class="container-fluid  m-16">
+    <table class="tablelayout"> <thead> <tr class="w-100 tablelayout-title"><th class="text-muted  phone-layout-tab text-light"><p class="text-center">Phone</p></th>  <th class="email-layout-tab"><p class="text-center text-normal text-body">Email</p></th> </tr></thead><tbody><tr class="w-100">  <td class="phone-tab tablelayout-identification active"></td>   <td class="email-tab tablelayout-identification"></td>     </tr> </tbody> </table>
+    <p class="p text-size-standout text-bold mt-32">Add Phone Or Email</p>
+  </div>
+   <!--Form continuation-->
+   <div class="container-fluid phone-remove m-16">
+     <div class="form-row border-muted r-4 p-8">
+       <select id="country_code" class="col-2  bl-muted bg-white outline-none"><option>+31</option></select>
+       <input name="phone" id="phone" class="col border-none outline-none" type="tel" placeholder="Phone">
+     </div>
+     <div class="phone-remove mt-16 p">
+       <p class="text-muted p"><small class="p">You may receive SMS updates from Instagram and can opt out at any time.</small></p>
+     </div>
+   </div>
+   <div class="container-fluid m-16 email-remove">
+     <div class="form-row container-fluid m-16 email-remove border-muted r-4 m-16">
+       <input name="email" id="email" class="w-100 border-none outline-none r-4 p-8" type="email" placeholder="Email">
+     </div>     
+     {% for error in form.email %}
+       <p class="float-left text-danger">{{error}}</p>
+     {% endfor %}
+   </div>
+   <div class="container-fluid">
+     <button type="button" class="phone_layout_button mt-32 p-16 btn-block btn btn-primary">Continue</button>
+   </div>
+   </div>
+   
+   
+   <!--Form continuation-->
+   <div class="password_layout">
+   <div class="container-fluid mt-16 text-left">
+    <p class="p text-size-standout text-bold">Create a Password</p>
+    <small class="p text-muted">For security reasons, your password must be 6 characters or more </small>
+  </div>
+  <!--Form-->
+  <div class="container-fluid m-16 mt-16 text-center">
+      <input name="password" id="password" class="w-100 p-8 border-muted outline-none r-4" type="password" min="8" placeholder="Password"/>
+       {% for error in form.password %}
+         <p class="float-left text-danger">{{error}}</p>
+       {% endfor %}
+      <button id="signup-btn" type="button" class="password_layout_button mt-32 p-16 btn-block btn btn-primary">Continue</button>
+      {% block js %}
+        <script>
+          var $input = $("input");
+          $("#signup-btn").on("click" , function (){
+            $.post("/auth/register/" , {"phone":$("#phone").val(),"username":$("#username").val() , "email":$("#email").val() , "password":$("#password").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function (data , status){
+              $("body").html(data);
+            });
+          });
+        </script>
+      {% endblock %}
+  </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+   <!--Verification -->
+    <div class="verify">
+  <div class="container-fluid mt-16 text-left">
+    <p class="p text-size-standout text-bold">Enter 6-digit code</p>
+    <small class="p text-muted">Your code was sent to {{email}}</small>
+  </div>
+  <!--Form-->
+  <div class="container-fluid m-16 mt-16">
+    <div class="form-row">
+      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="username" class="p-8 r-4 border-muted  col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+    </div>
+    <div class="resend-code mt-16">
+      <p class="text-muted">Resend code {{counter}} </p>
+    </div>
+      <button class="username_layout_button gone mt-32 p-16 btn-block btn btn-primary">Continue</button>
+  </div>
+  </div>
+{% endblock %}

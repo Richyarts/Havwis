@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="list-group">
+  {% for coin in coins %}
+    <li data-toggle="modal" data-target="modal" class="list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span class="right mt-8">NGN 0.00</span></li>
+  {% endfor %}
+</div>
+{% endblock %}
