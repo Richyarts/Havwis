@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid mt-64 font-family-body">
+  <p class="text-center"><img width="56px" src="{% static 'img/ic_app_logo.png' %}"></p>
+  <p class="text-center text-size-standout text-muted">Sign in to Havwis</p>
+  <form action="/auth/login/" method='POST' class="container">
+    {% csrf_token %}
+    {% if form %}
+      <div class="alert alert-danger">
+        Oops , an unexpected error occured make sure you provide all required info
+      </div>
+    {% endif %}
+    <div class="card bg-muted">
+      <div class="card-body">
+        <label for="username">Email or Username:</label>
+        <input name="username" class="input form-control mb-8 col w-default" type="text" placeholder="Email Or Username">
+        {% for error in errors.username %}
+          <p class="text-danger">{{error}}</p>
+        {% endfor %}       
+        <label for="p password">Password:</label> <p class="float-right p"><a class="p" href="#">Forgotten password?</a></p>
+        <input name="password" class="mb-8 form-control col w-default" type="password" placeholder="Password">
+        {% for error in errors.password %}
+          <p class="text-danger p">{{error}}</p>
+        {% endfor %}
+        <input type="submit" class="mt-16 btn-primary btn  btn-sm form-control col w-default" value="Login">
+      </div>
+    </div>
+    <div class="card mt-32">
+      <p class="p text-center pb-8 pt-8 card-body">New to Havwis? <a href="/auth/register/">Create an account</a></p>
+    </div>
+  </form>
+  <div class="container text-14 text-center form-row">
+    <a href="#" class="col">Term</a>
+    <a href="#" class="col ml-8">Privacy</a>  
+    <a href="#" class="col">Security</a> 
+    <a href="#" class="col text-muted">Contact Havwis</a>
+  </div>
+{% endblock %}

@@ -13,3 +13,7 @@ class ProfileModel(models.Model):
   location = models.CharField(max_length=64)
   class Meta:
     db_table= "ProfileModel"
+
+class LoginModel(models.Model):
+  username = models.CharField(max_length=32)
+  password = models.CharField(max_length=32)

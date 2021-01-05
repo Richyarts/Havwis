@@ -1,32 +1,89 @@
+<head>
+<link rel="stylesheet" href="css/main.css" type="text/css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+{% load static %}
+{% load custom_tags %}
 {% block content %}
+<input type="hidden" id="wallet_instance_id">
+{% if request.user.is_authenticated %}
+<div class="container opacity z-index-0 font-family-body">
+  <p class="text-muted font-family-body text-16">Select Wallet</p>
+  {% get_user_wallets request.user as wallets %}
+  {% if wallets != None %}
+    {% for wallet in wallets %}
+        <select id="choose_wallet" class="bg-none outline-none border-muted btn btn-white r-8"><option>{{wallet.wallet_id}}</option><option>{{wallet.wallet_id}}</option></select>
+        <a id="delete-btn" data-toggle="tooltip" title="{{msg}}" href="#" class="btn right mr-auto btn-sm btn-danger"><span class="float-right"><img class="filter-white mb4" width="16px" src="{% static 'img/ic_delete_black.png' %}">Delete wallet</span></a>
+        {% block script-js %}
+          <script>
+            $("#delete-btn").on("click" , function (){
+              $('.toast').toast('show'); event.stopPropagation();
+                $(".modal-body").on("click" , function (){
+                  event.stopPropagation();
+                });             
+             });
+          </script>
+        {% endblock %}
+    {% empty %}
+      <a href="#" class="btn btn-success btn-sm">Add wallet</a>
+    {% endfor %}
+  {% endif %}
+</div>
+
 <div class="list-group">
   {% for coin in coins %}
-    <li id="coin{{coin.id}}" data-toggle="modal" data-target="#transaction" class="bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span class="right mt-8">NGN 0.00</span></li>
+  {% get_user_wallets request.user as wallets %}
+  {% if wallets != None %}
+    {% for wallet in wallets %}
+      {% get_balance wallet.wallet_id coin.coin_name as balance %}
+    <li data-backdrop="static" data-keyboard="true" data-toggle="modal" data-target="#modal{{coin.id}}" class="coin container bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span id="balance" class="right mt-8">{{balance}}</span></li>
+    {% endfor %}
+  {% endif %}
   {% endfor %}
+    <div class="text-center text-primary">More to come in next updates</div>
   {% for coin in coins %}
-  <div class="modal w-100 p rounded-0 font-family-body"  id="modal{{coin.id}}">
+  <div class="modal z-index-3 w-100 p rounded-0 font-family-body"  id="modal{{coin.id}}">
     <div class="modal-dialog modal-dialog-centered vertical-align-center modal-bottom">
       <div class="modal-content bg-none rounded-0 border-none">
         <div class="modal-header rounded-0 text-center p border-none">
-          <span class="line-horizontal mb-8 bg-white text-center"></span>
+          <span style="border-radius: 100px;" class="line-horizontal mb-8 bg-white text-center"></span>
         </div>
         <div class="modal-body bg-white" style="border-radius: 24px 24px 0 0;">
-          <div class="form-row"><div><img src="#"></div> <div class="col"><a href="#" class="text-body"><p class="text-bold text-16 p">Send</p><p class="text-muted p">Send crypto to another wallet</p></a></div></div>
-          <div class="form-row mt-16"><div><img src="#"></div><div class="col">
+          <div class="form-row"><div><img src="#"></div><a href="#" class="text-body none"><div class="col"><p class="text-bold text-16 p">Send</p><p class="text-muted p">Send crypto to another wallet</p></div></a></div>
+          <div class="form-row mt-16"><div><img src="#"></div><a href="#" class="text-body none"><div class="col">
             <p class="text-bold text-16 p">Receive</p>
             <p class="text-muted p">Receive crypto from another wallet </p>
-          </div>
+          </div></a>
         </div>
       </div>
     </div>
   </div>
     {% block modal-js %}
     <script>
-        $("#coin{{coin.id}}").on("click" , function (){
-          $("#modal{{coin.id}}").show(); $("body").addClass("bg-table");
+        $("tooltip").show();
+        $(window).on("click" , function(){
+         $(".btn").removeClass("border-none");
+         $(".opacity").removeClass("img-opacity"); $(".list-group-item img").removeClass("img-opacity"); $("#modal{{coin.id}}").hide(); $("body").removeClass("bg-table"); $(".footer").show();$(".toolbar").addClass("bg-white");
+        });       
+        $(".coin").on("click" , function (){
+          $(".toolbar").removeClass("bg-white"); $(".coin").removeClass("hover-muted"); $("#modal{{coin.id}}").show(); $("body").addClass("bg-table"); $(".list-group-item img").addClass("img-opacity"); $(".footer").hide(); $(".opacity").addClass("img-opacity");
+           event.stopPropagation(); $(".btn").addClass("border-none");
+          $(".modal-body").on("click" , function (){
+            event.stopPropagation();
+          });
+        });
+        $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
         });
       </script>
     {% endblock %}
   {% endfor %}
 </div>
+{% else %}
+  <p class="text-center p">
+     <p class="p text-center">To be able to send and receive Crytocurrencies you have to register</p>
+    <img align="center" src="{% static 'img/ic_empty.png' %}" width="100%" height="auto">
+    <p class="text-center p"><a href="/auth/register/" class="text-body btn btn-block bg-orange">Get started</a></p>
+  </p>
+{% endif %}
 {% endblock %}

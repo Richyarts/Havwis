@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="container top  position-fixed tolbar">
+  <div class="container top bg-white position-fixed toolbar">
     <img src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px">
     <span class="float-right ml-16 mr-16 line-vertical-post text-center"></span>
     <img src="{% static 'img/ic_settings_black.png' %}" class="float-right filter-blue-2" width="28px">
     <div class="container mt-48">
-      <span class="monospace text-bold float-left"><span class="text-32 p">$0.</span><span class="p text-14">00</span></span><a href="#" class=" float-right font-family-bundle btn-green">Add Money</a>
+      <span class="monospace text-bold float-left"><span class="text-32 p">$0.</span><span class="p text-14">00</span></span><a href="#" id="add-money" class=" float-right font-family-bundle btn-green">Add Money</a>
     </div>
     <div class="container mt-32">
     <img src="{% static 'img/ic_visibility_off_black.png' %}" width="24px" class="ml-8 filter-muted"><span class="text-muted text-bold font-family-body ml-8">Hide balance</span>
     </div>
   </div>
   <div class="container z-index-0 layout mt-160">
-    <!--div class="alert bg-orange border-none alert-sucess"><div class="form-row"><img src="img/ic_info_black.png" height="32px" width="32px" class="filter-black"><span class="col">Verify email and phone number to be able to send and receive Crytocurrencies.<a href="#" class="underline">Verify</a></span></div></div>
-    --><div class="container text-14 transparent gridview form-row">
+    {% if not request.user.is_active %}
+      <div class="alert bg-orange border-none alert-sucess"><div class="form-row"><img src="img/ic_info_black.png" height="32px" width="32px" class="filter-black"><span class="col">Verify email and phone number to be able to send and receive Crytocurrencies.<a href="#" class="underline">Verify</a></span></div></div>
+    {% endif %}
+    <div class="container text-14 transparent gridview form-row">
       <div class="card bg-pink col">
         <div class="r-10  bg-wite"><img class="bg-white ml-16  mt-16 r-100" src="{% static 'img/ic_app_logo.png' %}" width="24px"><p class="text-bold text-14 ml-16 mt-8">Buy cryto</p></div>
       </div>
@@ -30,7 +32,8 @@
         <div class="r-10  bg-wite"><img class="bg-white ml-16 mt-16 r-100" src="{% static 'img/ic_custom.png' %}" width="24px"><p class="text-bold ml-16 mt-8">Pay bills</p></div>
       </div>
     </div>
-    
+
+<!--Recent activity -->    
     <div class="container mt-16">
       <p class="text-bold">Recent activity</p>
       <div class="bg-muted r-4 form-row p-8">
@@ -43,7 +46,20 @@
       </div>
     </div>
   </div>
-  <div class="footer bg-white bt-mute font-family-body position-fixed text-bold text-muted form-row">
+
+<!--Modal templates -->
+<div class="container">
+  <div id="modal-template" class="modal container">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div id="modal-data" class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!--Bottom Navigation -->
+  <div class="footer bg-white bt-mute font-family-bdy position-fixed text-bod text-12 text-muted form-row">
     <div id="nav-btn-home" class="col p text-body text-center"><img id="nav-btn-home-img" src="{% static 'img/ic_home_black.png' %}" width="24px" class="filter-orange-2"><p id="nav-btn-home-text" class="p text-orange">Home</p><p class="circle bg-orange-2 nav-btn-home-circle p text-center"></p></div>
     <div id="nav-btn-wallet" class="col text-center"><img src="{% static 'img/ic_wallet_membership_black.png' %}" width="24px" class="filter-blue-2"><p id="nav-btn-wallet-text" class="p">Wallet</p><p class="circle nav-btn-wallet-circle bg-orange-2 p text-center"></p></div>
     <div id="nav-btn-invest" class="col text-center"><img src="{% static 'img/ic_store_black.png' %}" width="24px" class="filter-blue-2"><p class="p">Invest</p><p class="circle nav-btn-invest-circle bg-orange-2 p text-center"></p></div>
@@ -67,6 +83,9 @@ $("#nav-btn-wallet").on("click" , function (){
      $("#nav-btn-wallet img").addClass("filter-orange-2"); $("#nav-btn-home-text").removeClass("text-orange"); $("#nav-btn-home-text").addClass("text-muted");
      $("#nav-btn-wallet-text").addClass("text-orange");
      $(".nav-btn-home-circle").hide();  $(".nav-btn-wallet-circle").show();
+});
+$("#add-money").on("click" , function (){
+  $("body").load("/harvis/creditcard/");
 });
 </script>
 {% endblock %}
