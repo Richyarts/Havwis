@@ -1,3 +1,4 @@
+<!--Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
 <head>
 <link rel="stylesheet" href="css/main.css" type="text/css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -8,11 +9,11 @@
 <input type="hidden" id="wallet_instance_id">
 {% if request.user.is_authenticated %}
 <div class="container opacity z-index-0 font-family-body">
-  <p class="text-muted font-family-body text-16">Select Wallet</p>
   {% get_user_wallets request.user as wallets %}
   {% if wallets != None %}
-    {% for wallet in wallets %}
-        <select id="choose_wallet" class="bg-none outline-none border-muted btn btn-white r-8"><option>{{wallet.wallet_id}}</option><option>{{wallet.wallet_id}}</option></select>
+     {% for wallet in wallets %}
+        <p class="text-muted font-family-body text-16">Select Wallet</p>
+        <select id="choose_wallet" class="bg-none outline-none border-muted btn btn-white r-8"><option>{{wallet.wallet_id}}</option></select>
         <a id="delete-btn" data-toggle="tooltip" title="{{msg}}" href="#" class="btn right mr-auto btn-sm btn-danger"><span class="float-right"><img class="filter-white mb4" width="16px" src="{% static 'img/ic_delete_black.png' %}">Delete wallet</span></a>
         {% block script-js %}
           <script>
@@ -25,6 +26,7 @@
           </script>
         {% endblock %}
     {% empty %}
+      <p class="text-danger">You don't have any Wallet create one now </p>
       <a href="#" class="btn btn-success btn-sm">Add wallet</a>
     {% endfor %}
   {% endif %}
@@ -36,11 +38,14 @@
   {% if wallets != None %}
     {% for wallet in wallets %}
       {% get_balance wallet.wallet_id coin.coin_name as balance %}
-    <li data-backdrop="static" data-keyboard="true" data-toggle="modal" data-target="#modal{{coin.id}}" class="coin container bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span id="balance" class="right mt-8">{{balance}}</span></li>
+      <li data-backdrop="static" data-keyboard="true" data-toggle="modal" data-target="#modal{{coin.id}}" class="coin container bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span id="balance" class="right mt-8">{{balance}}</span></li>
     {% endfor %}
   {% endif %}
   {% endfor %}
-    <div class="text-center text-primary">More to come in next updates</div>
+    {% get_user_wallets request.user as wallets %}
+    {% if wallets|length > 0 %}
+      <div class="text-center text-primary">More to come in next updates</div>
+    {% endif %}
   {% for coin in coins %}
   <div class="modal z-index-3 w-100 p rounded-0 font-family-body"  id="modal{{coin.id}}">
     <div class="modal-dialog modal-dialog-centered vertical-align-center modal-bottom">
@@ -72,7 +77,11 @@
             event.stopPropagation();
           });
         });
+        function reload(value){
+          $(".layout").load("/havwis/wallet/");
+        }
         $(document).ready(function(){
+          //setInterval("reload()" , 1000);
           $('[data-toggle="tooltip"]').tooltip();
         });
       </script>

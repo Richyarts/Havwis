@@ -1,0 +1,104 @@
+<!-- Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
+{% extends "base.html" %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+<!--Toolbar-->
+  <div class="toolbar text-center container">
+    <button id="add-btn" class="float-right outline-none border-none btn-green"><img src="{% static 'img/ic_add_white.png' %}" class="" width="16px"> Add card</button>
+    {% block script-btn %}
+      <script>
+        $("#add-btn").on("click" , function (){
+          $(".layout").load("/havwis/virtualcard/");  $(".custom-toolbar").hide(); $(".linearlayout-body").removeClass("mt-160"); $(".footer").hide();
+        });
+      </script>
+    {% endblock %}
+  </div>
+<!--Card types Red Visa , Blue mastercard , purple Unknown , Orange mastercard -->
+  {% if wallet|length <= 0 %}
+    
+  {% else %}
+  <div class="horizontal-listview">
+    <p class="text-white">&</p>
+    {% for wallet in wallet %}
+        {% for card in wallet.credit_card.all %}
+          {% card_no_format card.card_no as card_no %}
+          {% if card.card_type == "Mastercard" %}
+        <div class="r-4 border-none horizontal-listview-item item gradient-danger">
+          <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="#" width="32px" class="right"> </div> </div>
+           <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+          <div class="form-row">
+            <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
+            <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
+          </div>
+          <div class="form-row text-white container p">
+            <p class="col-12 btn-opacity p">NAME</p>
+            <p class="col-12 p">{{card.card_name}}</p>
+          </div>
+        </div>
+      {% endif %}
+      {% if card.card_type == "Visa" %}
+        <div class="r-4 border-none horizontal-listview-item item gradient-primary">
+          <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="#" width="32px" class="right"> </div> </div>
+           <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+          <div class="form-row">
+            <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
+            <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
+          </div>
+          <div class="form-row text-white container p">
+            <p class="col-12 btn-opacity p">NAME</p>
+            <p class="col-12 p">{{card.card_name}}</p>
+          </div>
+        </div>
+      {% endif %}
+      {% if card.card_type == "Unknown" %}
+        <div class="r-4 border-none horizontal-listview-item item gradient-orange">
+          <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="#" width="32px" class="right"> </div> </div>
+           <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+          <div class="form-row">
+            <div class="col-6 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
+            <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
+          </div>
+          <div class="form-row text-white container p">
+            <p class="col-12 btn-opacity p">NAME</p>
+            <p class="col-12 p">{{card.card_name}}</p>
+          </div>
+        </div>
+     {% endif %}
+     {% if card.card_type == "" %}
+      <div class="r-4 border-none horizontal-listview-item item gradient-purple">
+        <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="#" width="32px" class="right"> </div> </div>
+         <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+        <div class="form-row">
+          <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
+          <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
+        </div>
+        <div class="form-row text-white container p">
+          <p class="col-12 btn-opacity p">NAME</p>
+          <p class="col-12 p">{{card.card_name}}</p>
+      </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+    {% empty %}
+      Empty
+  {% endfor %}
+    <p class="text-white">&</p>
+</div>
+<div class="container">
+  <form>
+    <p class="p text-muted">AMOUNT</p>
+    <input type="number" class="w-no p outline-none  border-none border-bottom">
+    <p class="p text-muted mt-16">REMARK</p>
+    <input type="number" class="w-msg p outline-none border-none border-bottom">
+  </form>
+</div>
+{% block script %}
+<script>
+  $("#cancel").on("click" , function (){
+    $("body").load("/harvis/home/");
+  });
+</script>
+{% endblock %}
+{% endif %}
+{% endblock %}

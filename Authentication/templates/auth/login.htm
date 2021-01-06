@@ -1,3 +1,4 @@
+<!-- Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
@@ -19,7 +20,7 @@
           <p class="text-danger">{{error}}</p>
         {% endfor %}       
         <label for="p password">Password:</label> <p class="float-right p"><a class="p" href="#">Forgotten password?</a></p>
-        <input name="password" class="mb-8 form-control col w-default" type="password" placeholder="Password">
+        <input name="password" autocomplete="new-password" class="mb-8 form-control col w-default" type="password" placeholder="Password">
         {% for error in errors.password %}
           <p class="text-danger p">{{error}}</p>
         {% endfor %}

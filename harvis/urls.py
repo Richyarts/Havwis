@@ -8,6 +8,6 @@ import Wallet
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/',include('Authentication.urls') , name="auth"),
-    path('harvis/' , include('Wallet.urls') , name="harvis"),
+    path('havwis/' , include('Wallet.urls') , name="havwis"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

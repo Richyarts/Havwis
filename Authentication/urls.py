@@ -1,6 +1,5 @@
 from django.urls import path
 from Authentication import views
-from rest_framework.routers import DefaultRouter
 from Authentication.views import AuthenticationView  , VerificationView, LoginView
 
 urlpatterns = [

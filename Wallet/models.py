@@ -8,6 +8,7 @@ class CoinModel(models.Model):
     db_table = "CoinModel"
 
 class CreditCard(models.Model):
+  card_type = models.CharField(default="Unknown" , max_length=64)
   card_no =  models.IntegerField()
   card_name = models.CharField(max_length = 64)
   expiry_date = models.DateField()
@@ -22,3 +23,13 @@ class WalletModel(models.Model):
   balance = models.IntegerField(default=0.00)
   class Meta:
     db_table = "WalletModel"
+    
+class VirtualCardModel(models.Model):
+  user = models.ForeignKey(User , on_delete=models.CASCADE)
+  address = models.CharField(max_length=101)
+  city = models.CharField(max_length=32)
+  state = models.CharField(max_length=32)
+  postal_code = models.IntegerField()
+  country = models.CharField(max_length=32)
+  class Meta:
+    db_table = "VirtualCardModel"

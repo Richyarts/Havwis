@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!--Written by lyonkvalid http://github.com/lyonkvalod wed , jan 6 , 2020 -->
+<div class="bg-orange font-family-takemethere">
+  
+  <!--Toolbar -->
+  <div class="container toolbar">
+    <img id="back" align="center" src="{% static 'img/ic_chevon_left_black.png' %}" class="filter-black mb-8" width="20px">
+    <span class="text-size-standout">Create Card</span>
+  </div>
+  
+  <!--Billing address -->
+  <div class="container address1">
+    <p class="text-24 p font-family-sweet">Billing Address</p>
+    <small class="mb-16">Your billing address is required and must be your current address</small>
+    <input name="address" type="text" class="w-100 mt-8 border-none outline-none bg-none border-bottom p-8">
+  </div>
+  
+  <!-- city -->
+  <div class="container address2">
+    <p class="text-24 p font-family-sweet">Select your city</p>
+    <small class="mb-16">Turn on location to load data</small>
+    <select name="city" type="text" class="w-100 mt-8 border-none outline-none bg-none border-bottom p-8"><option></option></select>
+  </div>
+  
+  <!--State -->
+  <div class="container address3">
+    <p class="text-24 p font-family-sweet">Select your state</p>
+    <small class="mb-16">Turn on location to load data</small>
+    <select name="state" type="text" class="w-100 mt-8 border-none outline-none bg-none border-bottom p-8"><option></option></select>
+  </div>
+  
+  <!--Postal code -->
+  <div class="container address4">
+    <p class="text-24 p font-family-sweet">Select your postal code</p>
+    <small class="mb-16">Turn on location to load data</small>
+    <select name="postal_code" type="text" class="w-100 mt-8 border-none outline-none bg-none border-bottom p-8"><option></option></select>
+  </div>
+  
+  <!--Country -->
+  <div class="container address5">
+    <p class="text-24 p font-family-sweet">Select your country</p>
+    <small class="mb-16">Turn on location to load data</small>
+    <select name="country" type="text" class="w-100 mt-8 border-none outline-none bg-none border-bottom p-8"><option></option></select>
+  </div>
+  <div class="container">
+    <button id="next" class="btn mt-16 br-0 btn-block btn-sm btn-warning">Continue</button>
+  </div>
+{% block inline-js %}
+<script>
+  $("body").addClass("bg-orange"); $(".footer").hide();
+ var visibility = 0;
+ for(var x = 2; x < 6; x++){ $(".address"+x).hide(); }$("#next").on("click" , function(){ if(visibility <= 5){ visibility++; }  if(visibility == 0){     $(".address2").show();     for(var x = 0; x < 6; x++){       if(x != 2){       $(".address"+x).hide();      }     }   }   if(visibility == 1){          $(".address3").show();     for(var x = 0; x < 6; x++){       if(x != 3){       $(".address"+x).hide();      }     }   }   if(visibility == 2){    $(".address4").show();     for(var x = 0; x < 6; x++){       if(x != 4){       $(".address"+x).hide();       }     }   }  if(visibility == 3){         $(".address5").show();     for(var x = 0; x < 6; x++){      if(x != 5){      $(".address"+x).hide();      }  }  } });
+ $("#back").on("click" , function (){
+   if(visibility <= 0){
+     $(".layout").load("/havwis/card/"); $("body").removeClass("bg-orange");   $(".footer").show();
+   }
+   if(visibility == 4){
+     $(".address4").show();
+     for(var x = 0; x < 6; x++){
+       if(x != 4){
+       $(".address"+x).hide();
+       }
+     }
+   }
+   if(visibility == 3){
+     $(".address3").show();
+     for(var x = 0; x < 6; x++){
+       if(x != 3){
+       $(".address"+x).hide();
+       }
+     }
+   }
+   if(visibility == 2){
+     $(".address2").show();
+     for(var x = 0; x < 6; x++){
+       if(x != 2){
+       $(".address"+x).hide();
+       }
+     }
+   }
+   if(visibility == 1){
+     $(".address1").show();
+     for(var x = 0; x < 6; x++){
+       if(x != 1){
+       $(".address"+x).hide();
+       }
+     }
+   }
+   if(visibility != 0){
+     visibility--;
+   }
+});
+</script>
+{% endblock %}
+</div>
+{% endblock %}

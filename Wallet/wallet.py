@@ -1,3 +1,4 @@
+#>>>Written by lyonkvalid 7:40PM Wed , jan 6 2020
 import random
 from bitcoinlib.mnemonic import Mnemonic
 from bitcoinlib.wallets import Wallet , BCL_DATABASE_DIR , wallet_exists , wallet_delete

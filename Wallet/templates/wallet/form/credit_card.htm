@@ -1,3 +1,4 @@
+<!-- Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
 {%  extends "base.html" %}
 <link rel="stylesheet" href="css/main.css">
 <script src="js/jquery.js" type="text/javascript"></script>
@@ -6,10 +7,10 @@
 {% block content %}
   <div class="container toolbar bg-dark p-16">
     <img id="back" src="{% static 'img/ic_arrow_back_white.png' %}" width="24px">
-    <span class="text-size-standout ml-32 text-white">ADD CARD</span>
+    <span class="text-size-standout ml-32 text-white">Havwis pay</span>
   </div>
   <div class="container form">
-    <form action="/harvis/creditcard/" method="POST" class="form">
+    <form action="/havwis/creditcard/" method="POST" class="form">
       {% csrf_token %}
       <label for="card-no" class="p text-16 text-bold">CARD NO</label>
       <div class="card-no mb-8 mt-8 border-muted r-4">
@@ -20,7 +21,7 @@
         <div class="col ml-8">
           <label for="expiry-date" class="p text-16 text-bold">EXPIRY DATE</label>
            <div id="expiry-date-clone" class="border-muted card-no mt-8 col r-4">YYYY-MM-DD</div>
-           <input id="expiry_date" name="expiry_date" type="date" value="2020-06-07" class="card-no bg-white col outline-none r-4 border-muted mt-8" placeholder="Expiry Date">
+           <input id="expiry_date" name="expiry_date" type="date" class="card-no bg-white col outline-none r-4 border-muted mt-8" placeholder="Expiry Date">
            <p id="expiry_date_error" class="text-danger">{{error}}</p>
         </div>
         <div class="col ml-8">
@@ -32,7 +33,7 @@
       <label class="p text-16 text-bold" for="card-name">CARD OWNER</label>
       <input id="card_name" name="card_name" type="text" class="col mt-8 card-no border-muted r-4" placeholder="Name on card">
       <p id="card_name_error" class="text-danger">{{error}}</p>
-      <button id="submit" type="button" class="btn float-right mt-16 btn-warning">Add Card</button>
+      <button id="submit" type="button" class="btn float-right mt-16 btn-warning">Add pay</button>
     </form>
 </div>
 <div class="container mt-48">
@@ -41,12 +42,12 @@
 {% block script %}
 <script>
   $("#back").on("click" , function (){
-    $("body").load("/harvis/home/");
+    $("body").load("/havwis/home/");
   });
   $("#submit").on("click" , function(){
-    $.post("/harvis/creditcard/" , {"card_no":$("#card_no").val() , "card_name":$("#card_name").val() , "expiry_date":$("#expiry_date").val() , "cvv":$("#cvv").val() , "csrfmiddlewaretoken":"{{csrf_token}}" } , function (data , status){
+    $.post("/havwis/pay/" , {"card_no":$("#card_no").val() , "card_name":$("#card_name").val() , "expiry_date":$("#expiry_date").val() , "cvv":$("#cvv").val() , "csrfmiddlewaretoken":"{{csrf_token}}" } , function (data , status){
       if(data.status){
-        $("body").load("/harvis/home/");
+        $("body").load("/havwis/home/");
       }
       else{
         for(error in data.errors.card_no){
@@ -71,7 +72,9 @@
       input.click()
   }
  function updateDate(){
-   $("#expiry-date-clone").html($("#expiry_date").val());
+   if($("#expiry_date").val().length != 0){
+     $("#expiry-date-clone").html($("#expiry_date").val());
+   }
  }
  $(function (){
    setInterval("updateDate()", 0.1);

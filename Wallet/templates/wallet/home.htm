@@ -1,8 +1,10 @@
+<!--Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="container top bg-white position-fixed toolbar">
-    <img src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px">
+<div class="body">
+  <div class="container custom-toolbar top bg-white position-fixed toolbar">
+    <img id="notification-btn" src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px">
     <span class="float-right ml-16 mr-16 line-vertical-post text-center"></span>
     <img src="{% static 'img/ic_settings_black.png' %}" class="float-right filter-blue-2" width="28px">
     <div class="container mt-48">
@@ -12,7 +14,7 @@
     <img src="{% static 'img/ic_visibility_off_black.png' %}" width="24px" class="ml-8 filter-muted"><span class="text-muted text-bold font-family-body ml-8">Hide balance</span>
     </div>
   </div>
-  <div class="container z-index-0 layout mt-160">
+  <div class="container linearlayout-body remove-mt-160 z-index-0 layout mt-160">
     {% if not request.user.is_active %}
       <div class="alert bg-orange border-none alert-sucess"><div class="form-row"><img src="img/ic_info_black.png" height="32px" width="32px" class="filter-black"><span class="col">Verify email and phone number to be able to send and receive Crytocurrencies.<a href="#" class="underline">Verify</a></span></div></div>
     {% endif %}
@@ -57,35 +59,52 @@
     </div>
   </div>
 </div>
-
+</div>
   <!--Bottom Navigation -->
   <div class="footer bg-white bt-mute font-family-bdy position-fixed text-bod text-12 text-muted form-row">
     <div id="nav-btn-home" class="col p text-body text-center"><img id="nav-btn-home-img" src="{% static 'img/ic_home_black.png' %}" width="24px" class="filter-orange-2"><p id="nav-btn-home-text" class="p text-orange">Home</p><p class="circle bg-orange-2 nav-btn-home-circle p text-center"></p></div>
     <div id="nav-btn-wallet" class="col text-center"><img src="{% static 'img/ic_wallet_membership_black.png' %}" width="24px" class="filter-blue-2"><p id="nav-btn-wallet-text" class="p">Wallet</p><p class="circle nav-btn-wallet-circle bg-orange-2 p text-center"></p></div>
-    <div id="nav-btn-invest" class="col text-center"><img src="{% static 'img/ic_store_black.png' %}" width="24px" class="filter-blue-2"><p class="p">Invest</p><p class="circle nav-btn-invest-circle bg-orange-2 p text-center"></p></div>
+    <div id="nav-btn-card" class="col text-center"><img src="{% static 'img/ic_store_black.png' %}" width="24px" class="filter-blue-2"><p id="nav-btn-card-text" class="p">Cards</p><p class="circle nav-btn-card-circle bg-orange-2 p text-center"></p></div>
     <div id="nav-btn-profile" class="col text-center"><img src="{% static 'img/ic_person_black.png' %}" width="24px" class="filter-blue-2"><p class="p">Account</p><p class="circle bg-orange-2 nav-btn-profile-circle p text-center"></p></div>
   </div>
 {% block script-js %}
 <script>
 $(".nav-btn-profile-circle").hide();
-$(".nav-btn-invest-circle").hide();
+$(".nav-btn-card-circle").hide();
 $(".nav-btn-wallet-circle").hide();
 $("#nav-btn-home").on("click" , function (){
-     $("body").load("/harvis/home/");
+     $("body").load("/havwis/home/");
+     $("#nav-btn-card img").removeClass("filter-orange-2"); $("#nav-btn-wallet img").removeClass("filter-orange-2");
      $("#nav-btn-home img").addClass("filter-orange-2"); $("#nav-btn-home img").removeClass("filter-blue-2");
-     $("#nav-btn-wallet img").addClass("filter-orange-2"); $("#nav-btn-home-text").addClass("text-orange"); $("#nav-btn-home-text").removeClass("text-muted");
+      $("#nav-btn-home-text").addClass("text-orange"); $("#nav-btn-home-text").removeClass("text-muted");
      $("#nav-btn-wallet-text").removeClass("text-orange");
-     $(".nav-btn-home-circle").show();  $(".nav-btn-wallet-circle").hide();
+     $(".nav-btn-home-circle").show();  $(".nav-btn-wallet-circle").hide();$(".nav-btn-card-circle").hide(); $("#nav-btn-card-text").addClass("text-muted");
 });
 $("#nav-btn-wallet").on("click" , function (){
-     $(".layout").load("/harvis/wallet/");
+    $(".custom-toolbar").show(); $(".linearlayout-body").addClass("mt-160");
+     $(".layout").load("/havwis/wallet/");   $("#nav-btn-wallet img"). removeClass("filter-orange-2"); $("#nav-btn-home-text").removeClass("text-orange"); $("#nav-btn-card img").removeClass("filter-orange-2");
+     $("#nav-btn-card-text").removeClass("text-orange");  
+     $(".nav-btn-card-circle").hide(); 
      $("#nav-btn-home img").removeClass("filter-orange-2"); $("#nav-btn-home img").addClass("filter-blue-2");
      $("#nav-btn-wallet img").addClass("filter-orange-2"); $("#nav-btn-home-text").removeClass("text-orange"); $("#nav-btn-home-text").addClass("text-muted");
      $("#nav-btn-wallet-text").addClass("text-orange");
      $(".nav-btn-home-circle").hide();  $(".nav-btn-wallet-circle").show();
 });
+$("#nav-btn-card").on("click" , function(){
+  $(".custom-toolbar").hide(); $(".linearlayout-body").removeClass("mt-160");
+  $(".layout").load("/havwis/card/");
+  $("#nav-btn-home img").removeClass("filter-orange-2"); $("#nav-btn-home img").addClass("filter-blue-2");
+  $("#nav-btn-wallet img"). removeClass("filter-orange-2"); $("#nav-btn-home-text").removeClass("text-orange"); $("#nav-btn-home-text").addClass("text-muted");
+  $("#nav-btn-wallet-text").removeClass("text-orange");     $("#nav-btn-card img"). addClass("filter-orange-2"); $("#nav-btn-home-text").removeClass("text-orange"); $("#nav-btn-home-text").addClass("text-muted");
+  $("#nav-btn-card-text").addClass("text-orange");  
+  $(".nav-btn-card-circle").show(); 
+  $(".nav-btn-home-circle").hide();  $(".nav-btn-wallet-circle").hide();
+});
 $("#add-money").on("click" , function (){
-  $("body").load("/harvis/creditcard/");
+  $("body").load("/havwis/pay/");
+});
+$("#notification-btn").on("click" , function(){
+  $("body").load("/havwis/notifications/{{request.user.id}}/");
 });
 </script>
 {% endblock %}

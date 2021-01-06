@@ -77,7 +77,7 @@ class VerificationView(View):
     for x in code_value:
       code += x
     if code == profile.code:
-      return HttpResponse("<h1>Welcome to Harvis</h1>")
+      return HttpResponse("<h1>Welcome to havwis</h1>")
     else:
       return HttpResponse("<h1>Code Error</h1>")
   context = {"error":True}
@@ -94,11 +94,11 @@ class LoginView(View):
       user = authenticate(username=username , password = password)
       if user is not None:
         login(request , user)
-        return redirect("/harvis/home/")
+        return redirect("/havwis/home/")
       user = authenticate(email=username , password = password)
       if user is not None:
         login(request , user)
-        return redirect("/harvis/home/")       
+        return redirect("/havwis/home/")       
       return render(request , "auth/login.htm" , {"errors":user , "form":form_data})
     return render(request , "auth/login.htm" , {"errors":form_data.errors , "form":form_data})
     
