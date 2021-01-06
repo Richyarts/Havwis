@@ -45,17 +45,22 @@
   });
   $("#submit").on("click" , function(){
     $.post("/harvis/creditcard/" , {"card_no":$("#card_no").val() , "card_name":$("#card_name").val() , "expiry_date":$("#expiry_date").val() , "cvv":$("#cvv").val() , "csrfmiddlewaretoken":"{{csrf_token}}" } , function (data , status){
-      for(error in data.errors.card_no){
-        $("#card_no_error").html(data.errors.card_no[error]);
+      if(data.status){
+        $("body").load("/harvis/home/");
       }
-      for(error in data.errors.expiry_date){
-        $("#expiry_date_error").html(data.errors.expiry_date[error]);
-      }
-      for(error in data.errors.card_name){
-        $("#card_name_error").html(data.errors.card_name[error]);
-      }
-      for(error in data.errors.cvv){
-        $("#cvv_error").html(data.errors.cvv[error]);
+      else{
+        for(error in data.errors.card_no){
+          $("#card_no_error").html(data.errors.card_no[error]);
+        }
+        for(error in data.errors.expiry_date){
+          $("#expiry_date_error").html(data.errors.expiry_date[error]);
+        }
+        for(error in data.errors.card_name){
+          $("#card_name_error").html(data.errors.card_name[error]);
+        }
+        for(error in data.errors.cvv){
+          $("#cvv_error").html(data.errors.cvv[error]);
+        }
       }
     });
   });
