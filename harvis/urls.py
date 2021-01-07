@@ -7,6 +7,7 @@ import Wallet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('qr_code/', include('qr_code.urls', namespace="qr_code")),
     path('auth/',include('Authentication.urls') , name="auth"),
     path('havwis/' , include('Wallet.urls') , name="havwis"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

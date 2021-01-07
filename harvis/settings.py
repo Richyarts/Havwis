@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bitcoinlib',
     'Authentication',
     'Wallet',
+    'qr_code',
 ]
 
 MIDDLEWARE = [

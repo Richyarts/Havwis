@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% load qr_code %}
+{% block content %}
+  <div class="container  p toolbar">
+    <img id="back" src="{% static 'img/ic_clear_black.png' %}" class="mb-8"  width="24px">
+    <span class="text-size-standout text-bold margin-center mb-8">Receive Bitcoin</span>
+  </div>
+  <div class="container qr">
+  <div class="custom-card bg-none card">
+    <div class="card-body p">
+      <img src="{% qr_url_from_text '{{address}}'  %}" width="100%" class="img-qr">
+    </div>
+    <div class="card-footer bg-none">
+      <div class="form-row">
+        <div class="col-10">
+          <p class="p text-muted">Wallet Address</p>
+          <p class="p ellipsis text-16 text-bold">{{address}}</p>
+        </div>
+        <div class="col-2">
+          <button class="btn btn-success mt-16 btn-sm float-right">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="custom-card text-center mt-64">
+   <div class="text-center form-row p">
+     <div class="col mt-8 float-left p-8">
+      <img width="32px" height="33px" class="float-left r-100" src="{{avatar.url}}"> <span class="float-left text-bold text-16 ml-8">{{network}}</span>
+     </div>
+      <div class="col p-8">
+        <p class="float-right text-bold p">NGN 0.00</p><br>
+        <p class="float-right p ml-32">{{balance}}</p>
+      </div>
+    </div>
+  </div>
+  <button class="btn mt-32 font-family-bundle btn-lg btn-warning btn-block">Share address</button>
+{% block js %}
+  <script>
+    $("body").addClass("bg-orange");
+    $("#back").on("click" , function (){
+      $(".layout").html("");
+      $.get("/havwis/wallet/" , function (data){
+        $(".layout").html(data);
+      });
+      $("body").removeClass("bg-orange");
+      $(".custom-toolbar").show(); $(".linearlayout-body").addClass("mt-160");
+    });
+  </script>
+{% endblock %}
+{% endblock %}

@@ -33,20 +33,13 @@
 </div>
 
 <div class="list-group">
-  {% for coin in coins %}
+  {% for coin in wallet_single.coin.all %}
   {% get_user_wallets request.user as wallets %}
   {% if wallets != None %}
     {% for wallet in wallets %}
       {% get_balance wallet.wallet_id coin.coin_name as balance %}
-      <li data-backdrop="static" data-keyboard="true" data-toggle="modal" data-target="#modal{{coin.id}}" class="coin container bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span id="balance" class="right mt-8">{{balance}}</span></li>
+      <li id="coin{{coin.id}}" data-backdrop="static" data-keyboard="true" data-toggle="modal" data-target="#modal{{coin.id}}" class="coin container bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span id="balance" class="right mt-8">{{balance}}</span></li>
     {% endfor %}
-  {% endif %}
-  {% endfor %}
-    {% get_user_wallets request.user as wallets %}
-    {% if wallets|length > 0 %}
-      <div class="text-center text-primary">More to come in next updates</div>
-    {% endif %}
-  {% for coin in coins %}
   <div class="modal z-index-3 w-100 p rounded-0 font-family-body"  id="modal{{coin.id}}">
     <div class="modal-dialog modal-dialog-centered vertical-align-center modal-bottom">
       <div class="modal-content bg-none rounded-0 border-none">
@@ -55,7 +48,7 @@
         </div>
         <div class="modal-body bg-white" style="border-radius: 24px 24px 0 0;">
           <div class="form-row"><div><img src="#"></div><a href="#" class="text-body none"><div class="col"><p class="text-bold text-16 p">Send</p><p class="text-muted p">Send crypto to another wallet</p></div></a></div>
-          <div class="form-row mt-16"><div><img src="#"></div><a href="#" class="text-body none"><div class="col">
+          <div class="form-row mt-16"><div><img src="#"></div><a id="receive{{coin.id}}" class="text-body none"><div class="col">
             <p class="text-bold text-16 p">Receive</p>
             <p class="text-muted p">Receive crypto from another wallet </p>
           </div></a>
@@ -70,8 +63,8 @@
          $(".btn").removeClass("border-none");
          $(".opacity").removeClass("img-opacity"); $(".list-group-item img").removeClass("img-opacity"); $("#modal{{coin.id}}").hide(); $("body").removeClass("bg-table"); $(".footer").show();$(".toolbar").addClass("bg-white");
         });       
-        $(".coin").on("click" , function (){
-          $(".toolbar").removeClass("bg-white"); $(".coin").removeClass("hover-muted"); $("#modal{{coin.id}}").show(); $("body").addClass("bg-table"); $(".list-group-item img").addClass("img-opacity"); $(".footer").hide(); $(".opacity").addClass("img-opacity");
+        $("#coin{{coin.id}}").on("click" , function (){
+          $(".toolbar").removeClass("bg-white"); $("#coin{{coin.id}}").removeClass("hover-muted"); $("#modal{{coin.id}}").show(); $("body").addClass("bg-table"); $(".list-group-item img").addClass("img-opacity"); $(".footer").hide(); $(".opacity").addClass("img-opacity");
            event.stopPropagation(); $(".btn").addClass("border-none");
           $(".modal-body").on("click" , function (){
             event.stopPropagation();
@@ -84,10 +77,15 @@
           //setInterval("reload()" , 1000);
           $('[data-toggle="tooltip"]').tooltip();
         });
+        $("#receive{{coin.id}}").on("click" , function (){
+          $(".layout").load("/havwis/receive/{{coin.id}}/{{wallet_single.wallet_id}}/");
+          $(".custom-toolbar").hide(); $(".linearlayout-body").removeClass("mt-160");
+       });
       </script>
     {% endblock %}
-  {% endfor %}
 </div>
+  {% endif %}
+  {% endfor %}
 {% else %}
   <p class="text-center p">
      <p class="p text-center">To be able to send and receive Crytocurrencies you have to register</p>
@@ -95,4 +93,8 @@
     <p class="text-center p"><a href="/auth/register/" class="text-body btn btn-block bg-orange">Get started</a></p>
   </p>
 {% endif %}
+{% get_user_wallets request.user as wallets %}
+  {% if wallets|length > 0 %}
+    <div class="text-center text-primary">More to come in next updates</div>
+  {% endif %}
 {% endblock %}

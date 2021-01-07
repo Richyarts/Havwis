@@ -27,9 +27,9 @@ class HomeView(View):
 #>>>return user wallets and custom_tag check for balance and fiat price using coinmarketapi
 class WalletView(View):
   def get(self , request , *args , **kwargs):
-    coins = CoinModel.objects.all()
     wallet = WalletModel.objects.filter(user = request.user)
-    return render(request , "wallet/wallet.htm" , {"wallets":wallet , "coins":coins})
+    wallet_single = WalletModel.objects.get(user = request.user)
+    return render(request , "wallet/wallet.htm" , {"wallet_single":wallet_single , "wallets":wallet})
 
 #>>>Check for wallet_id that user switch to in view and return the wallet object
   def post(self , request , *args , **kwargs):
@@ -111,7 +111,19 @@ class SendView(View):
             return JsonResponse({"error":"sending error"})
       return render(request , "")
     return redirect("/havwis/login/")
- 
+
+class ReceiveView(View):
+  def get(self , request , *args , **kwargs):
+    coin_id = kwargs["coin_id"] 
+    wallet_id = kwargs["wallet_id"]
+    coin = get_object_or_404(CoinModel , id=coin_id)
+    network = coin.coin_name
+    wallet = Wallet(wallet_id)
+    balance = wallet.balance(network=network)
+    avatar = coin.coin_avatar
+    address = wallet.get_key(network=network).address
+    return render(request , "wallet/receive_crypto.htm" , {"balance":balance , "coin":coin , "address": address , "network":network , "avatar": avatar})
+
 #>>>Can change to listview but this easy for me @lyonkvalid
 class NotificationView(View):
   def get(self ,request , *args , **kwargs):

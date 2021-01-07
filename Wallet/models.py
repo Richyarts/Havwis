@@ -21,6 +21,7 @@ class WalletModel(models.Model):
   wallet_id = models.CharField(max_length=64 , blank=False , null=False)
   credit_card = models.ManyToManyField(CreditCard , blank=True)
   balance = models.IntegerField(default=0.00)
+  coin = models.ManyToManyField(CoinModel  , blank=False)
   class Meta:
     db_table = "WalletModel"
     

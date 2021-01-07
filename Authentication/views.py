@@ -49,7 +49,11 @@ class AuthenticationView(View):
         #>>>Todo create a form for uset to customize profile
         profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
         #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
+        coins = CoinModel.objects.all()
         wallet_model = WalletModel.objects.create(user=user , wallet_id=unique_id)
+        for coin_avaliable in coins:
+          wallet_model.coin.add(coin_avaliable)
+          wallet_model.save()
         user.save()
         return redirect("/auth/login/")
       else:

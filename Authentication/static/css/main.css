@@ -15,3 +15,8 @@ input[type="date"]{visibility: hidden; position: absolute; top: 0;} #expiry_date
 .monospace{font-family: Monospace!important;}
 .br-0{border-radius: 0!important;}
 .bb-thin{ border-bottom: 0.5px solid #EEEEEE;}
+.custom-card{box-shadow: 0.5px 1px 2px #E0E0E0; padding: 4px 0px; border-radius: 8px;}
+.margin-center{ margin-left: 24%; }
+.qr{padding: 0 24px!important; margin-top: 24px;}
+.qr-code{width: 200px; height: 150px;}
+.ellipsis{ text-overflow: ellipsis;   width: 100%;   overflow: hidden;         white-space: nowrap;}
