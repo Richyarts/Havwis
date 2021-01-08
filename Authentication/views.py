@@ -7,7 +7,7 @@ from Authentication.forms import *
 from django.shortcuts import render , redirect
 from Wallet.models import WalletModel
 from Wallet.wallet import create_wallet
-from harvis.core import verify_code , get_tag
+from harvis.core import verify_code , generateRandomString #generateRandomString added by Mumeen
 from django.contrib.auth.models import User
 from Authentication.views import ProfileModel
 from django.http import JsonResponse , HttpResponse
@@ -40,7 +40,7 @@ class AuthenticationView(View):
       user = User.objects.create_user(username , email , password)
       user.is_active = False
       #get a random string as suggested by Mummen and signed it with the projects Private key
-      unique_id = Signer.sign(get_random_string(length=64))
+      unique_id = generateRandomString() 
       #create a wallet  return None if wallet exists -> Have to change that cos of security breach 
       wallet = create_wallet(allow_mnemonic=False , id=unique_id , code=password)
       print(wallet)

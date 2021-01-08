@@ -1,5 +1,6 @@
 #>>>Written by lyonkvalid 7:40PM Wed , jan 6 2020
-import random
+import random # Written by Mumeen
+import string # Written by Mumeen
 from hashlib import sha256
 
 magic_no = [random.randint(0 , 9425)]
@@ -46,3 +47,9 @@ class VirtualCard():
       type = type,
     )
 verify_code = GenerateCode()
+
+def generateRandomString():
+ # Written by Mumeen
+  letters = string.ascii_letters
+  value = ''.join(random.choice(letters) for i in range(64)) 
+  return sha256(value.encode("utf-8")).hexdigest()
