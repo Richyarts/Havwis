@@ -3,7 +3,9 @@ $(".nav-btn-profile-circle").hide();
 $(".nav-btn-card-circle").hide();
 $(".nav-btn-wallet-circle").hide();
 
-
+//>>>Disable an element
+$(".disabled").attr('disabled','disabled');
+       
 $("#nav-btn-home").on("click" , function (){
   $.ajax({
     url:"/havwis/home/",

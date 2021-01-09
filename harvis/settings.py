@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Authentication',
     'Wallet',
     'qr_code',
+    'coinmarketcap',
 ]
 
 MIDDLEWARE = [

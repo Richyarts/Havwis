@@ -1,13 +1,21 @@
 from django import template
+from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 register = template.Library()
 
 from Wallet.wallet import *
+from bitcoinlib.networks import *
 from bitcoinlib.wallets import *
 from bitcoinlib.networks import *
 
+cmc = CoinMarketCapAPI('5fec81c9-dc6b-45dd-82ea-c86d7615adbb')
+
 @register.simple_tag
 def get_balance(id , network):
-  return print_value(int(Wallet(id).balance(network=network)) , network = network)
+  symbol = NETWORK_DEFINITIONS[network]["currency_code"]
+  amount = int(Wallet(id).balance(network=network))
+  if amount > 0:
+    return "${0}".format (cmc.tools_priceconversion(symbol=symbol ,  amount=amount))
+  return "$0.00"
 
 from Wallet.models import WalletModel
 

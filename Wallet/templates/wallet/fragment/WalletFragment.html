@@ -57,11 +57,13 @@
     <script>
         $("tooltip").show();
         $(window).on("click" , function(){
+         $("body").attr('disabled','enabled');
          $(".btn").removeClass("border-none"); $(".modal-template").hide();
          $(".opacity").removeClass("img-opacity"); $(".list-group-item img").removeClass("img-opacity"); $("#modal{{coin.id}}").hide(); $("body").removeClass("bg-table"); $(".footer").show();$(".toolbar").addClass("bg-white");
         });       
         $("#coin{{coin.id}}").on("click" , function (){
           $(".toolbar").removeClass("bg-white"); $("#coin{{coin.id}}").removeClass("hover-muted"); $("#modal{{coin.id}}").show(); $("body").addClass("bg-table"); $(".list-group-item img").addClass("img-opacity"); $(".footer").hide(); $(".opacity").addClass("img-opacity");
+           $("body").attr('disabled','disabled');
            event.stopPropagation(); $(".btn").addClass("border-none");
           $(".modal-body").on("click" , function (){
             event.stopPropagation();
