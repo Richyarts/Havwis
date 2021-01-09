@@ -1,5 +1,5 @@
 from django.urls import path
-from Wallet.views import VirtualCardView , ReceiveView ,  HomeView , WalletView , CreditCardView , NotificationView , PaymentView
+from Wallet.views import VirtualCardView , SendView , ReceiveView ,  HomeView , WalletView , CreditCardView , NotificationView , PaymentView
 
 urlpatterns = [
   path("home/" , HomeView.as_view() , name="home"),
@@ -9,4 +9,5 @@ urlpatterns = [
   path("virtualcard/" , VirtualCardView.as_view() , name="virtualcard"),
   path("notifications/<int:id>/" , NotificationView.as_view() , name="notifications"),
   path("receive/<int:coin_id>/<wallet_id>/" , ReceiveView.as_view() , name="receive"),
+  path("send/<int:coin_id>/<wallet_id>/"  , SendView.as_view() , name="send"),
 ]

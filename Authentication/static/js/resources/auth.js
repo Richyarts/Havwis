@@ -49,11 +49,17 @@ var visibility = 0;
 $('button').click(function (){
   visibility++;
  });
+ 
+if(visibility == 0){
+  var back = true;
+}
 
 $(function (){
   $('#auth-back').on("click" , function(){
     if(visibility == 2){
-      $('.phone_layout').show();
+      $('.email-tab').removeClass('active');
+      $('.phone-tab').addClass('active');
+      $('.phone-remove').show();
       $('.username_layout').hide();
       $('.password_layout').hide();
     }
@@ -61,14 +67,16 @@ $(function (){
       $('.password_layout').hide();
       $('.username_layout').show();
       $('.phone_layout').hide();
+      alert(visibility);
     }
     if(visibility == 0){
       $('.password_layout').hide();
       $('.username_layout').show();
-      $('.phone_layout').hide();
+      $('.phone_layout').hide(); alert(visibility)
     }
-    if(visibility < 0){
-      visibility = 0;
+    if(back){
+      alert(back);
+      $("body").load("/auth/login/");
     }
     visibility--;
   });

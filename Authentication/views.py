@@ -5,9 +5,9 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth import authenticate , login
 from Authentication.forms import *
 from django.shortcuts import render , redirect
-from Wallet.models import WalletModel
+from Wallet.models import WalletModel , CoinModel
 from Wallet.wallet import create_wallet
-from harvis.core import verify_code , generateRandomString #generateRandomString added by Mumeen
+from harvis.core import verify_code , get_tag , generateRandomString #generateRandomString added by Mumeen
 from django.contrib.auth.models import User
 from Authentication.views import ProfileModel
 from django.http import JsonResponse , HttpResponse
@@ -55,7 +55,8 @@ class AuthenticationView(View):
           wallet_model.coin.add(coin_avaliable)
           wallet_model.save()
         user.save()
-        return redirect("/auth/login/")
+        print(user)
+        return redirect("/havwis/home/")
       else:
        #>>>To prevent user from being create if there is an error with creating Wallet
        User.objects.get(username=username).delete()
