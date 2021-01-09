@@ -1,8 +1,7 @@
-{% extends "base.html" %}
 {% load static %}
 {% load qr_code %}
 {% block content %}
-  <div class="container  p toolbar">
+  <div class="p toolbar">
     <img id="back" src="{% static 'img/ic_clear_black.png' %}" class="mb-8"  width="24px">
     <span class="text-size-standout text-bold margin-center mb-8">Receive Bitcoin</span>
   </div>
@@ -37,14 +36,9 @@
   <button class="btn mt-32 font-family-bundle btn-lg btn-warning btn-block">Share address</button>
 {% block js %}
   <script>
-    $("body").addClass("bg-orange");
     $("#back").on("click" , function (){
-      $(".layout").html("");
-      $.get("/havwis/wallet/" , function (data){
-        $(".layout").html(data);
-      });
-      $("body").removeClass("bg-orange");
-      $(".custom-toolbar").show(); $(".linearlayout-body").addClass("mt-160");
+      $(".btn").removeClass("border-none"); $(".modal-template").hide();
+      $(".opacity").removeClass("img-opacity"); $(".list-group-item img").removeClass("img-opacity"); $("#modal{{coin.id}}").hide(); $("body").removeClass("bg-table"); $(".footer").show();$(".toolbar").addClass("bg-white");
     });
   </script>
 {% endblock %}

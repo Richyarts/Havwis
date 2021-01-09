@@ -1,4 +1,5 @@
-#Written by lyonkvalid 7:40PM Wed , jan 6 2020
+#>>>Written by lyonkvalid 7:40PM Wed , jan 6 2020
+#>>>Change html template name , @lyonkvalid
 from django.views import View
 from bitcoinlib.wallets import wallet_exists
 from django.core import serializers
@@ -21,7 +22,7 @@ class JsonSerializable(object):
 class HomeView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/home.htm")
+      return render(request , "wallet/fragment/HomeFragment.html")
     return redirect("/auth/login/")
 
 #>>>return user wallets and custom_tag check for balance and fiat price using coinmarketapi
@@ -29,7 +30,7 @@ class WalletView(View):
   def get(self , request , *args , **kwargs):
     wallet = WalletModel.objects.filter(user = request.user)
     wallet_single = WalletModel.objects.get(user = request.user)
-    return render(request , "wallet/wallet.htm" , {"wallet_single":wallet_single , "wallets":wallet})
+    return render(request , "wallet/fragment/WalletFragment.html" , {"wallet_single":wallet_single , "wallets":wallet})
 
 #>>>Check for wallet_id that user switch to in view and return the wallet object
   def post(self , request , *args , **kwargs):
@@ -39,14 +40,14 @@ class WalletView(View):
       wallet = WalletModel.objects.filter(user = request.user)
       wallet_object = Wallet(wallet_id)
       context = {"wallet_object":wallet_object}
-      return render(request , "wallet/wallet.htm" , context)
+      return render(request , "wallet/fragment/WalletFragment.html" , context)
     return JsonResponse(None)
 
 #>>>Payment to fund wallet
 class PaymentView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/form/credit_card.htm")
+      return render(request , "wallet/form/CreditCardActivity.html")
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_data = CreditCardForm(request.POST)
@@ -65,8 +66,9 @@ class CreditCardView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
       wallet_object =  WalletModel.objects.filter(user = request.user)
-      return render(request , "wallet/form/cards.htm" , {"wallet":wallet_object})
+      return render(request , "wallet/form/CardActivity.html" , {"wallets":wallet_object})
     return redirect("/auth/login/")
+ 
   def post(self , request , *args , **kwargs):
     pass
  
@@ -74,7 +76,7 @@ class CreditCardView(View):
 class VirtualCardView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/form/virtual_card.htm")
+      return render(request , "wallet/form/RegisterCardActivity.html")
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_data = VirtualCardForm(request.POST)
@@ -88,8 +90,8 @@ class VirtualCardView(View):
       virtual_card = VirtualCard(billing_address , city , state , postal_code , country)
       card_holder = virtual_card.card_holder(profile_object , request.user)
       card = virtual_card.card(card_holder)
-      return render(request , "wallet/form/virtual_card.htm" , {"card": card})
-    return render(request , "wallet/form/virtual_card.htm" , {"errors": form_data.errors})
+      return render(request , "wallet/form/RegisterCardActivity.html" , {"card": card})
+    return render(request , "wallet/form/RegisterCardActivity.html" , {"errors": form_data.errors})
 
 #>>>Will work on the send view later >>To do Rest APi for price feed
 class SendView(View):
@@ -122,11 +124,11 @@ class ReceiveView(View):
     balance = wallet.balance(network=network)
     avatar = coin.coin_avatar
     address = wallet.get_key(network=network).address
-    return render(request , "wallet/receive_crypto.htm" , {"balance":balance , "coin":coin , "address": address , "network":network , "avatar": avatar})
+    return render(request , "wallet/fragment/ReceiveFragment.html" , {"balance":balance , "coin":coin , "address": address , "network":network , "avatar": avatar})
 
 #>>>Can change to listview but this easy for me @lyonkvalid
 class NotificationView(View):
   def get(self ,request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/notifications.html")
+      return render(request , "wallet/activity/NotificationsActivity.html")
     return redirect("/havwis/login/")

@@ -1,14 +1,11 @@
 <!--Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
-<head>
-<link rel="stylesheet" href="css/main.css" type="text/css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-</head>
+{% extends "wallet/MainActivity.html" %}
 {% load static %}
 {% load custom_tags %}
 {% block content %}
 <input type="hidden" id="wallet_instance_id">
 {% if request.user.is_authenticated %}
-<div class="container opacity z-index-0 font-family-body">
+<div class="container mt-160 remove-mt-160 opacity z-index-0 font-family-body">
   {% get_user_wallets request.user as wallets %}
   {% if wallets != None %}
      {% for wallet in wallets %}
@@ -40,15 +37,15 @@
       {% get_balance wallet.wallet_id coin.coin_name as balance %}
       <li id="coin{{coin.id}}" data-backdrop="static" data-keyboard="true" data-toggle="modal" data-target="#modal{{coin.id}}" class="coin container bg-none list-group-item mt-8 mb-8 hover-muted"><img class="r-100" src="{{coin.coin_avatar.url}}" width="40px" height="40px"><span class="ml-16 mb-8 text-bold font-family-sweet">{{coin.coin_name}}</span><span id="balance" class="right mt-8">{{balance}}</span></li>
     {% endfor %}
-  <div class="modal z-index-3 w-100 p rounded-0 font-family-body"  id="modal{{coin.id}}">
+  <div class="modal b-sheet z-index-3 w-100 p rounded-0 font-family-body"  id="modal{{coin.id}}">
     <div class="modal-dialog modal-dialog-centered vertical-align-center modal-bottom">
       <div class="modal-content bg-none rounded-0 border-none">
         <div class="modal-header rounded-0 text-center p border-none">
           <span style="border-radius: 100px;" class="line-horizontal mb-8 bg-white text-center"></span>
         </div>
         <div class="modal-body bg-white" style="border-radius: 24px 24px 0 0;">
-          <div class="form-row"><div><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_up.png'%}"></div><a href="#" class="text-body none"><div class="col"><p class="text-bold text-16 p">Send</p><p class="text-muted p">Send crypto to another wallet</p></div></a></div>
-          <div class="form-row mt-16"><div><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png'%}"></div><a id="receive{{coin.id}}" class="text-body none"><div class="col">
+          <div class="form-row"><div><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_up.png' %}"></div><a href="#" class="text-body none"><div class="col"><p class="text-bold text-16 p">Send</p><p class="text-muted p">Send crypto to another wallet</p></div></a></div>
+          <div class="form-row mt-16"><div><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></div><a id="receive{{coin.id}}" class="text-body none"><div class="col">
             <p class="text-bold text-16 p">Receive</p>
             <p class="text-muted p">Receive crypto from another wallet </p>
           </div></a>
@@ -60,7 +57,7 @@
     <script>
         $("tooltip").show();
         $(window).on("click" , function(){
-         $(".btn").removeClass("border-none");
+         $(".btn").removeClass("border-none"); $(".modal-template").hide();
          $(".opacity").removeClass("img-opacity"); $(".list-group-item img").removeClass("img-opacity"); $("#modal{{coin.id}}").hide(); $("body").removeClass("bg-table"); $(".footer").show();$(".toolbar").addClass("bg-white");
         });       
         $("#coin{{coin.id}}").on("click" , function (){
@@ -78,8 +75,15 @@
           $('[data-toggle="tooltip"]').tooltip();
         });
         $("#receive{{coin.id}}").on("click" , function (){
-          $(".layout").load("/havwis/receive/{{coin.id}}/{{wallet_single.wallet_id}}/");
-          $(".custom-toolbar").hide(); $(".linearlayout-body").removeClass("mt-160");
+          $.ajax({
+            url:"/havwis/receive/{{coin.id}}/{{wallet_single.wallet_id}}/",
+            cache:false,
+            dataType:"html",
+            success: function (data){
+              $("#modal-template").show(); $(".b-sheet").hide(); event.stopPropagation();
+             $(".modal-data").html(data);
+            }
+          });
        });
       </script>
     {% endblock %}
@@ -97,4 +101,16 @@
   {% if wallets|length > 0 %}
     <div class="text-center text-primary">More to come in next updates</div>
   {% endif %}
+
+<!--Modal templates -->
+<div class="container">
+  <div id="modal-template" class="modal modal-template container">
+    <div id="modal-template-dialog" class="modal-dialog modal-template-dialog modal-dialog-centered">
+      <div id="modal-template-content" class="modal-content modal-template-content">
+        <div id="modal-data" class="modal-body modal-data"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

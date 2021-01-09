@@ -52,3 +52,7 @@ def get_wallet_instance(wallet_name):
 def card_no_format(value):
   value = str(value)
   return "{0} {1}  {2}  {3}".format(value[:4] , value[4:][:4] , value[8:][:4] , value[12:][:4])
+  
+@register.simple_tag
+def get_cards(wallet):
+  return wallet.credit_card.all
