@@ -49,7 +49,7 @@ class VirtualCard():
 verify_code = GenerateCode()
 
 def generateRandomString():
- # Written by Mumeen
+ # Written by Mumeen //make the randomly generated number unique by checking if already exist in the database or make foreign key 
   letters = string.ascii_letters
   value = ''.join(random.choice(letters) for i in range(64)) 
   return sha256(value.encode("utf-8")).hexdigest()
