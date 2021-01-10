@@ -21,7 +21,7 @@
   <!-- Toolbar -->
   {% block toolbar %}
   <div class="container custom-toolbar top bg-white position-fixed toolbar">
-    <img id="notification-btn" src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px">
+    <span class="relative"><img id="notification-btn" src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px"><span class="badge float-right img-notification-overlap badge-pill badge-success">1</span></span>
     <span class="float-right ml-16 mr-16 line-vertical-post text-center"></span>
     <img src="{% static 'img/ic_settings_black.png' %}" class="float-right filter-blue-2" width="28px">
     <div class="container mt-48">
@@ -54,6 +54,7 @@
     });
   </script>
   <style>
+  .img-notification-overlap{position: absolute!important; top: 0!important; left: 330px;}
     .hover-muted{list-style: none; padding: 8px 4px;}
     .none{text-decoration: none!important;} .hover-muted:hover{background: #F9F9F9!important;}
     .rounded-text{width: 32px; height: 32px; font-size: 16px;}

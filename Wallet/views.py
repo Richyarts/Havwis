@@ -121,6 +121,8 @@ class SendView(View):
           amount = form_data.cleaned_data["amount"]
           address = form_data.cleaned_data["address"]
           wallet.send_to(address , amount , network=network)
+          msg = notification.get_message("verify" , amount=amount , address=address , tag=profile_model.tag).get_text()
+          notification.send(user , user , msg)
         return JsonResponse({"error":form_data.errors})
       return redirect("/havwis/login/")
 
@@ -140,5 +142,9 @@ class ReceiveView(View):
 class NotificationView(View):
   def get(self ,request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/activity/NotificationsActivity.html")
+      notification = request.user.notifications.unread()
+      return render(request , "wallet/activity/NotificationsActivity.html" , {"notifications":notification})
     return redirect("/havwis/login/")
+ 
+def debug(request):
+  return render(request , "debug.html")
