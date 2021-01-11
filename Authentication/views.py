@@ -1,4 +1,5 @@
 import json
+from Authentication.models import ProfileModel , CustomerModel
 from django.views import View
 from harvis.notifications import notification
 from django.core.signing import Signer
@@ -8,9 +9,9 @@ from Authentication.forms import *
 from django.shortcuts import render , redirect
 from Wallet.models import WalletModel , CoinModel
 from Wallet.wallet import create_wallet
+from harvis import paystack
 from harvis.core import verify_code , get_tag , generateRandomString #generateRandomString added by Mumeen
 from django.contrib.auth.models import User
-from Authentication.views import ProfileModel
 from django.http import JsonResponse , HttpResponse
 
 """"
@@ -48,7 +49,7 @@ class AuthenticationView(View):
       #>>>Wallet return None if failed to create a Wallet check Wallet/wallet.py >>> method create_wallet()
       if wallet != None:
         try:
-          #>>>Todo create a form for uset to customize profile
+          #>>>Todo create a form for user to customize profile
           profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
           #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
           coins = CoinModel.objects.all()
@@ -59,8 +60,10 @@ class AuthenticationView(View):
           for coin_avaliable in coins:
             wallet_model.coin.add(coin_avaliable)
             wallet_model.save()
-            user.save()
-            print(user)
+          #>>>Create a customer instance for paystack payment getaway
+          customer_id = create_customer(user , profile_model)
+          Customer.objects.create(user , customer_id)
+          user.save()
           return redirect("/havwis/home/")
         except:
           #>>>To prevent user from being create if there is an error with creating Wallet

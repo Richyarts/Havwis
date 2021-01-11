@@ -54,7 +54,7 @@ class NotificationModel(models.Model):
     amount = kwargs.get("amount")
     network = kwargs.get("network")
     tag = kwargs.get("tag")
-    if type is "security":
+    if type == "security":
       return (self.text.format(tag , time))
     if type == "verify":
       return (self.text.format(tag))
@@ -62,3 +62,12 @@ class NotificationModel(models.Model):
       return (self.text.format(network , amount , address))
     if type == "receive":
       return (self.text.format(network , amount , address))
+    class Meta:
+      db_table = "NotificationModel"
+      
+class TradeModel(models.Model):
+  coin_name = models.TextField(max_length = 64 , blank=False , null=False)
+  coin_avatar = models.ImageField(upload_to='Authentication/static/market/trade' , blank=False , max_length=500 )
+  coin_symbol = models.TextField(max_length = 64 , blank=False , null=False , default="BTC")
+  class Meta:
+    db_table = "TradeModel"
