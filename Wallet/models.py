@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 class CoinModel(models.Model):
   coin_name = models.TextField(max_length = 64 , blank=False , null=False)
@@ -34,3 +36,29 @@ class VirtualCardModel(models.Model):
   country = models.CharField(max_length=32)
   class Meta:
     db_table = "VirtualCardModel"
+ 
+class NotificationModel(models.Model):
+  notificationId = [
+    ("security" , "security"),
+    ("send" , "send"),
+    ("receive" , "receive"),
+    ("verify" , "verify"),
+  ]
+  type = models.CharField(max_length=10 , choices=notificationId)
+  text = models.TextField(max_length=500 , blank=False , null=False)
+  def __str__(self):
+    return self.text
+  def get_text(self , type , *args , **kwargs):
+    time = naturaltime(timezone.now())
+    address = kwargs.get("address")
+    amount = kwargs.get("amount")
+    network = kwargs.get("network")
+    tag = kwargs.get("tag")
+    if type is "security":
+      return (self.text.format(tag , time))
+    if type == "verify":
+      return (self.text.format(tag))
+    if type == "send":
+      return (self.text.format(network , amount , address))
+    if type == "receive":
+      return (self.text.format(network , amount , address))

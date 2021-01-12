@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+
+{% if network != "" or None and id != None%}
+{% get_balance id network  as usd_balance %}
+{% currency_symbol network as symbol %}
+{% endif %}
+{{error}}
+<div class="toolbar container text-center"><img id="back" class="left" src="{% static 'img/ic_clear_black.png' %}" width="24px"><span class="">SEND {% filter force_escape|upper %} {{network}} {% endfilter %}</span></div>
+  <div class="container text-center"><img class="r-100" width="56px" src="{{avatar.url}}"><p class="mt-16">Enter Amount</p></div>
+   <form action="/havwis/send/{{coin.id}}/{{id}}/" method="POST">
+    {% csrf_token %}
+    <input id="balance" type="hidden" name="balance" value="{{balance}}">
+    <div class="text-center form-row container">
+      <span class="border-muted r-100 text-muted text-14 text-bold rounded-text">⚠️</span><input id="amount" name="amount" max="16" maxlength="16" type="number" class="text-bold text-muted monospace text-size-standout  border-none outline-none ml-16 col w-default" value="0.00"><span>{{symbol|upper}}</span>
+    </div>
+     <p class="amount-error p ml-32 text-danger">{{errors}}</p>
+    {% for errors in error.amount %}
+     <p id="amount-error" class="p ml-32 text-danger">{{errors}}</p>
+    {% endfor %}
+  <div class="container">
+    <p class="border-bottom pb-8 p mt-16"><span class="text-orange p">{{symbol|upper}}</span><span class="right text-bold text-muted monospace text-16">{{balance}}</span></p>
+    <p class="text-muted pt-8 text-14"><span class="p">USD</span><span class="right monospace">{{usd_balance}}</span></p>
+  </div>
+  <div class="alert alert-warning">Your {{network|upper}} wallet is empty , you don't have any {{symbol|upper}} to send</div>
+  <div class="container">
+    <label class="p" for="address">Receiver  address</label>
+   <input id="address" name="address" class="w-100 mt-8 r-4 border-muted outline-none p-8" placeholder="Paste {{symbol|upper}} Wallet Address">
+   <p class="p address-error text-danger"></p>
+   {% for errors in error.address %}
+     <p id="address-error" class="p text-danger"></p>
+   {% endfor %}
+  </div>
+  <button type="button" id="submit" class="btn btn-block btn-lg mt-32 btn-outline-warning">Send</button>
+  </form>
+{% block js %}
+  <script>
+    if($("#balance").val() <= 0){
+      $("#submit").hide(); $(".alert").show();
+    }
+    if($("#balance").val() > 0){
+      $("#submit").show(); $(".alert").hide();
+    }
+    $("#back").on("click" , function (){
+      $(".btn").removeClass("border-none"); $(".modal-template").hide();
+      $(".opacity").removeClass("img-opacity"); $(".list-group-item img").removeClass("img-opacity"); $("#modal{{coin.id}}").hide(); $("body").removeClass("bg-table"); $(".footer").show();$(".toolbar").addClass("bg-white");
+      $(".modal-bottom").css({"bottom":"-36.5%"});
+    });
+    var $amount = $("#amount").val()
+    $("#submit").on("click" , function(){
+      if($("#amount").val() > 0 && $("#address").val().length >= 32){
+        $.post("/havwis/send/{{coin.id}}/{{id}}/" , {"amount":$("#amount").val() , "address":$("#address").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function (data , status){
+           $(".modal-data").html(data);
+        });
+      }
+      else{
+        if($("#address").val().length < 32){
+          $(".address-error").html("Invalid Address")
+        }
+        if($("#amount").val() <= 0){
+          $("#amount-error").html("Amount must be greater than 0")
+        }
+      }
+    });
+  </script>
+{% endblock %}
+{% endblock %}

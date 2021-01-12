@@ -96,23 +96,35 @@ class VirtualCardView(View):
 #>>>Will work on the send view later >>To do Rest APi for price feed
 class SendView(View):
   def get(self , request , *args , **kwargs):
-    pass
-  def post(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      wallet_id = request.POST["wallet_id"]
+     coin_id = kwargs["coin_id"] 
+     wallet_id = kwargs["wallet_id"]
+     coin = get_object_or_404(CoinModel , id=coin_id)
+     network = coin.coin_name
+     wallet = Wallet(wallet_id)
+     balance = wallet.balance(network=network)
+     avatar = coin.coin_avatar
+     return render(request , "wallet/fragment/SendFragment.html" , {"id":wallet_id , "balance":balance , "coin":coin , "network":network , "avatar": avatar})
+    else:
+      return redirect("/auth/login/")
+      
+  def post(self , request , *args , **kwargs):
+    wallet_id = kwargs["wallet_id"]
+    coin_id = kwargs["coin_id"] 
+    coin = get_object_or_404(CoinModel , id=coin_id)
+    network = coin.coin_name
+    if request.user.is_authenticated:
       if wallet_exists(wallet_id):
         wallet = Wallet(wallet_id)
-        network = request.POST["network"]
         form_data = SendForm(request.POST)
         if form_data.is_valid():
           amount = form_data.cleaned_data["amount"]
           address = form_data.cleaned_data["address"]
-          try:
-            wallet.send_to(address , amount , network=network)
-          except:
-            return JsonResponse({"error":"sending error"})
-      return render(request , "")
-    return redirect("/havwis/login/")
+          wallet.send_to(address , amount , network=network)
+          msg = notification.get_message("verify" , amount=amount , address=address , tag=profile_model.tag).get_text()
+          notification.send(user , user , msg)
+        return JsonResponse({"error":form_data.errors})
+      return redirect("/havwis/login/")
 
 class ReceiveView(View):
   def get(self , request , *args , **kwargs):
@@ -130,5 +142,9 @@ class ReceiveView(View):
 class NotificationView(View):
   def get(self ,request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/activity/NotificationsActivity.html")
+      notification = request.user.notifications.unread()
+      return render(request , "wallet/activity/NotificationsActivity.html" , {"notifications":notification})
     return redirect("/havwis/login/")
+ 
+def debug(request):
+  return render(request , "debug.html")

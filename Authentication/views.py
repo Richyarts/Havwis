@@ -1,13 +1,14 @@
 import json
 from django.views import View
+from harvis.notifications import notification
 from django.core.signing import Signer
 from django.utils.crypto import get_random_string
 from django.contrib.auth import authenticate , login
 from Authentication.forms import *
 from django.shortcuts import render , redirect
-from Wallet.models import WalletModel
+from Wallet.models import WalletModel , CoinModel
 from Wallet.wallet import create_wallet
-from harvis.core import verify_code , generateRandomString #generateRandomString added by Mumeen
+from harvis.core import verify_code , get_tag , generateRandomString #generateRandomString added by Mumeen
 from django.contrib.auth.models import User
 from Authentication.views import ProfileModel
 from django.http import JsonResponse , HttpResponse
@@ -46,16 +47,26 @@ class AuthenticationView(View):
       print(wallet)
       #>>>Wallet return None if failed to create a Wallet check Wallet/wallet.py >>> method create_wallet()
       if wallet != None:
-        #>>>Todo create a form for uset to customize profile
-        profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
-        #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
-        coins = CoinModel.objects.all()
-        wallet_model = WalletModel.objects.create(user=user , wallet_id=unique_id)
-        for coin_avaliable in coins:
-          wallet_model.coin.add(coin_avaliable)
-          wallet_model.save()
-        user.save()
-        return redirect("/auth/login/")
+        try:
+          #>>>Todo create a form for uset to customize profile
+          profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
+          #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
+          coins = CoinModel.objects.all()
+          wallet_model = WalletModel.objects.create(user=user , wallet_id=unique_id)
+          #send notification to verify account
+          msg = notification.get_message("verify" , tag=profile_model.tag)
+          notification.send(user , user , msg)
+          for coin_avaliable in coins:
+            wallet_model.coin.add(coin_avaliable)
+            wallet_model.save()
+            user.save()
+            print(user)
+          return redirect("/havwis/home/")
+        except:
+          #>>>To prevent user from being create if there is an error with creating Wallet
+          User.objects.get(username=username).delete()
+          #>>>return HttpResponse if an error occurs in creating Wallet
+          return HttpResponse("<h1>Error creating Wallet </h1>")
       else:
        #>>>To prevent user from being create if there is an error with creating Wallet
        User.objects.get(username=username).delete()
@@ -97,6 +108,8 @@ class LoginView(View):
       password = request.POST["password"]
       user = authenticate(username=username , password = password)
       if user is not None:
+        msg = notification.get_message("security" , tag=username)
+        notification.send(user , user , msg)
         login(request , user)
         return redirect("/havwis/home/")
       user = authenticate(email=username , password = password)

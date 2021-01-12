@@ -17,6 +17,10 @@ def get_balance(id , network):
     return "${0}".format (cmc.tools_priceconversion(symbol=symbol ,  amount=amount))
   return "$0.00"
 
+@register.simple_tag
+def currency_symbol(network):
+  return NETWORK_DEFINITIONS[network]["currency_code"]
+  
 from Wallet.models import WalletModel
 
 @register.simple_tag
@@ -27,7 +31,7 @@ def get_user_wallets(user):
 
 @register.simple_tag
 def get_wallet_id(wallet):
-  return Wallet.wallet_id
+  return Wallet.wallet_id[:4]
 
 @register.simple_tag
 def get_wallet(wallet_id):
@@ -59,7 +63,7 @@ def get_wallet_instance(wallet_name):
 @register.simple_tag
 def card_no_format(value):
   value = str(value)
-  return "{0} {1}  {2}  {3}".format(value[:4] , value[4:][:4] , value[8:][:4] , value[12:][:4])
+  return "{0} {1}  {2}  {3}".format("****" , "****" , "****" , value[12:][:4])
   
 @register.simple_tag
 def get_cards(wallet):

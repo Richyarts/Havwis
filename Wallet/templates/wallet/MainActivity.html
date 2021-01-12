@@ -21,20 +21,42 @@
   <!-- Toolbar -->
   {% block toolbar %}
   <div class="container custom-toolbar top bg-white position-fixed toolbar">
-    <img id="notification-btn" src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px">
+    <span class="relative"><img id="notification-btn" src="{% static 'img/ic_notifications_black.png' %}" class="float-right filter-blue-2" width="28px"><span class="badge float-right img-notification-overlap badge-pill badge-success">1</span></span>
     <span class="float-right ml-16 mr-16 line-vertical-post text-center"></span>
     <img src="{% static 'img/ic_settings_black.png' %}" class="float-right filter-blue-2" width="28px">
     <div class="container mt-48">
-      <span class="monospace text-bold float-left"><span class="text-32 p">$0.</span><span class="p text-14">00</span></span><a href="#" id="add-money" class=" float-right font-family-bundle btn-green">Add Money</a>
+      <span class="monospace text-bold float-left"><span class="text-32 p v-1">$0.</span><span class="p text-14 v-2">00</span></span><a href="#" id="add-money" class=" float-right font-family-bundle btn-green">Add Money</a>
     </div>
-    <div class="container mt-32">
-    <img src="{% static 'img/ic_visibility_off_black.png' %}" width="24px" class="ml-8 filter-muted"><span class="text-muted text-bold font-family-body ml-8">Hide balance</span>
+    <div id="balance-visibility" class="container mt-32">
+      <img id="balance-visibility" src="{% static 'img/ic_visibility_off_black.png' %}" width="24px" class="ml-8 filter-muted"><span class="text-muted text-bold font-family-body ml-8">Hide balance</span>
     </div>
   </div>
   {% endblock %}
   {% block content %}{% endblock %}
+  <script>
+    $("#notification-btn").on("click" , function(){
+      $("body").load("/havwis/notifications/{{request.user.id}}/");
+    });
+    var visibility = true;
+    $("#balance-visibility").on("click" , function (){
+      if (visibility){
+        $(".v-1").html("💰💰"); $(".v-2").html("💰💰");
+        alert($("#balance-visibility img").attr({"src":"{% static 'img/ic_visibility_black.png' %}"}));
+        $("#balance-visibility span").html("Show balance");
+        visibility = false;
+      }
+      else{
+        $(".v-1").html("$0."); $(".v-2").html("00");
+        alert($("#balance-visibility img").attr({"src":"{% static 'img/ic_visibility_off_black.png' %}"}));
+        $("#balance-visibility span").html("Hide balance");
+        visibility = true;
+      }
+    });
+  </script>
   <style>
+  .img-notification-overlap{position: absolute!important; top: 0!important; left: 330px;}
     .hover-muted{list-style: none; padding: 8px 4px;}
     .none{text-decoration: none!important;} .hover-muted:hover{background: #F9F9F9!important;}
+    .rounded-text{width: 32px; height: 32px; font-size: 16px;}
   </style>
 </body>
