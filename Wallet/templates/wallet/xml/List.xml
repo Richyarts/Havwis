@@ -9,8 +9,8 @@
   </div>
   <div class="container p">
     {% for coin in trade_coins %}
-      {#{% usd_value coin.coin_symbol 1 as balance %} #}
-      <div id="coin{{coin.id}}" class="form-row b-m container"> <img class="r-100 mt-8" src="{{coin.coin_avatar.url}}" width="32px" height="32px"> <div class="col ml-8"> <p class="p text-bold text-16">{{coin.coin_name}}</p> <p class="p monospace text-14">$3000000</p></div> </div>
+      {% usd_value coin.coin_symbol 1 as balance %}
+      <div id="coin{{coin.id}}" class="form-row b-m container"> <img class="r-100 mt-8" src="{{coin.coin_avatar.url}}" width="32px" height="32px"> <div class="col ml-8"> <p class="p text-bold text-16">{{coin.coin_name}}</p> <p class="p monospace text-14">{{balance}}</p></div> </div>
       {% block script-js %}
         <script>
           $("#coin{{coin.id}}").on("click" , function(){

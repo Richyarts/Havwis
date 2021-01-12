@@ -1,4 +1,5 @@
 from django import template
+from harvis.core import get_price
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 register = template.Library()
 
@@ -15,12 +16,12 @@ def get_balance(id , network):
   symbol = NETWORK_DEFINITIONS[network]["currency_code"]
   amount = int(Wallet(id).balance(network=network))
   if amount > 0:
-    return "${0}".format (cmc.tools_priceconversion(symbol=symbol , amount=amount)["price"])
+    return "${0}".format (get_price(symbol , amount))
   return "$0.00"
 
 @register.simple_tag
 def usd_value(symbol , amount):
-    return "${0}".format (json.dumps(cmc.tools_priceconversion(symbol=symbol , amount=amount)))
+    return "${0}".format (get_price(symbol , amount))
   
 @register.simple_tag
 def currency_symbol(network):
