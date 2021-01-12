@@ -3,9 +3,9 @@
 {% load humanize %}
 {% block content %}
 <!-- Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
-<div class="container border-bottom text-center p toolbar">
-    <img id="back" src="{% static 'img/ic_clear_grey.png' %}"  class="float-right" width="24px">
-    <span class="text-size-standout ml-16">Notifications</span>
+<div class="container border-bottom  p toolbar">
+    <img id="back" src="{% static 'img/ic_clear_grey.png' %}"  class="filter-default" width="24px">
+    <span class="text-size-standout text-primary ml-16">Notifications</span>
   </div>
   {% for notification in notifications %}
     <div class="container mt-16 br-0 bb-thin">

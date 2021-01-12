@@ -1,0 +1,42 @@
+{% load static %}
+<div class="modal font-family-body b-sheet z-index-3 w-100 p rounded-0 font-family-body"  id="modal">
+    <div class="modal-dialog modal-dialog-centered vertical-align-center modal-bottom">
+      <div class="modal-content bg-none rounded-0 border-none">
+        <div class="modal-header bg-none rounded  text-center p border-none">
+          <span style="border-radius: 100px;" class="line-horizontal mb-8 bg-muted text-center"></span>
+        </div>
+        <div class="modal-body bg-white" style="border-radius: 24px 24px 0 0;">
+          <p class="text-size-standout text-bold">Payment Methods</p>
+          <div class="form-row choice-deposit mt-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
+            <p class="text-bold text-16 p">Deposit cash</p>
+            <p class="text-muted text-14 text-bold p">Send fund directly from your to your Havwis wallet. Once we receive that manual transfer , use that cash to buy cryto.</p>
+          </div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block js %}
+<script>
+  $(window).on("click" , function (){
+    $("#modal").hide();
+    $("body").removeClass("bg-table");
+    $(".b-m").removeClass("border-none");
+    $(".card-border").removeClass("border-none");
+  });
+  $(".modal-btn").on("click" , function(){
+     event.stopPropagation();
+     $("#modal").show();
+     $("body").addClass("bg-table");
+     $(".b-m").addClass("border-none");
+     $(".card-border").addClass("border-none");
+  });
+  $(".choice-deposit").on("click" , function (){
+    $("#type").val = "deposit"
+    $("#modal").hide();
+    $("body").removeClass("bg-table");
+    $(".b-m").removeClass("border-none");
+    $(".card-border").removeClass("border-none");
+  });
+</script>
+{% endblock %}

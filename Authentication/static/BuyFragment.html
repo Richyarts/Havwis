@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+<head>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery.js"></script>
+</head>
+{% block content %}
+  <div class="toolbar container bg-dark"><img id="back" src="{% static 'img/ic_arrow_back_white.png' %}" class="mr-32 mb-8" width="24px"><span class="btn-opacity mr-24  text-size-standout text-white">Buy Crypto</span></div>
+  <div class="b-m mt-8 container form-row"><div class="col-6 ml-16"><p class="p text-bold">{{trade_coin.coin_name}}</p><p class="p text-muted text-bold monospace">$300000.77</p></div><div class="col"><img class="float-right r-100"  src="{{trade_coin.coin_avatar.url}}" width="16px"></div></div>
+  <div class="container mt-40 text-center"><p class="monospace text-32 p text-bold">$<input id="theInput" type="number" class="w-10 input-element bg-none border-none text-center  text-bold text-32 outline-none" value="0" oninput="this.setAttribute('size' , this.value.length)"></p><p class="p text-14 text-muted text-bold">0 {{trade_coin.coin_symbol}}</p></div>
+  <div class="container">
+    <p class="text-14 p ml-8 text-bold text-muted">Payment Method</p>
+    <div class="container">
+      <input id="type" type="hidden" value="deposit">
+      <div class="card-border modal-btn r-4"><span class="round ml-16 mr-8 r-100"><img class="filter-default" src="{% static 'img/ic_add_circle_black.png' %}" width="24px"></span><span class="text-bold ml-16 mr-16">Select a Payment Method</span><select class="ml-8 border-none bg-none outline-none nr-8" disabled="true"></select> </div>
+    </div>
+  </div>
+  {% include "wallet/xml/BottomSheet.xml" %}
+  <p class="text-center bottom-absolute"><button class="btn text-14 text-bold btn-lg btn-block text-white  bg-default">Continue</button></p>
+<style>
+  .text-14{font-size: 14px!important;}
+  .bottom-absolute{position: absolute; bottom: 0; left: 16px; right: 16px;}
+  .card-border{border: 1px solid #EEEEEE; padding: 16px 8px;}
+  .round {background: #BBDEFB; padding: 4px 2px 6px 2px;}
+  .b-m{border-bottom: 2px solid #F9F9F9;}
+  .input-element {
+        border: 0;
+        padding: 3px;
+        background: #fff;
+        font-size: 32px;
+      }
+
+      .tmp-element {
+        visibility: hidden;
+        white-space: pre;
+      }
+</style>
+{% block script %}
+<script>
+  $(".choice-deposit").on("click" , function (){
+    alert($("#type").val() = "deposit");
+  });
+  $("#back").on("click" , function (){
+    $("body").load("/havwis/home/");
+  });
+        var inputEl = document.getElementById("theInput");
+
+      function getWidthOfInput() {
+        var tmp = document.createElement("span");
+        tmp.className = "input-element tmp-element";
+        tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        document.body.appendChild(tmp);
+        var theWidth = tmp.getBoundingClientRect().width;
+        document.body.removeChild(tmp);
+        return theWidth;
+      }
+
+      function adjustWidthOfInput() {
+        inputEl.style.width = getWidthOfInput() + "px";
+      }
+
+      adjustWidthOfInput();
+      inputEl.onkeyup = adjustWidthOfInput;
+</script>
+{% endblock %}
+{% endblock %}

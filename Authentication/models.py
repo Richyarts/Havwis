@@ -17,3 +17,7 @@ class ProfileModel(models.Model):
 class LoginModel(models.Model):
   username = models.CharField(max_length=32)
   password = models.CharField(max_length=32)
+
+class CustomerModel(models.Model):
+  user = models.OneToOneField(User , on_delete=models.CASCADE)
+  customer_id = models.CharField(max_length=64)

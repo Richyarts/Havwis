@@ -1,0 +1,23 @@
+<!--Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
+{% load static %}
+{% load custom_tags %}
+<div class="continer font-family-body">
+  <div class="container p">
+    <img class="mb-16 filter-default" src="{% static 'img/ic_add_shopping_cart_black.png' %}" width="32px">
+    <p class="text-muted p text-bold text-size-standout">Buy with Cash or Card</p>
+    <p class="text-bold">Select the crypto you want to buy</p>
+  </div>
+  <div class="container p">
+    {% for coin in trade_coins %}
+      {% usd_value coin.coin_symbol 1 as balance %}
+      <div id="coin{{coin.id}}" class="form-row b-m container"> <img class="r-100 mt-8" src="{{coin.coin_avatar.url}}" width="32px" height="32px"> <div class="col ml-8"> <p class="p text-bold text-16">{{coin.coin_name}}</p> <p class="p monospace text-14">{{balance}}</p></div> </div>
+      {% block script-js %}
+        <script>
+          $("#coin{{coin.id}}").on("click" , function(){
+            $("body").load("/havwis/buy/{{coin.id}}/");
+          });
+        </script>
+      {% endblock %}
+    {% endfor %}
+  </div>
+</div>

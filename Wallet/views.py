@@ -6,8 +6,8 @@ from django.core import serializers
 from django.http import JsonResponse , HttpResponse
 from bitcoinlib.wallets import Wallet
 from django.shortcuts import render , get_object_or_404 , redirect
-from Wallet.forms import CreditCardForm , VirtualCardForm , SendForm
-from Wallet.models import CoinModel , WalletModel , CreditCard
+from Wallet.forms import CreditCardForm , VirtualCardForm , SendForm , TextForm , IntegerForm
+from Wallet.models import CoinModel , TradeModel , WalletModel , CreditCard
 import json
 from harvis.core import VirtualCard
 
@@ -22,16 +22,17 @@ class JsonSerializable(object):
 class HomeView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/fragment/HomeFragment.html")
+      return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all()})
     return redirect("/auth/login/")
-
+  def post(self , request , *args , **kwargs):
+    pass
+  
 #>>>return user wallets and custom_tag check for balance and fiat price using coinmarketapi
 class WalletView(View):
   def get(self , request , *args , **kwargs):
     wallet = WalletModel.objects.filter(user = request.user)
     wallet_single = WalletModel.objects.get(user = request.user)
     return render(request , "wallet/fragment/WalletFragment.html" , {"wallet_single":wallet_single , "wallets":wallet})
-
 #>>>Check for wallet_id that user switch to in view and return the wallet object
   def post(self , request , *args , **kwargs):
     wallet_id = request.POST.get("wallet_id")
@@ -147,4 +148,12 @@ class NotificationView(View):
     return redirect("/havwis/login/")
  
 def debug(request):
-  return render(request , "debug.html")
+  return render(request , "wallet/fragment/BuyFragment.html")
+
+class BuyView(View):
+  def get(self , request , *args , **kwargs):
+    network_id = kwargs["network_id"]
+    trade_object = TradeModel.objects.get(id=network_id)
+    return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
+  def post(self , request , *args , **kwargs):
+    pass

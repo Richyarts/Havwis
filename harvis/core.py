@@ -53,3 +53,32 @@ def generateRandomString():
   letters = string.ascii_letters
   value = ''.join(random.choice(letters) for i in range(64)) 
   return sha256(value.encode("utf-8")).hexdigest()
+
+#coinmarketcap dummy
+from requests import Request, Session
+from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
+import json
+
+def get_price(ticker , price):
+  url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+  parameters = {
+ 	 'start':'1',
+ 	 'limit':'5000',
+	  'convert':'USD'
+	}
+  headers = {
+    'Accepts': 'application/json',
+    'X-CMC_PRO_API_KEY': '5fec81c9-dc6b-45dd-82ea-c86d7615adbb',
+  }
+
+  session = Session()
+  session.headers.update(headers)
+
+  try:
+    response = session.get(url, params=parameters)
+    data = json.loads(response.text)
+    for x in data["data"]:
+      if x["symbol"] == ticker:
+        return round(x["quote"]["USD"]["price"] , 2)
+  except (ConnectionError, Timeout, TooManyRedirects) as e:
+    return "Can't load %s"%ticker

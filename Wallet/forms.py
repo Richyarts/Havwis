@@ -14,3 +14,9 @@ class VirtualCardForm(forms.ModelForm):
 class SendForm(forms.Form):
   amount = forms.IntegerField()
   address = forms.CharField(max_length=64)
+
+class IntegerForm(forms.Form):
+  number = forms.IntegerField()
+
+class TextForm(forms.Form):
+  text = forms.CharField(max_length=101)
