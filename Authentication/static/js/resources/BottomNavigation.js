@@ -20,6 +20,9 @@ $("#nav-btn-home").on("click" , function (){
   $("#nav-btn-home-text").addClass("text-primary"); $("#nav-btn-home-text").removeClass("text-muted");
   $("#nav-btn-wallet-text").removeClass("text-primary");
   $(".nav-btn-home-circle").show();  $(".nav-btn-wallet-circle").hide();$(".nav-btn-card-circle").hide(); $("#nav-btn-card-text").addClass("text-muted");
+  $("#nav-btn-profile-text").removeClass("text-primary");  
+  $(".nav-btn-profile-circle").hide(); 
+  $("#nav-btn-profile img").removeClass("filter-default");
 });
 $("#nav-btn-wallet").on("click" , function (){
   $.ajax({
@@ -42,6 +45,9 @@ $("#nav-btn-wallet").on("click" , function (){
   $("#nav-btn-wallet-text").addClass("text-primary");
   $(".nav-btn-home-circle").hide(); 
   $(".nav-btn-wallet-circle").show();
+  $("#nav-btn-profile-text").removeClass("text-primary");  
+  $(".nav-btn-profile-circle").hide(); 
+  $("#nav-btn-profile img").removeClass("filter-default");
 });
 $("#nav-btn-card").on("click" , function(){
   $(".linearlayout").load("/havwis/card/");
@@ -51,6 +57,22 @@ $("#nav-btn-card").on("click" , function(){
   $("#nav-btn-card-text").addClass("text-primary");  
   $(".nav-btn-card-circle").show(); 
   $(".nav-btn-home-circle").hide();  $(".nav-btn-wallet-circle").hide();
+  $("#nav-btn-profile-text").removeClass("text-primary");  
+  $(".nav-btn-profile-circle").hide(); 
+  $("#nav-btn-profile img").removeClass("filter-default");
+});
+$("#nav-btn-profile").on("click" , function(){
+ $(".linearlayout").load("/auth/profile/"); $(".custom-toolbar").hide();
+  $("#nav-btn-home img").removeClass("filter-default"); $("#nav-btn-home img").addClass("filter-blue-2");
+  $("#nav-btn-wallet img"). removeClass("filter-default"); $("#nav-btn-home-text").removeClass("text-primary"); $("#nav-btn-home-text").addClass("text-muted");
+  $("#nav-btn-wallet-text").removeClass("text-primary");     $("#nav-btn-card img"). removeClass("filter-default"); $("#nav-btn-home-text").removeClass("text-primary"); $("#nav-btn-home-text").addClass("text-muted");
+  $("#nav-btn-card-text").removeClass("text-primary");  
+  $(".nav-btn-card-circle").hide(); 
+  $("#nav-btn-profile-text").addClass("text-primary");  
+  $(".nav-btn-profile-circle").show(); 
+  $("#nav-btn-profile img").addClass("filter-default");
+  $(".nav-btn-home-circle").hide();  $(".nav-btn-wallet-circle").hide();
+
 });
 $("#add-money").on("click" , function (){
   $("body").load("/havwis/pay/");

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="container">
+    <p class="text-size-standout san p text-bold">{{request.user.email}}</p>
+    <p class="text-16 p san text-bold">{{request.user.first_name}} {{request.user.last_name}}</p>
+  </div>
+  <div class="container">
+    <p class="text-size-standout san p text-bold">Account</p>
+    <p id="limit" class="text-16 mt-16  btn-opacity">Limits and features <img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+    <p id="country" class="text-16 btn-opacity">Country<img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+    <p id="privacy" class="text-16 btn-opacity">Privacy<img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+    <p id="phone" class="text-16 btn-opacity">Phone numbers<img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+  </div>
+  <div class="container">
+    <p class="text-size-standout san p text-bold">Settings</p>
+    <p id="pin" class="text-16 mt-16   btn-opacity">Set Password <span class="badge ml-16 badge-primary">Todo</span><img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+    <p id="verify" class="text-16 btn-opacity">Verify Account<img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+    <p id="two-factor" class="text-16 btn-opacity">Two factor authentication   <span class="badge ml-16 badge-primary">Todo</span> <img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+  </div>
+  <button class="btn-danger mt-32 btn btn-block">Log out</button>
+<style>
+   a{color: black!important;}
+  .btn-opacity{padding: 8px;}
+  .btn-opacity:hover{ background: #F9F9F9!important; padding: 16px; border-radius: 4px;} }
+</style>
+</div>
+{% block js %}
+<script>
+  function click (name , type){
+    $("#"+name).on("click" , function (){
+      $(".linearlayout").load("/auth/profile/update/"+type+"/");
+    });
+  }
+  click("limit" , "limit");
+  click("country" , "country");
+  click("phone" , "phone");
+</script>
+{% endblock %}
+{% endblock %}

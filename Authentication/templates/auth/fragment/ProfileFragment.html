@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% load countries %}
+{% load static %}
+{% block content %}
+<div class="font-family-body">
+  <div class="toolbar text-center container">
+    <img id="back" src="{% static 'img/ic_chevon_left_black.png' %}" width="24px" class="left">
+    <span class="text-16 text-bold">{{title}}</span>
+  </div>
+  <div class="container"><div class="ml-8 mr-8 alert"></div></div>
+ {% if update_type == "phone" %}
+  <div class="container">
+    <div class="container mt-16 p-8"><img src="{% static 'img/ic_stay_current_portrait_black.png' %}" width="24px" class="mr-8"><span class="text-bold text-size-standout monospace">{% get_phone data.phone as phone %} {{phone}}</span></div>
+    <div class="container">
+      <button class="btn btn-block btn-opacity p-8 mt-64 btn-danger">Update phone number</button>
+    </div>
+  </div>
+  {% elif update_type == "country" %}
+    {% get_countries as country %}
+    <div class="container p-8">
+      <div class="container r-4 mt-16 p-8 text-center card-border"><img id="flag" src="{{data.location.flag}}" class="float-left" width='24px'> <select class="bg-none w-default outline-none border-none"><option value="NG">{{data.location.name}}</option>{% for country in country %} <option value="{{country.code}}">{{country.name}}</option>{% endfor %}</select></div>
+      <div class="container">
+        <button id="submit" class="btn btn-block btn-opacity p-8 mt-64 btn-danger">Update country</button>
+      </div>
+    </div>
+    {% block country-js %}
+      <script>
+        $("#submit").on("click" , function (){
+          $("#submit").html("<div class='spinner-grow text-14 text-white'></div>");
+          let country_name = $("select").val()
+          $.post("/auth/profile/update/country/" , {"country":country_name , "csrfmiddlewaretoken":"{{csrf_token}}"} , function (data , status){
+            if(data.status){
+              $(".alert").addClass("alert-success");
+              $(".alert").html("Profile successful upgraded!"); $(".alert").show();
+              $(".linearlayout").load("/auth/profile/update/country/");
+             }
+            else{
+              $(".alert").addClass("alert-error");
+              $(".alert").html("Profile successful upgraded!"); $(".alert").show();
+              $(".linearlayout").load("/auth/profile/update/country/");
+            }
+          });
+        });
+      </script>
+    {% endblock %}
+  {% else %}
+  <div class="container font-family-body mt-16 p-8">
+    <div class="container"><img src="{% static 'img/ic_send_black.png' %}" width="24px" class="float-left filter-default mr-16">Send Crytocurrency <span class="btn-opacity float-right">Enabled</span></div>
+    <div class="container"><img src="{% static 'img/ic_border_all_black.png' %}" width="24px" class="float-left filter-default mr-16">Receive Crytocurrency <span class="btn-opacity float-right">Enabled</span></div>
+    <div class="container"><img src="{% static 'img/ic_store_black.png' %}" width="24px" class="float-left filter-default mr-16">Buy Crytocurrency <span class="btn-opacity float-right">Enabled</span></div>
+  </div>
+  <div class="container text-muted">
+    <div class="container r-4 p-16 text-16  box-shadow">
+      You currently have the highest level of accounts limit and features available.
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% block js %}
+  <script>
+     $("#back").on("click" , function(){
+       $(".linearlayout").load("/auth/profile/");
+     });
+  </script>
+{% endblock %}
+{% endblock %}

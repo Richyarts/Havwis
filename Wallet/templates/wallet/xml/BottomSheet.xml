@@ -7,11 +7,12 @@
         </div>
         <div class="modal-body bg-white" style="border-radius: 24px 24px 0 0;">
           <p class="text-size-standout text-bold">Payment Methods</p>
-          <div class="form-row choice-deposit mt-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
+          <div class="form-row choice-deposit p-16 mt-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
             <p class="text-bold text-16 p">Deposit cash</p>
             <p class="text-muted text-14 text-bold p">Send fund directly from your to your Havwis wallet. Once we receive that manual transfer , use that cash to buy cryto.</p>
           </div></a>
         </div>
+        <p class="text-white">hshshsjs</p>
       </div>
     </div>
   </div>
@@ -28,6 +29,7 @@
      event.stopPropagation();
      $("#modal").show();
      $("body").addClass("bg-table");
+    // $(".modal-bottom").css({"bottom":"40px"});
      $(".b-m").addClass("border-none");
      $(".card-border").addClass("border-none");
   });

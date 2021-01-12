@@ -27,7 +27,7 @@
       {% for error in form.username %}
         <p class="float-left text-danger">{{error}}</p>
       {% endfor %}
-      <button type="button" class="username_layout_button mt-32 p-16 btn-block btn btn-primary">Continue</button>
+      <button id="btn-spinner" type="button" class="username_layout_button mt-32 p-16 btn-block btn btn-primary">Continue</button>
     </div>
   </div>
   
@@ -79,6 +79,7 @@
         <script>
           var $input = $("input");
           $("#signup-btn").on("click" , function (){
+            $("#signup-btn").html("<div class='spinner-grow text-white'></div>");
             $.post("/auth/register/" , {"phone":$("#phone").val(),"username":$("#username").val() , "email":$("#email").val() , "password":$("#password").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function (data , status){
               $("body").html(data);
             });
