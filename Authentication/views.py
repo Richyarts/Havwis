@@ -131,6 +131,7 @@ class ProfileView(View):
 class UpdateView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
+      data = None
       type = kwargs["type"]
       if type == "phone":
         data = ProfileModel.objects.get(user = request.user)
