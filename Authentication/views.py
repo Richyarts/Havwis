@@ -13,6 +13,7 @@ from harvis import paystack
 from harvis.core import verify_code , get_tag , generateRandomString #generateRandomString added by Mumeen
 from django.contrib.auth.models import User
 from django.http import JsonResponse , HttpResponse
+from Wallet.forms import CountryForm
 
 """"
     Writing by Lyonkvalid http://github.com/lyonkvalid @2.12AM Tue , JAN 15
@@ -48,7 +49,7 @@ class AuthenticationView(View):
       print(wallet)
       #>>>Wallet return None if failed to create a Wallet check Wallet/wallet.py >>> method create_wallet()
       if wallet != None:
-        try:
+        if True:
           #>>>Todo create a form for user to customize profile
           profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
           #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
@@ -61,11 +62,12 @@ class AuthenticationView(View):
             wallet_model.coin.add(coin_avaliable)
             wallet_model.save()
           #>>>Create a customer instance for paystack payment getaway
-          customer_id = create_customer(user , profile_model)
-          Customer.objects.create(user , customer_id)
+          customer_id = paystack.create_customer(user , profile_model)
+          customer = CustomerModel(user=user , customer_id=customer_id)
+          customer.save()
           user.save()
           return redirect("/havwis/home/")
-        except:
+        else:
           #>>>To prevent user from being create if there is an error with creating Wallet
           User.objects.get(username=username).delete()
           #>>>return HttpResponse if an error occurs in creating Wallet
@@ -122,3 +124,38 @@ class LoginView(View):
       return render(request , "auth/login.htm" , {"errors":user , "form":form_data})
     return render(request , "auth/login.htm" , {"errors":form_data.errors , "form":form_data})
     
+class ProfileView(View):
+  def get(self , request , *args , **kwargs):
+    return render(request , "auth/activity/ProfileActivity.html")
+
+class UpdateView(View):
+  def get(self , request , *args , **kwargs):
+    if request.user.is_authenticated:
+      data = None
+      type = kwargs["type"]
+      if type == "phone":
+        data = ProfileModel.objects.get(user = request.user)
+        title = "Phone number"
+      elif type == "country":
+        data = ProfileModel.objects.get(user = request.user)
+        title = "Country available"
+      else:
+        title = "Limits and Features"
+      return render(request , "auth/fragment/ProfileFragment.html" , {"update_type":type , "title":title , "data":data})
+    return redirect("/auth/login/")
+  def post(self , request , *args , **kwargs):
+    if request.user.is_authenticated:
+      type = kwargs["type"]
+      if type == "country":
+        form_data = CountryForm(request.POST)
+        if form_data.is_valid():
+          country = form_data.cleaned_data["country"]
+          profile_object = ProfileModel.objects.get(user = request.user)
+          profile_object.country = country
+          profile_object.save()
+          return JsonResponse({"status":True})
+        else:
+          return JsonResponse({"status":False , "error":form_data.errors})
+      elif type == "Phone":
+        print("None")
+    return redirect("/auth/login/")

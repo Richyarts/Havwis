@@ -3,7 +3,7 @@
 {% load custom_tags %}
 <div class="continer font-family-body">
   <div class="container p">
-    <img class="mb-16 filter-default" src="{% static 'img/ic_add_shopping_cart_black.png' %}" width="32px">
+    <img class="mb-16 filter-default" src="{% static 'img/ic_shopping_cart_black.png' %}" width="32px">
     <p class="text-muted p text-bold text-size-standout">Buy with Cash or Card</p>
     <p class="text-bold">Select the crypto you want to buy</p>
   </div>

@@ -1,6 +1,7 @@
 #>>>Written by lyonkvalid 7:40PM Wed , jan 6 2020
 #>>>Change html template name , @lyonkvalid
 from django.views import View
+from Authentication.models import CustomerModel , ProfileModel
 from bitcoinlib.wallets import wallet_exists
 from django.core import serializers
 from django.http import JsonResponse , HttpResponse
@@ -9,6 +10,7 @@ from django.shortcuts import render , get_object_or_404 , redirect
 from Wallet.forms import CreditCardForm , VirtualCardForm , SendForm , TextForm , IntegerForm
 from Wallet.models import CoinModel , TradeModel , WalletModel , CreditCard
 import json
+from harvis import paystack
 from harvis.core import VirtualCard
 
 #>>>dummy tool to serializer wallet but useless now
@@ -146,14 +148,29 @@ class NotificationView(View):
       notification = request.user.notifications.unread()
       return render(request , "wallet/activity/NotificationsActivity.html" , {"notifications":notification})
     return redirect("/havwis/login/")
- 
+
+from Wallet.forms import CountryForm
+
 def debug(request):
-  return render(request , "wallet/fragment/BuyFragment.html")
+  return render(request , "debug.html" , {"country":CountryForm()})
 
 class BuyView(View):
   def get(self , request , *args , **kwargs):
-    network_id = kwargs["network_id"]
+    if request.user.is_authenticated:
+      network_id = kwargs["network_id"]
+      trade_object = TradeModel.objects.get(id=network_id)
+      return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
+    return redirect("/auth/login/")
+  def post(self , request , *args , **kwargs):
+    form_amount_data = IntegerForm(request.POST)
+    type = TextForm(request.POST)
+    if form_amount_data.is_valid() and type.is_valid():
+      customer_id = CustomerModel.objects.get(user=request.user).customer_id
+      profile_model = ProfileModel.objects.get(user = request.user)
+      customer = paystack.get_customer(customer_id)
+      amount = form_amount_data.cleaned_data["number"]
+      url = paystack.create_transaction(customer , amount , "payouk.mystre@gmail.com")
+      return redirect(url)
+      # return HttpResponse(customer)
     trade_object = TradeModel.objects.get(id=network_id)
     return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
-  def post(self , request , *args , **kwargs):
-    pass

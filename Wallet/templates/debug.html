@@ -1,25 +1,10 @@
-{% load notifications_tags %}
-{% notifications_unread %}
+{% load countries %}
 {% load static %}
 <head>
-    <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
-    {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+  <link rel="stylesheet" href="{% static 'flags/sprite.css' %}">
 </head>
-{% live_notify_list as li %}
-{% for li in li %}
-  li
-{% endfor %}
-{% live_notify_list list_class="dropdown-menu" as menu %}
-{{menu}}
-<select = "dropdown-menu"><option class="{{menu}}"></option></select>
-{% register_notify_callbacks callbacks='fill_notification_badge,my_special_notification_callback' %}
-{% block js %}
-<script>
-  function my_special_notification_callback(data) {
-    for (var i=0; i < data.unread_list.length; i++) {
-        msg = data.unread_list[i];
-        alert(msg);
-    }
-}
-</script>
-{% endblock %}
+<body>
+  {{country '{widget}<img class="country-select-flag" id="{flag_id}" style="margin: 6px 4px 0" src="{country.flag}">'
+  {{country}}<img class="country-select-flag" id="{{flag_id}}" style="margin: 6px 4px 0" src="{{country.flag}}">'
+'{country}<img class="country-select-flag" id="{flag_id}" style="margin: 6px 4px 0" src="{country.flag}">'
+</body>

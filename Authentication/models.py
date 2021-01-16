@@ -1,6 +1,9 @@
 from django.db import models
+from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 from django.conf import settings 
+from paystackapi.verification import Verification 
+from django_countries.fields import CountryField
 
 
 class ProfileModel(models.Model):
@@ -10,10 +13,12 @@ class ProfileModel(models.Model):
   avatar = models.ImageField(upload_to='Authentication/static/user/avatar' , blank=True , max_length=500 )
   bio = models.CharField(max_length=101)
   tag = models.CharField(max_length = 32 , unique=True , blank=False)
-  location = models.CharField(max_length=64)
+  location = CountryField(default="NGN")
+  def __str__(self):
+    return str(self.user)
   class Meta:
     db_table= "ProfileModel"
-
+  
 class LoginModel(models.Model):
   username = models.CharField(max_length=32)
   password = models.CharField(max_length=32)
@@ -21,3 +26,5 @@ class LoginModel(models.Model):
 class CustomerModel(models.Model):
   user = models.OneToOneField(User , on_delete=models.CASCADE)
   customer_id = models.CharField(max_length=64)
+  def __str__(self):
+    return str(self.user)

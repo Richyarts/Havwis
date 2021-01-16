@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_tags %}
 {% load static %}
 <head>
   <link rel="stylesheet" href="css/main.css">
@@ -7,17 +8,20 @@
 </head>
 {% block content %}
   <div class="toolbar container bg-dark"><img id="back" src="{% static 'img/ic_arrow_back_white.png' %}" class="mr-32 mb-8" width="24px"><span class="btn-opacity mr-24  text-size-standout text-white">Buy Crypto</span></div>
-  <div class="b-m mt-8 container form-row"><div class="col-6 ml-16"><p class="p text-bold">{{trade_coin.coin_name}}</p><p class="p text-muted text-bold monospace">$300000.77</p></div><div class="col"><img class="float-right r-100"  src="{{trade_coin.coin_avatar.url}}" width="16px"></div></div>
-  <div class="container mt-40 text-center"><p class="monospace text-32 p text-bold">$<input id="theInput" type="number" class="w-10 input-element bg-none border-none text-center  text-bold text-32 outline-none" value="0" oninput="this.setAttribute('size' , this.value.length)"></p><p class="p text-14 text-muted text-bold">0 {{trade_coin.coin_symbol}}</p></div>
+  <div class="b-m mt-8 container form-row"><div class="col-6 ml-16"><p class="p text-bold">{{trade_coin.coin_name}}</p><p class="p text-muted text-bold monospace" >{% usd_value trade_coin.coin_symbol 1 as price %} {{price}}</p></div><div class="col"><img class="float-right r-100"  src="{{trade_coin.coin_avatar.url}}" width="16px"></div></div>
+<form action="/havwis/buy/{{trade_coin.id}}/" method="POST">
+  {% csrf_token %}
+  <div class="container mt-40 text-center"><p class="monospace text-32 p text-bold">$<input name="number" id="theInput" type="number" class="w-10 input-element bg-none border-none text-center  text-bold text-32 outline-none" value="0" oninput="this.setAttribute('size' , this.value.length)"></p><p class="p text-14 text-muted text-bold" id="price">0 {{trade_coin.coin_symbol}}</p></div>
   <div class="container">
     <p class="text-14 p ml-8 text-bold text-muted">Payment Method</p>
     <div class="container">
-      <input id="type" type="hidden" value="deposit">
+      <input name="text" id="type" type="hidden" value="deposit">
       <div class="card-border modal-btn r-4"><span class="round ml-16 mr-8 r-100"><img class="filter-default" src="{% static 'img/ic_add_circle_black.png' %}" width="24px"></span><span class="text-bold ml-16 mr-16">Select a Payment Method</span><select class="ml-8 border-none bg-none outline-none nr-8" disabled="true"></select> </div>
     </div>
   </div>
   {% include "wallet/xml/BottomSheet.xml" %}
-  <p class="text-center bottom-absolute"><button class="btn text-14 text-bold btn-lg btn-block text-white  bg-default">Continue</button></p>
+  <p class="text-center bottom-absolute"><button type="submit" class="btn text-14 text-bold btn-lg btn-block text-white  bg-default">Continue</button></p>
+</form>
 <style>
   .text-14{font-size: 14px!important;}
   .bottom-absolute{position: absolute; bottom: 0; left: 16px; right: 16px;}
@@ -38,6 +42,14 @@
 </style>
 {% block script %}
 <script>
+  function price(ticker , amount){
+        ticker = "{{trade_coin.coin_symbol}}";
+        amount = $("#theInput").val();
+        $.get("/api/price/"+ticker+"/"+amount , function (data){
+          $("#price").html(data);
+        });
+  }
+  setInterval("price()" ,  100);
   $(".choice-deposit").on("click" , function (){
     alert($("#type").val() = "deposit");
   });

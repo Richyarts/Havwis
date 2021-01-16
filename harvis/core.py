@@ -79,6 +79,6 @@ def get_price(ticker , price):
     data = json.loads(response.text)
     for x in data["data"]:
       if x["symbol"] == ticker:
-        return round(x["quote"]["USD"]["price"] , 2)
+        return "${0}".format(round(x["quote"]["USD"]["price"] , 2))
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     return "Can't load %s"%ticker

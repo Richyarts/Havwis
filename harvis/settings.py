@@ -40,10 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'bitcoinlib',
     'Authentication',
+    'paystackapi',
     'Wallet',
     'qr_code',
     'coinmarketcap',
+    'django_countries',
     'notifications',
+    'Api',
 ]
 
 MIDDLEWARE = [

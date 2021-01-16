@@ -16,12 +16,12 @@ def get_balance(id , network):
   symbol = NETWORK_DEFINITIONS[network]["currency_code"]
   amount = int(Wallet(id).balance(network=network))
   if amount > 0:
-    return "${0}".format (get_price(symbol , amount))
+    return "{0}".format (get_price(symbol , amount))
   return "$0.00"
 
 @register.simple_tag
 def usd_value(symbol , amount):
-    return "${0}".format (get_price(symbol , amount))
+    return "{0}".format (get_price(symbol , amount))
   
 @register.simple_tag
 def currency_symbol(network):
@@ -74,3 +74,7 @@ def card_no_format(value):
 @register.simple_tag
 def get_cards(wallet):
   return wallet.credit_card.all
+
+@register.simple_tag
+def get_phone(value):
+  return "•• •••••••{0}".format(str(value)[-2]+str(value)[-1])
