@@ -4,9 +4,10 @@ from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 
 class CreditCardForm(forms.ModelForm):
-  class Meta:
-    model = CreditCard
-    fields = ["card_no" ,"card_name" , "expiry_date" , "cvv"]
+  card_no = forms.IntegerField()
+  card_name = forms.CharField(max_length=64)
+  expiry_date = forms.DateField()
+  cvv = forms.IntegerField()
 
 class VirtualCardForm(forms.ModelForm):
   class Meta:

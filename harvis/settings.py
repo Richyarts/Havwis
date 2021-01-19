@@ -130,3 +130,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 if DEBUG:
   MEDIA_URL = '/media/'
+
+EMAIL_ACTIVE_FIELD = 'is_active'
+EMAIL_SERVER = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_ADDRESS = 'info@havwis.com'
+EMAIL_FROM_ADDRESS = 'info@havwis.com'
+EMAIL_PASSWORD = 'Havwis25528'
+#EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'

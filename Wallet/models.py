@@ -10,11 +10,8 @@ class CoinModel(models.Model):
     db_table = "CoinModel"
 
 class CreditCard(models.Model):
-  card_type = models.CharField(default="Unknown" , max_length=64)
-  card_no =  models.IntegerField()
-  card_name = models.CharField(max_length = 64)
-  expiry_date = models.DateField()
-  cvv = models.IntegerField()
+  id = models.CharField(unique=True , max_length=64 , primary_key=True)
+  label = models.CharField(max_length=64)
   class Meta:
     db_table = "CreditCard"
     

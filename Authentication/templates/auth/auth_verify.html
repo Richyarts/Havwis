@@ -8,19 +8,24 @@
     <small class="p text-muted">Your code was sent to {{email}}</small>
   </div>
   <!--Form-->
+  {% if error %}
+    <div class="alert alert-danger">Invalid code! Try again.</div>
+  {% endif %}
   <div class="container-fluid m-16 mt-16">
+    <form action="/auth/verify/{{user.id}}" method="POST">
     <div class="form-row">
-      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="username" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="username" class="p-8 r-4 border-muted  col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="1" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="2" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="3" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="4" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="5" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input id="6" class="p-8 r-4 border-muted  col ml-8 outline-none" maxlength="1" min="1" type="number"/>
     </div>
     <div class="resend-code mt-16">
-      <p class="text-muted">Resend code {{counter}} </p>
+      <!--<p class="text-muted">Resend code {{counter}} </p>-->
     </div>
-      <button class="username_layout_button gone mt-32 p-16 btn-block btn btn-primary">Continue</button>
+      <button type="submit" class="username_layout_button gone mt-32 p-16 btn-block btn btn-primary">Continue</button>
+    </form>
   </div>
   </div>
 {% endblock %}

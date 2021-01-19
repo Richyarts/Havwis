@@ -1,4 +1,6 @@
 import json
+from Wallet import send_mail
+from bitcoinlib.wallets import wallet_delete
 from Authentication.models import ProfileModel , CustomerModel
 from django.views import View
 from harvis.notifications import notification
@@ -42,6 +44,7 @@ class AuthenticationView(View):
       #Create a user instance and set user.is_active{false} cos user haven't verify email
       user = User.objects.create_user(username , email , password)
       user.is_active = False
+      send_mail.send_mail_verification(user , self.code)
       #get a random string as suggested by Mummen and signed it with the projects Private key
       unique_id = generateRandomString() 
       #create a wallet  return None if wallet exists -> Have to change that cos of security breach 
@@ -49,7 +52,7 @@ class AuthenticationView(View):
       print(wallet)
       #>>>Wallet return None if failed to create a Wallet check Wallet/wallet.py >>> method create_wallet()
       if wallet != None:
-        if True:
+        try:
           #>>>Todo create a form for user to customize profile
           profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
           #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
@@ -66,8 +69,9 @@ class AuthenticationView(View):
           customer = CustomerModel(user=user , customer_id=customer_id)
           customer.save()
           user.save()
-          return redirect("/havwis/home/")
-        else:
+          return redirect("/auth/verify/{}".format(user.id))
+        except:
+          wallet_delete(username)
           #>>>To prevent user from being create if there is an error with creating Wallet
           User.objects.get(username=username).delete()
           #>>>return HttpResponse if an error occurs in creating Wallet
@@ -82,12 +86,22 @@ class AuthenticationView(View):
 """Todo clean up authentication and send_mail to user for email verification"""
 class VerificationView(View):
   def get(self , request , *args , **kwargs):
-    if request.user.is_authenticated:
       id = kwargs["id"]
       user = User.objects.get(id = id)
       return render(request , "auth/auth_verify" , {"user":user})
-    return redirect("/auth/register/")
-    
+  def post(self , request , *args , **kwargs):
+    id = kwargs["id"]
+    user = User.objects.get(id = id)
+    profile = ProfileModel.objects.get(user=user)
+    code = ""
+    for codes in range(1 , 7):
+      code += request.POST[str(codes)]
+    if profile.code == code:
+      user.is_active = True
+      login(request , user)
+      return redirect("/havwis/home/")
+    return render(request , "auth/auth_verify" , {"user":user} , {"error":"error"})
+ 
   def post(request):
     profile = ProfileModel.objects.get(user = request.user)
     code_value = []

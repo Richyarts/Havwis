@@ -1,0 +1,20 @@
+<!Doctype html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+  </head>
+<div class="">
+  <div class="toolbar text-white text-center bg-dark">
+    <img class="left filter-white" src="img/ic_chevon_left_black.png" width="24px">
+    <span class="">Sell {{network|capital}}</span>
+  </div>
+   <div class="container p-16">
+     <p class="mt-16 mb-16 text-bold font-family-sweet text-size-standout">How much would you like to sell?</p>
+     <div class="border-muted form-row p-8 r-4"><select class="w-25 border-none bg-none"><option>USD</option><option>{{network}}</option></select><input class="col border-none outline-none w-100" type="number" placeholder="Enter Amount"></div>
+     <p class="mt-32 text-primary small text-center">Your {{network}} balance is {{balance}}</p>
+   </div>
+   <div class="container">
+     <button class="btn btn-primary r-4 btn-block">Proceed with sale</button>
+   </div>
+</div>
+</html>

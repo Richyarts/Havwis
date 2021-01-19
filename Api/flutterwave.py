@@ -41,9 +41,17 @@ def GetCard(id):
     url = "https://api.flutterwave.com/v3/virtual-cards/{0}".format(id)
     response = requests.get(url=url, headers = apikey)
     data = response.json()["data"]
-    return (data["card_pan"], data["cvv"], data["expiration"], data["name_on_card"])
+    return {"card_type":data["card_type"] ,"card_number":data["card_pan"], "cvv":data["cvv"], "expiration":data["expiration"], "card_name":data["name_on_card"]}
     
 def GetBalance(id):
     url = "https://api.flutterwave.com/v3/virtual-cards/{0}".format(id)
     response = requests.get(url=url, headers = apikey)
     return response.json()["data"]["amount"]
+
+def get_all_balance(user):
+  from Wallet.models import WalletModel
+  WalletModel.objects.filter(user = user).credit_card.all()
+  balance = 0.0
+  for card in cards:
+    balance += float(GetBalance(card.card_id))
+  return "₦%s"%str(balance)

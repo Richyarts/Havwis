@@ -72,8 +72,9 @@ def card_no_format(value):
   return "{0} {1}  {2}  {3}".format("****" , "****" , "****" , value[12:][:4])
   
 @register.simple_tag
-def get_cards(wallet):
-  return wallet.credit_card.all
+def get_cards(id):
+  from Api import flutterwave
+  return flutterwave.GetCard(id)
 
 @register.simple_tag
 def get_phone(value):

@@ -64,7 +64,7 @@ def get_price(ticker , price):
   parameters = {
  	 'start':'1',
  	 'limit':'5000',
-	  'convert':'USD'
+	  'convert':'NGN'
 	}
   headers = {
     'Accepts': 'application/json',
@@ -79,6 +79,6 @@ def get_price(ticker , price):
     data = json.loads(response.text)
     for x in data["data"]:
       if x["symbol"] == ticker:
-        return "${0}".format(round(x["quote"]["USD"]["price"] , 2))
+        return "₦{0}".format(round(x["quote"]["NGN"]["price"] , 2))
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     return "Can't load %s"%ticker

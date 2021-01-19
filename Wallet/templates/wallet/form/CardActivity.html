@@ -18,19 +18,18 @@
   </div>
   
 <!--Card types Red Visa , Blue mastercard , purple Unknown , Orange mastercard -->
-  {% if wallets|length <= 0 %}
+  {% if card|length <= 0 %}
     
   {% else %}
   <div class="horizontal-listview">
     <p class="text-white">&</p>
-    {% for wallet in wallets %}
-          {% get_cards wallet as cards %}
-            {% for card in cards %}
-              {% card_no_format card.card_no as card_no %}
-                {% if card.card_type == "Mastercard" %}
+    {% for cards in card %}
+          {% get_cards cards.id as card %}
+              {% card_no_format card.card_number as card_number %}
+                {% if card.card_type == "mastercard" %}
                   <div class="r-4 border-none horizontal-listview-item item gradient-danger">
                     <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="#" width="32px" class="right"> </div> </div>
-                    <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+                    <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
                     <div class="form-row">
                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
                        <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
@@ -41,10 +40,10 @@
                     </div>
                   </div>
                 {% endif %}
-                {% if card.card_type == "Visa" %}
+                {% if card.card_type == "visa" %}
                   <div class="r-4 border-none horizontal-listview-item item gradient-primary">
                     <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_visacard.png' %}" width="32px" class="right"> </div> </div>
-                    <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+                    <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
                     <div class="form-row">
                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
@@ -55,10 +54,10 @@
                     </div>
                   </div>
               {% endif %}
-              {% if card.card_type == "Unknown" %}
+              {% if card.card_type == "unknown" %}
                 <div class="r-4 border-none horizontal-listview-item item gradient-orange">
                   <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_credit_card_white.png' %}" width="24px" class="right"> </div> </div>
-                  <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+                  <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
                   <div class="form-row">
                     <div class="col-6 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
                     <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
@@ -72,7 +71,7 @@
              {% if card.card_type == "" %}
                <div class="r-4 border-none horizontal-listview-item item gradient-purple">
                  <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_unknowncard.png' %}" width="32px" class="right filter-orange-2"> </div> </div>
-                 <p class="monospace text-center text-24 p text-white">{{card_no}}</p>
+                 <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
                  <div class="form-row">
                    <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
                    <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>

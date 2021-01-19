@@ -11,6 +11,7 @@ from Wallet.forms import CreditCardForm , VirtualCardForm , SendForm , TextForm 
 from Wallet.models import CoinModel , TradeModel , WalletModel , CreditCard
 import json
 from harvis import paystack
+from Api import flutterwave
 from harvis.core import VirtualCard
 
 #>>>dummy tool to serializer wallet but useless now
@@ -68,18 +69,31 @@ class PaymentView(View):
 class CreditCardView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      wallet_object =  WalletModel.objects.filter(user = request.user)
-      return render(request , "wallet/form/CardActivity.html" , {"wallets":wallet_object})
+      card =  WalletModel.objects.get(user = request.user).credit_card.all()
+      return render(request , "wallet/form/CardActivity.html" , {"card":wallet_object})
     return redirect("/auth/login/")
  
   def post(self , request , *args , **kwargs):
-    pass
- 
+    amount = request.POST["amount"]
+    card_id = request.POST["id"]
+    type = request.POST["type"]
+    if type == "exist":
+      if flutterwave.GetBalance(card_id) != 0 and amount < flutterwave.GetBalance(card_id):
+        profile = ProfileModel.objects.get(user = request.user)
+        id = flutterwave.CreateCard(request.user , profile , amount , currency)
+        card = CreditCard(id)
+        wallet = WalletModel.objects.get(user = request.user).credit_card.add(card)
+        return JsonResponse({"status":"Card created"})
+      return JsonResponse({"can't create card"})
+    elif type == "paystack":
+      pass
+      
 #>>>VirtualCardView view with stripe virtual card issuing 
 class VirtualCardView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/form/RegisterCardActivity.html")
+      if not VirtualCard.objects.filter(user = request.user).exists:
+        return render(request , "wallet/form/RegisterCardActivity.html")
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_data = VirtualCardForm(request.POST)
@@ -90,10 +104,7 @@ class VirtualCardView(View):
       state = form_data.cleaned_data["state"]
       postal_code = form_data.cleaned_data["postal_code"]
       country = form_data.cleaned_data["country"]
-      virtual_card = VirtualCard(billing_address , city , state , postal_code , country)
-      card_holder = virtual_card.card_holder(profile_object , request.user)
-      card = virtual_card.card(card_holder)
-      return render(request , "wallet/form/RegisterCardActivity.html" , {"card": card})
+      return redirect("/havwis/card/")
     return render(request , "wallet/form/RegisterCardActivity.html" , {"errors": form_data.errors})
 
 #>>>Will work on the send view later >>To do Rest APi for price feed
@@ -174,3 +185,17 @@ class BuyView(View):
       # return HttpResponse(customer)
     trade_object = TradeModel.objects.get(id=network_id)
     return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
+
+class SellView(View):
+  def get(self , request , *args , **kwargs):
+    if request.user.is_authenticated:
+      wallet_id = WalletModel.objects.get(user = request.user).wallet_id
+      network = kwargs["network"]
+      wallet = Wallet(wallet_id)
+      balance = wallet.balance(network=network)
+      return render(request , "/wallet/fragment/SellFragment.html" , {"network": network , "balance": balance})
+    return redirect("/auth/login/")
+  def post(self , request , *args , **kwargs):
+    if request.user.is_authenticated:
+       amount = request.POST["amount"]
+       pass
