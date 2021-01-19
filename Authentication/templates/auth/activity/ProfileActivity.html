@@ -6,6 +6,7 @@
     <p class="text-size-standout san p text-bold">{{request.user.email}}</p>
     <p class="text-16 p san text-bold">{{request.user.first_name}} {{request.user.last_name}}</p>
   </div>
+  <div class="alert alert-success">Account have been verified , you can buy and sell crytocurrency on Havwis</div>
   <div class="container">
     <p class="text-size-standout san p text-bold">Account</p>
     <p id="limit" class="text-16 mt-16  btn-opacity">Limits and features <img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
@@ -15,11 +16,11 @@
   </div>
   <div class="container">
     <p class="text-size-standout san p text-bold">Settings</p>
-    <p id="pin" class="text-16 mt-16   btn-opacity">Set Password <span class="badge ml-16 badge-primary">Todo</span><img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
+    <p id="customer" class="text-16 mt-16 btn-opacity">Customer care <!--span class="badge ml-16 badge-primary">Todo</span--><img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
     <p id="verify" class="text-16 btn-opacity">Verify Account<img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
     <p id="two-factor" class="text-16 btn-opacity">Two factor authentication   <span class="badge ml-16 badge-primary">Todo</span> <img src="{% static 'img/ic_navigate_next_black.png' %}" width="20px" class="float-right"></p>
   </div>
-  <button class="btn-danger mt-32 btn btn-block">Log out</button>
+  <a href="/auth/logout/" class="btn-danger mt-32 btn btn-block text-white">Log out</a>
 <style>
    a{color: black!important;}
   .btn-opacity{padding: 8px;}
@@ -28,11 +29,20 @@
 </div>
 {% block js %}
 <script>
+ // $(".alert").hide();
   function click (name , type){
     $("#"+name).on("click" , function (){
       $(".linearlayout").load("/auth/profile/update/"+type+"/");
     });
   }
+  $("#verify").on("click" , function(){
+    $.get("/auth/verify/{{request.user.id}}/" , function (data){
+      if(data.status){
+        $(".alert").show();
+        $(".linearlayout").load("/auth/profile/"); $(".custom-toolbar").hide();
+      }
+    });
+  });
   click("limit" , "limit");
   click("country" , "country");
   click("phone" , "phone");

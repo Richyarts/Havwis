@@ -10,8 +10,14 @@ class CoinModel(models.Model):
     db_table = "CoinModel"
 
 class CreditCard(models.Model):
+  choices = [
+    ("crytocurrency" , "trade"),
+    ("savings" , "savings"),
+    ("groceries" , "groceries"),
+    ("others" , "others"),
+  ]
   id = models.CharField(unique=True , max_length=64 , primary_key=True)
-  label = models.CharField(max_length=64)
+  label = models.CharField(max_length=64 , choices=choices)
   class Meta:
     db_table = "CreditCard"
     

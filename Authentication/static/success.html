@@ -1,0 +1,93 @@
+<!Doctype html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+  </head>
+  <body class="container p-32 bg-table font-family-body">
+    <div class="modal p-32 bg-none container">
+      <div class="modal-dialog bg-none border-none modal-dialog-centered">
+        <div class="modal-content p-16 bg-none border-none">
+          <div class="modal-body bg-white border-none">
+          <!--Header-->
+            <div class="header text-center font-family-body"><!--{% block header %}--><p class="text-bold p text-primary text-size-standout">Thank you</p><!-- {% endblock %}--> <p class="text-muted">Your transaction was successful.</p></div>
+            <!--Time-->
+            <div class="form-row">
+              <div class="col">
+                <p class="text-muted p">DATE</p>
+                <p class="text-bold text-secondary">20 , June 2020</p>
+              </div>
+              <div class="right">
+                <p class="p text-muted">Time</p>
+                <p class="text-bold text-secondary">12:00 AM</p>
+              </div>
+            </div>
+            <!--content-->
+            <div class="form-row">
+              <div class="col">
+                <p class="p text-muted">Buy BTC</p>
+                <p class="p text-bold text-secondary">@Lyonkvalid</p>
+                <p class="text-muted">payouk.mystre@gmail.com</p>
+              </div>
+              <div class="right">
+                <img class="r-100" src="#" width="32px">
+              </div>
+            </div>
+            <!--Amount-->
+            <div class="form-row">
+              <div class="col">
+                <p class="p text-muted">Amount</p>
+                <p class="left text-size-standout text-bold">$1000</p>
+                <p class="right small text-muted">COMPLETE</p>
+              </div>
+           </div>
+           <!--div footer-->
+           <div class="border-none p">
+             <div class="p-8 p form-row mt-8 r-8 bg-muted">
+               <div class="col-1 p mt-8  mr-8">
+                 <img width="24px" src="img/ic_mastercard.png">
+               </div>
+               <div class='col'>
+                 <p class="p text-bold text-16">Credit/Debit card</p>
+                 <p class="text-muted p">Mastercard ending with ***5</p>
+               </div>
+             </div>
+           </div>
+          </div>
+         <!--Footer-->
+         <div class="text-center border-none bg-none">
+           <img id="close" class="rounded bg-muted filter-white mt-16 r-100" align="center" src="img/ic_clear_black.png" width="14px">
+         </div>
+        </div>
+      </div>
+    </div>
+<script>
+  $(".modal").show();
+  $("#close").on("click" , function (){
+    $(".modal").hide();
+    $("body").removeClass("bg-table")
+  });
+</script>
+<style>
+  .body{background: none;}
+  .modal-dialog{
+    background: none!important;
+  }
+  .modal-content{
+    background: none!important;
+  }
+  .modal{
+    background: none!important;
+  }
+  .modal-body{
+    border-radius: 8px!important;
+  }
+  .rounded{
+    padding: 16px; width: 50px;
+  }
+  .p-32{
+    padding: 32px;
+  }
+</style>
+  </body>
+</html>

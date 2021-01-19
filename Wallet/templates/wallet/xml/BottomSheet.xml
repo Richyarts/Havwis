@@ -5,17 +5,21 @@
         <div class="modal-header bg-none rounded  text-center p border-none">
           <span style="border-radius: 100px;" class="line-horizontal mb-8 bg-muted text-center"></span>
         </div>
-        <div class="modal-body bg-white" style="border-radius: 24px 24px 0 0;">
+        <div class="modal-body p-16 bg-white" style="border-radius: 24px 24px 0 0;">
           <p class="text-size-standout text-bold">Payment Methods</p>
-          <div class="form-row choice-deposit p-16 mt-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
-            <p class="text-bold text-16 p">Deposit cash</p>
-            <p class="text-muted text-14 text-bold p">Send fund directly from your to your Havwis wallet. Once we receive that manual transfer , use that cash to buy cryto.</p>
+          <div class="form-row choice-deposit pl-16 pr-16 mb-8 mt-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
+            <p class="text-bold text-16 p">Virtual card</p>
+            <p class="text-muted text-14 text-bold p">Use your trade card as payment method</p>
+          </div></a>      </div>
+          <div class="form-row choice-deposit pl-16 pr-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
+            <p class="text-bold text-16 p">Transfer fund</p>
+            <p class="text-muted text-14 text-bold p">Create a virtual account no , to send fund</p>
           </div></a>
-        </div>
-        <p class="text-white">hshshsjs</p>
-      </div>
+          </div>
+        <!--p class="text-white">hshshsjs</p-->
     </div>
   </div>
+</div>
 </div>
 {% block js %}
 <script>
@@ -23,13 +27,14 @@
     $("#modal").hide();
     $("body").removeClass("bg-table");
     $(".b-m").removeClass("border-none");
+    $(".modal-bottom").css({"bottom":"-40.5%"});
     $(".card-border").removeClass("border-none");
   });
   $(".modal-btn").on("click" , function(){
      event.stopPropagation();
      $("#modal").show();
      $("body").addClass("bg-table");
-    // $(".modal-bottom").css({"bottom":"40px"});
+     $(".modal-bottom").css({"bottom":"-36.5%"});
      $(".b-m").addClass("border-none");
      $(".card-border").addClass("border-none");
   });

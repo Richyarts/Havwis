@@ -11,7 +11,7 @@
     {% block script-btn %}
       <script>
         $("#add-btn").on("click" , function (){
-          $(".layout").load("/havwis/virtualcard/");  $(".custom-toolbar").hide(); $(".linearlayout-body").removeClass("mt-160"); $(".footer").hide();
+          $(".linearlayout").load("/havwis/virtualcard/");  $(".custom-toolbar").hide(); $(".linearlayout-body").removeClass("mt-160"); $(".footer").hide();
         });
       </script>
     {% endblock %}
@@ -82,7 +82,6 @@
                  </div>
               </div>
             {% endif %}
-          {% endfor %}
     {% empty %}
 
     {% endfor %}

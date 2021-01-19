@@ -17,7 +17,7 @@ def get_balance(id , network):
   amount = int(Wallet(id).balance(network=network))
   if amount > 0:
     return "{0}".format (get_price(symbol , amount))
-  return "$0.00"
+  return "₦0.00"
 
 @register.simple_tag
 def usd_value(symbol , amount):

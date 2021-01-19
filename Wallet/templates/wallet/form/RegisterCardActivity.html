@@ -54,7 +54,7 @@
  for(var x = 2; x < 6; x++){ $(".address"+x).hide(); }$("#next").on("click" , function(){ if(visibility <= 5){ visibility++; }  if(visibility == 0){     $(".address2").show();     for(var x = 0; x < 6; x++){       if(x != 2){       $(".address"+x).hide();      }     }   }   if(visibility == 1){          $(".address3").show();     for(var x = 0; x < 6; x++){       if(x != 3){       $(".address"+x).hide();      }     }   }   if(visibility == 2){    $(".address4").show();     for(var x = 0; x < 6; x++){       if(x != 4){       $(".address"+x).hide();       }     }   }  if(visibility == 3){         $(".address5").show();     for(var x = 0; x < 6; x++){      if(x != 5){      $(".address"+x).hide();      }  }  } });
  $("#back").on("click" , function (){
    if(visibility <= 0){
-     $(".layout").load("/havwis/card/"); $("body").removeClass("bg-orange");   $(".footer").show();
+     $(".linearlayout").load("/havwis/card/"); $("body").removeClass("bg-orange");   $(".footer").show();
    }
    if(visibility == 4){
      $(".address4").show();

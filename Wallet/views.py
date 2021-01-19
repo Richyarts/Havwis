@@ -8,7 +8,7 @@ from django.http import JsonResponse , HttpResponse
 from bitcoinlib.wallets import Wallet
 from django.shortcuts import render , get_object_or_404 , redirect
 from Wallet.forms import CreditCardForm , VirtualCardForm , SendForm , TextForm , IntegerForm
-from Wallet.models import CoinModel , TradeModel , WalletModel , CreditCard
+from Wallet.models import CoinModel , TradeModel , WalletModel , CreditCard , VirtualCardModel
 import json
 from harvis import paystack
 from Api import flutterwave
@@ -25,7 +25,9 @@ class JsonSerializable(object):
 class HomeView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all()})
+      if not WalletModel.objects.get(user = request.user).credit_card.filter(label="crytocurrency").exists:
+        return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all()})
+      return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all() , "create":"create"})
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     pass
@@ -70,7 +72,7 @@ class CreditCardView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
       card =  WalletModel.objects.get(user = request.user).credit_card.all()
-      return render(request , "wallet/form/CardActivity.html" , {"card":wallet_object})
+      return render(request , "wallet/form/CardActivity.html" , {"card": card})
     return redirect("/auth/login/")
  
   def post(self , request , *args , **kwargs):
@@ -92,8 +94,9 @@ class CreditCardView(View):
 class VirtualCardView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      if not VirtualCard.objects.filter(user = request.user).exists:
+      if VirtualCardModel.objects.filter(user = request.user).exists:
         return render(request , "wallet/form/RegisterCardActivity.html")
+      return JsonResponse({"status":"True"})
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_data = VirtualCardForm(request.POST)
@@ -135,7 +138,7 @@ class SendView(View):
           amount = form_data.cleaned_data["amount"]
           address = form_data.cleaned_data["address"]
           wallet.send_to(address , amount , network=network)
-          msg = notification.get_message("verify" , amount=amount , address=address , tag=profile_model.tag).get_text()
+          msg = notification.get_message("verify" , amount=amount , address=address , tag=profile_model.tag)
           notification.send(user , user , msg)
         return JsonResponse({"error":form_data.errors})
       return redirect("/havwis/login/")
@@ -193,7 +196,7 @@ class SellView(View):
       network = kwargs["network"]
       wallet = Wallet(wallet_id)
       balance = wallet.balance(network=network)
-      return render(request , "/wallet/fragment/SellFragment.html" , {"network": network , "balance": balance})
+      return render(request , "wallet/fragment/SellFragment.html" , {"network": network , "balance": balance})
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     if request.user.is_authenticated:

@@ -6,7 +6,7 @@ from django.views import View
 from harvis.notifications import notification
 from django.core.signing import Signer
 from django.utils.crypto import get_random_string
-from django.contrib.auth import authenticate , login
+from django.contrib.auth import authenticate , logout , login
 from Authentication.forms import *
 from django.shortcuts import render , redirect
 from Wallet.models import WalletModel , CoinModel
@@ -88,7 +88,9 @@ class VerificationView(View):
   def get(self , request , *args , **kwargs):
       id = kwargs["id"]
       user = User.objects.get(id = id)
-      return render(request , "auth/auth_verify.html" , {"user":user})
+      if not user.is_active:
+        return render(request , "auth/auth_verify.html" , {"user":user})
+      return JsonResponse({"status":True})
   def post(self , request , *args , **kwargs):
     id = kwargs["id"]
     user = User.objects.get(id = id)
@@ -158,3 +160,7 @@ class UpdateView(View):
       elif type == "Phone":
         print("None")
     return redirect("/auth/login/")
+
+def logout_view(request):
+  logout(request)
+  return redirect("/auth/login/")

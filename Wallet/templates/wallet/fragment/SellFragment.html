@@ -1,3 +1,4 @@
+{% load static %}
 <!Doctype html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -5,8 +6,8 @@
   </head>
 <div class="">
   <div class="toolbar text-white text-center bg-dark">
-    <img class="left filter-white" src="img/ic_chevon_left_black.png" width="24px">
-    <span class="">Sell {{network|capital}}</span>
+    <img id="back" class="left filter-white" src="{% static 'img/ic_chevon_left_black.png' %}" width="24px">
+    <span class="">Sell {{network|upper}}</span>
   </div>
    <div class="container p-16">
      <p class="mt-16 mb-16 text-bold font-family-sweet text-size-standout">How much would you like to sell?</p>
@@ -17,4 +18,11 @@
      <button class="btn btn-primary r-4 btn-block">Proceed with sale</button>
    </div>
 </div>
+{% block script %}
+  <script>
+    $("#back").on("click" , function (){
+      $("body").load("/havwis/home/");
+    });
+  </script>
+{% endblock %}
 </html>

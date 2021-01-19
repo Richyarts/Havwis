@@ -14,10 +14,10 @@
   </tr>
 </table>
 <div class="font-family-body">
-  <div class="container p">
+  <div class="container p font-family-takemethere">
     <img class="mb-16 filter-default" src="{% static 'img/ic_shopping_cart_black.png' %}" width="32px">
-    <p class="text-muted p text-bold text-size-standout">Buy with Cash or Card</p>
-    <p class="text-bold">Select the crypto you want to buy</p>
+    <p class="text-muted p text-bold text-size-standout"><span class="upper-verb">Buy</span> with Cash or Card</p>
+    <p class="text-bold font-family-body">Select the crypto you want to <span class="lower-verb">buy</span></p>
   </div>
   <div class="container p">
     {% for coin in trade_coins %}
@@ -28,24 +28,28 @@
           var type = "buy";
           $(".buy-tab").on("click" , function (){
             type = "buy";
+             $(".lower-verb").html("buy");
+             $(".upper-verb").html("Buy");
              $(".sell-tab").removeClass("text-primary");
-             $(".buy-tab").addClass("text-primary")
+             $(".buy-tab").addClass("text-primary");
              $(".sell-active").removeClass("active");
              $(".buy-active").addClass("active");
           });
           $(".sell-tab").on("click" , function (){
              type = "sell";
+             $(".lower-verb").html("sell");
+             $(".upper-verb").html("Sell");
              $(".sell-tab").addClass("text-primary");
-             $(".buy-tab").removeClass("text-primary")
+             $(".buy-tab").removeClass("text-primary");
              $(".sell-active").addClass("active");
              $(".buy-active").removeClass("active");
           }); 
           $("#coin{{coin.id}}").on("click" , function(){
            if(type == "buy"){
-              $("body").load("/havwis/sell/{{coin.id}}/");
+              $("body").load("/havwis/buy/{{coin.id}}/");
            }
-           else if(type == "sell"){
-             $("body").load("/havwis/buy/{{coin.coin_name}}/");
+           if(type == "sell"){
+             $("body").load("/havwis/sell/{{coin.coin_name}}/");
            }
           });
         </script>

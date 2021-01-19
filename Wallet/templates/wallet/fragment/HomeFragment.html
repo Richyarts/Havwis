@@ -5,10 +5,13 @@
 <div class="body">
   <div class="linearlayout">
   <div class="container linearlayout-body remove-mt-160 z-index-0 layout mt-160">
-    {% if not request.user.is_active %}
-      <div class="alert bg-orange border-none alert-sucess"><div class="form-row"><img src="img/ic_info_black.png" height="32px" width="32px" class="filter-black"><span class="col">Verify email and phone number to be able to send and receive Crytocurrencies.<a href="#" class="underline">Verify</a></span></div></div>
-    {% endif %}
-    {% include "wallet/xml/List.xml" %}
+   {# {% if create %} #}
+      <!-- <img src="{% static '#' %}" width="100%" height="50%">
+       <p class="p text-center">To be able to buy and sell crytocurrencies on havwis , you have to choose a payment method.</p>
+       <p class="text-center"><button class="btn btn-primary virtual-card mt-32">Choose now</button></button-->
+   {# {% else %} #}
+      {% include "wallet/xml/List.xml" %}
+   {# {% endif %} #}
 </div>
 </div>
 

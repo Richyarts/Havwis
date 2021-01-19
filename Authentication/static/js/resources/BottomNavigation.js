@@ -77,3 +77,7 @@ $("#nav-btn-profile").on("click" , function(){
 $("#add-money").on("click" , function (){
   $("body").load("/havwis/pay/");
 });
+
+$("#back").on("click" , function (){
+  history.back();
+});
