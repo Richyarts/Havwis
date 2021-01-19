@@ -131,10 +131,12 @@ STATIC_URL = '/static/'
 if DEBUG:
   MEDIA_URL = '/media/'
 
-EMAIL_ACTIVE_FIELD = 'is_active'
-EMAIL_SERVER = 'smtp.gmail.com'
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_ADDRESS = 'info@havwis.com'
-EMAIL_FROM_ADDRESS = 'info@havwis.com'
-EMAIL_PASSWORD = 'Havwis25528'
+EMAIL_HOST_USER = 'payouk.mystre@gmail.com'
+#EMAIL_FROM_ADDRESS = 'info@havwis.com'
+EMAIL_HOST_PASSWORD = "pjgnwzjuzoekaqim"
+#EMAIL_PASSWORD = 'Havwis25528'
 #EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'

@@ -52,7 +52,7 @@ class AuthenticationView(View):
       print(wallet)
       #>>>Wallet return None if failed to create a Wallet check Wallet/wallet.py >>> method create_wallet()
       if wallet != None:
-        try:
+        if True:
           #>>>Todo create a form for user to customize profile
           profile_model = ProfileModel.objects.create(user=user , code=self.code , phone=phone , tag=get_tag(username))
           #>>>save the wallet info (Wallet_id) >>>check Wallet/models.py and custom_tags for significant of this instance
@@ -69,8 +69,8 @@ class AuthenticationView(View):
           customer = CustomerModel(user=user , customer_id=customer_id)
           customer.save()
           user.save()
-          return redirect("/auth/verify/{}".format(user.id))
-        except:
+          return redirect("/auth/verify/{0}".format(user.id))
+        else:
           wallet_delete(username)
           #>>>To prevent user from being create if there is an error with creating Wallet
           User.objects.get(username=username).delete()
@@ -88,11 +88,11 @@ class VerificationView(View):
   def get(self , request , *args , **kwargs):
       id = kwargs["id"]
       user = User.objects.get(id = id)
-      return render(request , "auth/auth_verify" , {"user":user})
+      return render(request , "auth/auth_verify.html" , {"user":user})
   def post(self , request , *args , **kwargs):
     id = kwargs["id"]
     user = User.objects.get(id = id)
-    profile = ProfileModel.objects.get(user=user)
+    profile = ProfileModel.objects.get(user= user)
     code = ""
     for codes in range(1 , 7):
       code += request.POST[str(codes)]
@@ -100,22 +100,7 @@ class VerificationView(View):
       user.is_active = True
       login(request , user)
       return redirect("/havwis/home/")
-    return render(request , "auth/auth_verify" , {"user":user} , {"error":"error"})
- 
-  def post(request):
-    profile = ProfileModel.objects.get(user = request.user)
-    code_value = []
-    code = ""
-    for x in range(1 , 6):
-      code_value.append(request.POST["code"+x])
-    for x in code_value:
-      code += x
-    if code == profile.code:
-      return HttpResponse("<h1>Welcome to havwis</h1>")
-    else:
-      return HttpResponse("<h1>Code Error</h1>")
-  context = {"error":True}
-  JsonResponse(context)
+    return JsonResponse({"error":True})
 
 class LoginView(View):
   def get(self , request , *args , **kwargs):

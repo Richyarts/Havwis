@@ -19,12 +19,19 @@
 <body class="absolute font-family-takemethere">
     <!--Toolbar -->
       <div class="text-center p-8">
-        <img  id="{{back_id}}" src="{% static 'img/ic_chevon_left_black.png' %}" align="left" class="img-24">
+        <img id="{{back_id}}" src="{% static 'img/ic_chevon_left_black.png' %}" align="left" class="back img-24">
         <span class="text-bold text-body text-16">{% block toolbar-title %} Sign Up {% endblock %}</span>
         <img src="{% static 'img/ic_info_black.png' %}" align="right" class="img-24">
       </div>
   
   {% block content %} {% endblock %}
+{% block back %}
+<script>
+  $(".back").on("click" , function(){
+     history.back();
+  });
+</script>
+{% endblock %}
 </body>
 <script type="text/javascript" src="{% static 'js/resources/auth.js' %}"></script>
 </html>

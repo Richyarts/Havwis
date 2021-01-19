@@ -1,31 +1,51 @@
-<!-- Written by lyonkvalid 7:40PM Wed , jan 6 2020 -->
-{% extends 'base.html' %}
+<!-- Written by lyonkvalname 7:40PM Wed , jan 6 2020 -->
+{% extends 'auth_base.html' %}
 {% block content %}
    <!--Verification -->
-    <div class="verify">
-  <div class="container-fluid mt-16 text-left">
+    <div class="verify container">
+  <div class="container mt-16 text-left">
     <p class="p text-size-standout text-bold">Enter 6-digit code</p>
     <small class="p text-muted">Your code was sent to {{email}}</small>
   </div>
   <!--Form-->
-  {% if error %}
     <div class="alert alert-danger">Invalid code! Try again.</div>
-  {% endif %}
-  <div class="container-fluid m-16 mt-16">
-    <form action="/auth/verify/{{user.id}}" method="POST">
+  <div class="container m-16 mt-16">
+    <form action="/auth/verify/{{user.id}}/" method="POST">
+     {% csrf_token %}
     <div class="form-row">
-      <input id="1" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="2" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="3" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="4" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="5" class="p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="number"/>
-      <input id="6" class="p-8 r-4 border-muted  col ml-8 outline-none" maxlength="1" min="1" type="number"/>
+      <input name="1" class="one p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="text"/>
+      <input name="2" class="two p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="text"/>
+      <input name="3" class="three p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="text"/>
+      <input name="4" class="four p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="text"/>
+      <input name="5" class="five p-8 r-4 border-muted col ml-8 outline-none" maxlength="1" min="1" type="text"/>
+      <input name="6" class="six p-8 r-4 border-muted  col ml-8 outline-none" maxlength="1" min="1" type="text"/>
     </div>
     <div class="resend-code mt-16">
-      <!--<p class="text-muted">Resend code {{counter}} </p>-->
+      <p class="text-muted">Resend code <span class="counter"></span></p>
     </div>
-      <button type="submit" class="username_layout_button gone mt-32 p-16 btn-block btn btn-primary">Continue</button>
+      <button type="button" class="username_layout_button  mt-32 btn-block btn btn-primary">Continue</button>
     </form>
   </div>
+{% block script %} 
+ <script>
+ $(".alert").hide();
+  $(".username_layout_button").on("click" , function (){
+     $.post("/auth/verify/{{user.id}}/" , {"1":$(".one").val() , "2":$(".two").val() , "3":$(".three").val() , "4":$(".four").val() , "5":$(".five").val() , "6":$(".six").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function(data , status){
+       $(".username_layout_button").html("<p class='spinner-grow text-8 text-white'></p>");
+      if(data.error){
+        $(".alert").show();
+        $(".username_layout_button").html("Continue")
+      }
+     });
+  });
+  var x = 60;
+  if(x == 0){
+    $(".counter").html('<a href="#">Not my email? </a>');
+  }
+  if(x != 0){
+    setInterval(function(){if(x != 0){$(".counter").html(x--);} } , 1000);
+  }
+ </script>
+{% endblock %}
   </div>
 {% endblock %}
