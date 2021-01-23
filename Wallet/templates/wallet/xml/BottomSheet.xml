@@ -11,7 +11,7 @@
             <p class="text-bold text-16 p">Virtual card</p>
             <p class="text-muted text-14 text-bold p">Use your trade card as payment method</p>
           </div></a>      </div>
-          <div class="form-row choice-deposit pl-16 pr-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
+          <div class="form-row choice-transfer pl-16 pr-16"><div class=""><span class="round col r-100"><img class="filter-default" width="24px" src="{% static 'img/ic_arrow_down.png' %}"></span></div><a id="receive{{coin.id}}" class="text-body col none"><div class="col">
             <p class="text-bold text-16 p">Transfer fund</p>
             <p class="text-muted text-14 text-bold p">Create a virtual account no , to send fund</p>
           </div></a>
@@ -39,7 +39,14 @@
      $(".card-border").addClass("border-none");
   });
   $(".choice-deposit").on("click" , function (){
-    $("#type").val = "deposit"
+    $("#type").val = "virtual"
+    $("#modal").hide();
+    $("body").removeClass("bg-table");
+    $(".b-m").removeClass("border-none");
+    $(".card-border").removeClass("border-none");
+  });
+  $(".choice-transfer").on("click" , function (){
+    $("#type").val = "transfer"
     $("#modal").hide();
     $("body").removeClass("bg-table");
     $(".b-m").removeClass("border-none");
