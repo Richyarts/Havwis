@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <iframe
+  src="childpage.html"
+  allow="clipboard-read; clipboard-write"
+></iframe>
+        <script>
+if (navigator.clipboard) {
+
+    let text = await navigator.clipboard.readText();
+   
+   alert(text);
+   
+   }
+        </script>
+    </body>
+</html>
+

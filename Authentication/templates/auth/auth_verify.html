@@ -45,6 +45,24 @@
   if(x != 0){
     setInterval(function(){if(x != 0){$(".counter").html(x--);} } , 1000);
   }
+  $(".one").on("keyup",function(){
+    $(".two").focus();
+  });
+  $(".two").on("keyup",function(){
+    $(".three").focus();
+  });
+  $(".three").on("keyup",function(){
+    $(".four").focus();
+  });
+  $(".four").on("keyup",function(){
+    $(".five").focus();
+  });
+  $(".five").on("keyup",function(){
+    $(".six").focus();
+  });
+  $(".six").on("keyup",function(){
+    $(".one").focus();
+  });
  </script>
 {% endblock %}
   </div>
