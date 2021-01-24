@@ -21,3 +21,6 @@ class FlutterwaveHash(object):
         test = plainText.encode('utf-8')
         encrypted = base64.b64encode(cipher.encrypt(test)).decode("utf-8")
         return encrypted
+
+flutterwave = FlutterwaveHash()
+key = flutterwave.getKey("FLWSECK_TEST-6cf63b691c215e23c3f75c871787f96b-X")

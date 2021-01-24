@@ -88,6 +88,7 @@ class VerificationView(View):
   def get(self , request , *args , **kwargs):
       id = kwargs["id"]
       user = User.objects.get(id = id)
+      profile = ProfileModel.objects.get(user = user)
       if not user.is_active:
         return render(request , "auth/auth_verify.html" , {"user":user})
       return JsonResponse({"status":True})
@@ -100,6 +101,7 @@ class VerificationView(View):
       code += request.POST[str(codes)]
     if profile.code == code:
       user.is_active = True
+      user.save()
       login(request , user)
       return redirect("/havwis/home/")
     return JsonResponse({"error":True})

@@ -177,11 +177,12 @@ class BuyView(View):
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_amount_data = IntegerForm(request.POST)
-    type = TextForm(request.POST)
-    if form_amount_data.is_valid() and type.is_valid():
+    """Since we are funding virtual card for transaction user dont have to choose transaction type here"""
+    #type = TextForm(request.POST)
+    if form_amount_data.is_valid():
       customer_id = CustomerModel.objects.get(user=request.user).customer_id
       profile_model = ProfileModel.objects.get(user = request.user)
-      customer = paystack.get_customer(customer_id)
+      customer = flutterwave.card_payment(id , amount , )
       amount = form_amount_data.cleaned_data["number"]
       url = paystack.create_transaction(customer , amount , "payouk.mystre@gmail.com")
       return redirect(url)

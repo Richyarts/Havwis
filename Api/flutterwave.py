@@ -1,5 +1,8 @@
 import requests
 import json
+from django.util import datetime
+from .core import flutterwave , key
+from harvis.core import generateRandomString as GenerateRandomString
 """
 {
   "status": "success",
@@ -37,14 +40,81 @@ def CreateCard(user, profile, amount, currency):
     response = requests.post(url = "https://api.flutterwave.com/v3/virtual-cards", headers = apikey , json = data)
     return response.json()["data"]["id"]
 
+def createAccountNumber(user , amount):
+  url = "https://api.flutterwave.com/v3/bulk-virtual-account-numbers"
+  data = {
+    "email":user.email ,
+    "amount": amount,
+    "is_permanent":False,
+  }
+  response = requests.post(url=url , headers=apikey , json=data)
+  return response.json()["data"]
+
+def createOTP(profile , type):
+  customer = {
+    "name": profile.user.username ,
+    "phone": profile.phone , 
+    "email": profile.user.email,
+  }
+  url = "https://api.flutterwave.com/v3/otps"
+  data = {
+    "length": 6,
+    "send":True,
+    "customer": customer,
+    "sender": "Havwis",
+    "medium":type,
+    "expiry":5
+  }
+  response = requests.post(url=url , headers= apikey , json=data)
+  return response.json()["data"][0]["reference"]
+  
+def verifyOTP(id , otp):
+  url = "https://api.flutterwave.com/v3/otps/reference/validate"
+  data = {
+    "reference":id,
+    "otp":otp
+  }
+  response = requests.post(url=url , headers=apikey , json=data)
+  return response.json()
+  
 def GetCard(id):
     url = "https://api.flutterwave.com/v3/virtual-cards/{0}".format(id)
     response = requests.get(url=url, headers = apikey)
-    data = response.json()["data"]
-    return (data["card_pan"], data["cvv"], data["expiration"], data["name_on_card"])
-    
+    if response.json()["status"] == "success":
+      return {"status":True , "data":response.json()["data"]}
+    return {"status":False , "data":response.json()["data"]["status"]}
+
 def GetBalance(id):
     url = "https://api.flutterwave.com/v3/virtual-cards/{0}".format(id)
     response = requests.get(url=url, headers = apikey)
     return response.json()["data"]["amount"]
+
+def getTransaction(id):
+  #card = GetCard(id)
+  url = "https://api.flutterwave.com/v3/virtual-cards/{}/transactions".format(id)
+  data = {
+    "from":"2021-1",
+    "to":datetime.now(),
+    "index":0,
+    "size":None
+  }
+  response = requests.get(url=url , headers=apikey , params=data)
+  return response.json()
   
+def cardPayment(id , profile ,  amount , currency):
+  card = GetCard(id)
+  date = card["expiration"].split("-")
+  payload = {
+    "amount": amount, "currency":currency,
+    "card_number":card["card_pan"], "cvv":card["cvv"] ,
+    "expiry_month":date[1] , "expiry_year":date[0],
+    "phone_number": profile.phone , "email": profile.user.email,
+    "full_name": profile.user.username , "tx_ref": GenerateRandomString()
+  }
+  hash_payload = flutterwave.encryptData(key , json.dumps(payload))
+  data = { "client":hash_payload }
+  url = "https://api.flutterwave.com/v3/charges?type=card"
+  response = requests.post(url=url , headers=apikey , json=data)
+  if response.json()["status"] != "error":
+    return {"status":True , "data":response.json()["data"]}
+  return {"status":False , "data":response.json()["message"]}

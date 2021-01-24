@@ -11,7 +11,7 @@ class CoinModel(models.Model):
 
 class CreditCard(models.Model):
   choices = [
-    ("crytocurrency" , "trade"),
+    ("trade" , "trade"),
     ("savings" , "savings"),
     ("groceries" , "groceries"),
     ("others" , "others"),
