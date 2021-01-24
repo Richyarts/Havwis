@@ -11,6 +11,7 @@ from Wallet.forms import CreditCardForm , VirtualCardForm , SendForm , TextForm 
 from Wallet.models import CoinModel , TradeModel , WalletModel , CreditCard , VirtualCardModel
 import json
 from harvis import paystack
+from .core import Trade
 from Api import flutterwave
 from harvis.core import VirtualCard
 
@@ -177,16 +178,18 @@ class BuyView(View):
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_amount_data = IntegerForm(request.POST)
-    """Since we are funding virtual card for transaction user dont have to choose transaction type here"""
-    #type = TextForm(request.POST)
     if form_amount_data.is_valid():
-      customer_id = CustomerModel.objects.get(user=request.user).customer_id
+      wallet_model = WalletModel.objects.get(user=request.user)
       profile_model = ProfileModel.objects.get(user = request.user)
-      customer = flutterwave.card_payment(id , amount , )
       amount = form_amount_data.cleaned_data["number"]
-      url = paystack.create_transaction(customer , amount , "payouk.mystre@gmail.com")
+      id = wallet_model.credit_card.get(label="trade").id
+      transaction = flutterwave.cardPayment(id , profile_model , amount , "NGN")
+      trade = Trade(wallet_model.wallet_id , amount)
+      if transaction["status"]:
+        buy = trade.buy(request , transaction["status"] , network)
+        return JsonResponse(buy)
+      return JsonResponse({"status":"error" , "data":transaction["data"]})
       return redirect(url)
-      # return HttpResponse(customer)
     trade_object = TradeModel.objects.get(id=network_id)
     return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
 

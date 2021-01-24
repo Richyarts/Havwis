@@ -1,6 +1,6 @@
 import requests
 import json
-from django.util import datetime
+from django.utils import timezone
 from .core import flutterwave , key
 from harvis.core import generateRandomString as GenerateRandomString
 """
@@ -94,7 +94,7 @@ def getTransaction(id):
   url = "https://api.flutterwave.com/v3/virtual-cards/{}/transactions".format(id)
   data = {
     "from":"2021-1",
-    "to":datetime.now(),
+    "to":timezone.now(),
     "index":0,
     "size":None
   }
