@@ -22,7 +22,7 @@
     </div>
   </div-->
   {% include "wallet/xml/BottomSheet.xml" %}
-  <p class="text-center bottom-absolute"><button type="submit" class="btn text-14 text-bold btn-lg btn-block text-white  bg-default">Continue</button></p>
+  <p class="text-center bottom-absolute"><button id="submit" type="button" class="btn text-14 text-bold btn-lg btn-block text-white  bg-default">Continue</button></p>
 </form>
 <style>
   .text-14{font-size: 14px!important;}
@@ -76,6 +76,15 @@
 
       adjustWidthOfInput();
       inputEl.onkeyup = adjustWidthOfInput;
+  
+  $("#submit").on("click" , function(){
+    $.post("/havwis/buy/{{trade_coin.id}}/" , {"number":$("#theInput").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function(data , status){
+      if(data.status){
+        alert("true")
+      }
+      alert(data.data.data);
+    });
+  });
 </script>
 {% endblock %}
 {% endblock %}

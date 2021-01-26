@@ -77,8 +77,11 @@ def get_price(ticker , price):
   try:
     response = session.get(url, params=parameters)
     data = json.loads(response.text)
-    for x in data["data"]:
-      if x["symbol"] == ticker:
-        return "₦{0}".format(round(x["quote"]["NGN"]["price"] , 2))
+    try:
+      for x in data["data"]:
+        if x["symbol"] == ticker:
+          return "₦{0}".format(round(x["quote"]["NGN"]["price"] , 2))
+    except:
+      return "Can't load %s"%ticker
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     return "Can't load %s"%ticker

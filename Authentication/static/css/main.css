@@ -33,3 +33,4 @@ input[type="date"]{visibility: hidden; position: absolute; top: 0;} #expiry_date
 .round {background: #BBDEFB; padding: 4px 2px 6px 2px;}
 .b-m{border-bottom: 2px solid #F9F9F9;}
 .p-16{padding: 16px!important;}
+.form-input{padding: 6px!important;}

@@ -23,7 +23,7 @@ class Trade(object):
     else:
       return {"status":False , "info":failed}
       
-  def buy(self , request , status , network):
+  def sell(self , request , status , network):
     if status:
       super_user = getSuperUser("havwis")
       vendor_wallet_id = WalletModel.objects.get(user = super_user).wallet_id

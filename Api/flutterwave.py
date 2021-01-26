@@ -1,5 +1,6 @@
 import requests
 import json
+from Wallet.models import WalletModel , CreditCard
 from django.utils import timezone
 from .core import flutterwave , key
 from harvis.core import generateRandomString as GenerateRandomString
@@ -33,12 +34,13 @@ from harvis.core import generateRandomString as GenerateRandomString
 }
 """
 apikey = {"authorization":"FLWSECK_TEST-6cf63b691c215e23c3f75c871787f96b-X"}
-def CreateCard(user, profile, amount, currency):
+def CreateCard(user, amount, currency):
     data = {
         "billing_name": user.username, "amount": amount, "currency": currency
         }
     response = requests.post(url = "https://api.flutterwave.com/v3/virtual-cards", headers = apikey , json = data)
-    return response.json()["data"]["id"]
+    print(response.json())
+    #return response.json()["data"]["id"]
 
 def createAccountNumber(user , amount):
   url = "https://api.flutterwave.com/v3/bulk-virtual-account-numbers"
@@ -82,7 +84,7 @@ def GetCard(id):
     response = requests.get(url=url, headers = apikey)
     if response.json()["status"] == "success":
       return {"status":True , "data":response.json()["data"]}
-    return {"status":False , "data":response.json()["data"]["status"]}
+    return {"status":False , "data":response.json()["message"]}
 
 def GetBalance(id):
     url = "https://api.flutterwave.com/v3/virtual-cards/{0}".format(id)
@@ -100,21 +102,35 @@ def getTransaction(id):
   }
   response = requests.get(url=url , headers=apikey , params=data)
   return response.json()
-  
-def cardPayment(id , profile ,  amount , currency):
-  card = GetCard(id)
-  date = card["expiration"].split("-")
-  payload = {
-    "amount": amount, "currency":currency,
-    "card_number":card["card_pan"], "cvv":card["cvv"] ,
-    "expiry_month":date[1] , "expiry_year":date[0],
-    "phone_number": profile.phone , "email": profile.user.email,
-    "full_name": profile.user.username , "tx_ref": GenerateRandomString()
-  }
-  hash_payload = flutterwave.encryptData(key , json.dumps(payload))
-  data = { "client":hash_payload }
-  url = "https://api.flutterwave.com/v3/charges?type=card"
-  response = requests.post(url=url , headers=apikey , json=data)
-  if response.json()["status"] != "error":
-    return {"status":True , "data":response.json()["data"]}
-  return {"status":False , "data":response.json()["message"]}
+
+def get_card(request , type):
+  if WalletModel.objects.get(user=request.user).credit_card.count() > 0:
+    id = WalletModel.objects.get(user=request.user).credit_card.get(label=type)
+    return GetCard(id)
+  id = CreateCard(request.user , "100" , "NGN")
+  card = CreditCard(id = id , label = type)
+  card.save()
+  wallet_model = WalletModel.objects.get(user = request.user).credit_card.add(card)
+  return GetCard(id)
+    
+def cardPayment(type , profile , amount , currency):
+  card = get_card(profile , type)
+  if card["status"]:
+    date = card["expiration"].split("-")
+    if card["is_active"] and card["amount"] > float(0) and float(card["amount"]) >= float(amount):
+      payload = {
+        "amount": amount, "currency":currency,
+        "card_number":card["card_pan"], "cvv":card["cvv"] ,
+        "expiry_month":date[1] , "expiry_year":date[0],
+        "phone_number": profile.phone , "email": profile.user.email,
+        "full_name": profile.user.username , "tx_ref": GenerateRandomString()
+      }
+      hash_payload = flutterwave.encryptData(key , json.dumps(payload))
+      data = { "client":hash_payload }
+      url = "https://api.flutterwave.com/v3/charges?type=card"
+      response = requests.post(url=url , headers=apikey , json=data)
+      if response.json()["status"] != "error":
+        return {"status":True , "data":response.json()["data"]}
+      return {"status":False , "data":response.json()["message"]}
+    return {"status":False , "data":"Low balance! can't process transaction"}
+  return {"status":False , "data":card}

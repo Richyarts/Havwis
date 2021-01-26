@@ -5,16 +5,16 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 {% load static %}
 {% block content %}
-  <div class="container toolbar bg-dark p-16">
+  <div class="container toolbar bg-dark p-8">
     <img id="back" src="{% static 'img/ic_arrow_back_white.png' %}" width="24px">
     <span class="text-size-standout ml-32 text-white">Havwis pay</span>
   </div>
-  <div class="container form">
-    <form action="/havwis/creditcard/" method="POST" class="form">
+  <div class="container font-family-body form">
+    <form action="/havwis/creditcard/" method="POST" class="form mb-64">
       {% csrf_token %}
       <label for="card-no" class="p text-16 text-bold">CARD NO</label>
       <div class="card-no mb-8 mt-8 border-muted r-4">
-        <input id="card_no" type="number" name="card_no" class="border-none outline-none" placeholder="Valid Card No"><span class="bg-orange pb-8 pt-8"><img src="#" width="32px"></span>
+        <input id="card_no" type="number" name="card_no" class="border-none form-input outline-none" placeholder="Valid Card No"><span class="bg-orange pb-8 pt-8"><img src="{% static 'img/ic_mastercard.png' %}" width="32px"></span>
       </div>
       <p id="card_no_error" class="text-danger">{{error}}</p>
       <div class="form-row">
@@ -31,10 +31,10 @@
         </div>
       </div>
       <label class="p text-16 text-bold" for="card-name">CARD OWNER</label>
-      <input id="card_name" name="card_name" type="text" class="col mt-8 card-no border-muted r-4" placeholder="Name on card">
+      <input id="card_name" name="card_name" type="text" class="col mt-8 card-no outline-none border-muted r-4" placeholder="Name on card">
       <p id="card_name_error" class="text-danger">{{error}}</p>
-      <button id="submit" type="button" class="btn float-right mt-16 btn-warning">Add pay</button>
     </form>
+    <button id="submit" type="button" class="btn mt-64 btn-primary btn-block mt-16 btn-primary">Add pay</button>
 </div>
 <div class="container mt-48">
   <div class="alert alert-info border-none">By continuing you accept our <a href="#">Term of Service and conditions</a></div>

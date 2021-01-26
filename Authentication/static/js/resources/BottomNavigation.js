@@ -5,7 +5,7 @@ $(".nav-btn-wallet-circle").hide();
 
 //>>>Disable an element
 $(".disabled").attr('disabled','disabled');
-       
+
 $("#nav-btn-home").on("click" , function (){
   $.ajax({
     url:"/havwis/home/",
@@ -13,7 +13,7 @@ $("#nav-btn-home").on("click" , function (){
     dataType:"html",
     success: function (data){
       $("body").html(data);
-    }
+      }
   });  
   $("#nav-btn-card img").removeClass("filter-default"); $("#nav-btn-wallet img").removeClass("filter-default");
   $("#nav-btn-home img").addClass("filter-default"); $("#nav-btn-home img").removeClass("filter-blue-2");
@@ -24,6 +24,7 @@ $("#nav-btn-home").on("click" , function (){
   $(".nav-btn-profile-circle").hide(); 
   $("#nav-btn-profile img").removeClass("filter-default");
 });
+
 $("#nav-btn-wallet").on("click" , function (){
   $.ajax({
     url:"/havwis/wallet/",

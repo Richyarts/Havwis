@@ -26,9 +26,7 @@ class JsonSerializable(object):
 class HomeView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      if not WalletModel.objects.get(user = request.user).credit_card.filter(label="crytocurrency").exists:
-        return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all()})
-      return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all() , "create":"create"})
+      return render(request , "wallet/fragment/HomeFragment.html" , {"trade_coins":TradeModel.objects.all()})
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     pass
@@ -54,7 +52,9 @@ class WalletView(View):
 class PaymentView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
-      return render(request , "wallet/form/CreditCardActivity.html")
+      if WalletModel.objects.get(user=request.user).credit_card.filter(label="trade").exists:
+        return render(request , "wallet/form/CreditCardActivity.html")
+      return JsonResponse({"status":False , "data":"create a virtual card"})
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
     form_data = CreditCardForm(request.POST)
@@ -71,8 +71,13 @@ class PaymentView(View):
 #>>>List all user credit cards
 class CreditCardView(View):
   def get(self , request , *args , **kwargs):
+    card = []
     if request.user.is_authenticated:
-      card =  WalletModel.objects.get(user = request.user).credit_card.all()
+      if WalletModel.objects.get(user = request.user).credit_card.filter(label="trade").exists:
+        card_id =  WalletModel.objects.get(user = request.user).credit_card.all()
+        for id in card_id:
+          card.append(flutterwave.GetCard(card_id))
+      card = None
       return render(request , "wallet/form/CardActivity.html" , {"card": card})
     return redirect("/auth/login/")
  
@@ -144,15 +149,25 @@ class SendView(View):
         return JsonResponse({"error":form_data.errors})
       return redirect("/havwis/login/")
 
+#>>> A receive view with QR code
 class ReceiveView(View):
   def get(self , request , *args , **kwargs):
+    #>>>parse coin_id from url
     coin_id = kwargs["coin_id"] 
+    #>>>parse wallet_id from url
     wallet_id = kwargs["wallet_id"]
+    #>>>check if coin_id exists or throw error status 404
     coin = get_object_or_404(CoinModel , id=coin_id)
+    #>>> get info for templates view
+    #>>> coin name 
     network = coin.coin_name
+    #>>> wallet_id
     wallet = Wallet(wallet_id)
+    #>>> balance
     balance = wallet.balance(network=network)
+    #>>> coin avatar
     avatar = coin.coin_avatar
+    #>>> new address todo if used generate new address
     address = wallet.get_key(network=network).address
     return render(request , "wallet/fragment/ReceiveFragment.html" , {"balance":balance , "coin":coin , "address": address , "network":network , "avatar": avatar})
 
@@ -166,33 +181,49 @@ class NotificationView(View):
 
 from Wallet.forms import CountryForm
 
+#>>>for debugging templates views
 def debug(request):
   return render(request , "debug.html" , {"country":CountryForm()})
 
+#>>> buy view for trade
 class BuyView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
+      #parse network_id from url /buy/network_id/
       network_id = kwargs["network_id"]
+      #filter TradeModel with (id = id)
       trade_object = TradeModel.objects.get(id=network_id)
       return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
     return redirect("/auth/login/")
   def post(self , request , *args , **kwargs):
+    #parse network_id from url /buy/network_id/
+    network_id = kwargs["network_id"]
+    #>>> integer form field reuse if you have an integer form field
     form_amount_data = IntegerForm(request.POST)
+    #>>>checks if form is valid
     if form_amount_data.is_valid():
+      #>>>the wallet and profile model check Api/flutterwave.py >>> cardPayment method for parameters [type , profile , amount , currency]
       wallet_model = WalletModel.objects.get(user=request.user)
       profile_model = ProfileModel.objects.get(user = request.user)
+      #>>>clean amount data from integer form field
       amount = form_amount_data.cleaned_data["number"]
-      id = wallet_model.credit_card.get(label="trade").id
-      transaction = flutterwave.cardPayment(id , profile_model , amount , "NGN")
+      #>>>first card transaction to havwis Flutterwave account
+      transaction = flutterwave.cardPayment("trade", profile_model , amount , "NGN")
+      #>>>Create a trade object for access buy method in the Trade class
       trade = Trade(wallet_model.wallet_id , amount)
+      #>>>Check if card transaction is successful
       if transaction["status"]:
+        #>>>Then withdraw  from havwis wallet to users wallet
         buy = trade.buy(request , transaction["status"] , network)
-        return JsonResponse(buy)
-      return JsonResponse({"status":"error" , "data":transaction["data"]})
-      return redirect(url)
+        #>>>json response data to work with in the ui
+        return JsonResponse({"status":True , "tx_info":transaction , "cryto_info":buy})
+      #>>> throw an error is something is wrong with the transaction
+      return JsonResponse({"status":False , "data":transaction["data"]})
+    #>>> render back the buy view if form error
     trade_object = TradeModel.objects.get(id=network_id)
     return render(request , "wallet/fragment/BuyFragment.html" , {"trade_coin":trade_object})
 
+#>>>todo payments
 class SellView(View):
   def get(self , request , *args , **kwargs):
     if request.user.is_authenticated:
