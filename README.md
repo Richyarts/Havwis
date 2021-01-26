@@ -7,9 +7,3 @@
 <div class="mt">
   <a href="#">Contact us </a>
 </div>
-<style>
-  p{line-height: 1.5;}
- .mt{margin-top: 32px;}
- a{color: #4559FF; border: 0.5px solid #4559FF; padding: 4px 8px; text-decoration: none; border-radius: 4px;}
-  li{font-size: 14px; padding: 8px; background: #F9F9F9; margin: 8px;}
-</style>
