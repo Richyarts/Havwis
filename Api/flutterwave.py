@@ -107,11 +107,11 @@ def get_card(request , type):
   if WalletModel.objects.get(user=request.user).credit_card.count() > 0:
     id = WalletModel.objects.get(user=request.user).credit_card.get(label=type)
     return GetCard(id)
-  id = CreateCard(request.user , "100" , "NGN")
-  card = CreditCard(card_id = id , label = type)
-  card.save()
-  wallet_model = WalletModel.objects.get(user = request.user).credit_card.add(card)
-  return GetCard(id)
+  card_id = CreateCard(request.user , "100" , "NGN")
+  card = CreditCard.objects.create(card_id = str(card_id) , label = type)
+  #wallet_model = WalletModel.objects.get(user = request.user).credit_card.add(card)
+  #wallet_model.save()
+  return GetCard(card_id)
     
 def cardPayment(type , profile , amount , currency):
   card = get_card(profile , type)

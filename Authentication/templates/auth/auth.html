@@ -78,7 +78,7 @@
         <script>
           var $input = $("input");
           $("#signup-btn").on("click" , function (){
-            $("#signup-btn").html("<p class='spinner-grow text-8 text-white'></p>");
+            $("#signup-btn").html("<span class='spinner-grow text-8 text-white'></span>");
             $.post("/auth/register/" , {"phone":$("#phone").val(),"username":$("#username").val() , "email":$("#email").val() , "password":$("#password").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function (data , status){
               $("body").html(data);
             });
