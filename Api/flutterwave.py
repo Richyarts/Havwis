@@ -108,7 +108,7 @@ def get_card(request , type):
     id = WalletModel.objects.get(user=request.user).credit_card.get(label=type)
     return GetCard(id)
   id = CreateCard(request.user , "100" , "NGN")
-  card = CreditCard(id = id , label = type)
+  card = CreditCard(card_id = id , label = type)
   card.save()
   wallet_model = WalletModel.objects.get(user = request.user).credit_card.add(card)
   return GetCard(id)

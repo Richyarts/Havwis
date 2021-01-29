@@ -16,7 +16,7 @@ class CreditCard(models.Model):
     ("groceries" , "groceries"),
     ("others" , "others"),
   ]
-  id = models.CharField(unique=True , max_length=64 , primary_key=True)
+  card_id = models.TextField(unique=True , max_length=64)
   label = models.CharField(max_length=64 , choices=choices)
   class Meta:
     db_table = "CreditCard"
