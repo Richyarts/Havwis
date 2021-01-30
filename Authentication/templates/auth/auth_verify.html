@@ -23,20 +23,23 @@
     <div class="resend-code mt-16">
       <p class="text-muted">Resend code <span class="counter"></span></p>
     </div>
-      <button type="button" class="username_layout_button  mt-32 btn-block btn btn-primary">Continue</button>
+      <button type="button" class="username_layout_button mt-32 btn-block btn btn-primary">Continue</button>
     </form>
   </div>
 {% block script %} 
  <script>
  $(".alert").hide();
   $(".username_layout_button").on("click" , function (){
+     $(".username_layout_button").html("<span class='spinner-grow text-8 text-white'></span>");
      $.post("/auth/verify/{{user.id}}/" , {"1":$(".one").val() , "2":$(".two").val() , "3":$(".three").val() , "4":$(".four").val() , "5":$(".five").val() , "6":$(".six").val() , "csrfmiddlewaretoken":"{{csrf_token}}"} , function(data , status){
-       $(".username_layout_button").html("<p class='spinner-grow text-8 text-white'></p>");
       if(data.error){
         $(".alert").show();
         $(".username_layout_button").html("Continue")
       }
-      $("body").html(data);
+      else{
+        $("body").html(data);
+        history.pushState(null , null , "/havwis/home/")
+      }
      });
   });
   var x = 60;

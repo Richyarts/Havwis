@@ -39,8 +39,7 @@ def CreateCard(user, amount, currency):
         "billing_name": user.username, "amount": amount, "currency": currency
         }
     response = requests.post(url = "https://api.flutterwave.com/v3/virtual-cards", headers = apikey , json = data)
-    print(response.json())
-    #return response.json()["data"]["id"]
+    return response.json()["data"]["id"]
 
 def createAccountNumber(user , amount):
   url = "https://api.flutterwave.com/v3/bulk-virtual-account-numbers"
@@ -105,19 +104,20 @@ def getTransaction(id):
 
 def get_card(request , type):
   if WalletModel.objects.get(user=request.user).credit_card.count() > 0:
-    id = WalletModel.objects.get(user=request.user).credit_card.get(label=type)
+    id = WalletModel.objects.get(user=request.user).credit_card.get(label=type).card_id
     return GetCard(id)
   card_id = CreateCard(request.user , "100" , "NGN")
   card = CreditCard.objects.create(card_id = str(card_id) , label = type)
-  #wallet_model = WalletModel.objects.get(user = request.user).credit_card.add(card)
-  #wallet_model.save()
+  wallet_model = WalletModel.objects.get(user = request.user).credit_card.add(card)
   return GetCard(card_id)
     
 def cardPayment(type , profile , amount , currency):
-  card = get_card(profile , type)
-  if card["status"]:
+  card_info = get_card(profile , type)
+  card = card_info["data"]
+  status = card_info["status"]
+  if status:
     date = card["expiration"].split("-")
-    if card["is_active"] and card["amount"] > float(0) and float(card["amount"]) >= float(amount):
+    if card["is_active"] and float(card["amount"]) > float(0) and float(card["amount"]) >= float(amount):
       payload = {
         "amount": amount, "currency":currency,
         "card_number":card["card_pan"], "cvv":card["cvv"] ,
