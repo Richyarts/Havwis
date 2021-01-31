@@ -15,6 +15,7 @@ django-qr-code==2.1.0
 django-user-accounts==3.0.2
 ecdsa==0.16.0
 future==0.18.2
+gunicorn
 idna==2.10
 jsonfield==3.1.0
 Paperboy==1.0.1
