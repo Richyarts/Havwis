@@ -1,6 +1,6 @@
 from django import template
 from harvis.core import get_price
-from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
+#from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 register = template.Library()
 
 import json
@@ -9,7 +9,7 @@ from bitcoinlib.networks import *
 from bitcoinlib.wallets import *
 from bitcoinlib.networks import *
 
-cmc = CoinMarketCapAPI('5fec81c9-dc6b-45dd-82ea-c86d7615adbb')
+#cmc = CoinMarketCapAPI('5fec81c9-dc6b-45dd-82ea-c86d7615adbb')
 
 @register.simple_tag
 def get_balance(id , network):

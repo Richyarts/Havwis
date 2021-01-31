@@ -16,7 +16,7 @@
       </script>
     {% endblock %}
   </div>
-  
+
 <!--Card types Red Visa , Blue mastercard , purple Unknown , Orange mastercard -->
   {% if card|length <= 0 %}
     
@@ -24,62 +24,63 @@
   <div class="horizontal-listview">
     <p class="text-white">&</p>
     {% for cards in card %}
+    
           {% get_cards cards.id as card %}
-              {% card_no_format card.card_number as card_number %}
-                {% if card.card_type == "mastercard" %}
+              {% card_no_format cards.card_pan as card_number %}
+                {% if cards.card_type == "" %}
                   <div class="r-4 border-none horizontal-listview-item item gradient-danger">
-                    <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="#" width="32px" class="right"> </div> </div>
+                    <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_credit_card_white.png' %}" width="32px" class="right"> </div> </div>
                     <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
                     <div class="form-row">
-                      <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
-                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
+                      <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{cards.expiration}}</p></div>
+                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{cards.cvv}}</p></div>
                     </div>
                     <div class="form-row text-white container p">
                       <p class="col-12 btn-opacity p">NAME</p>
-                      <p class="col-12 p">{{card.card_name}}</p>
+                      <p class="col-12 p">{{cards.name_on_card}}</p>
                     </div>
                   </div>
                 {% endif %}
-                {% if card.card_type == "visa" %}
+                {% if cards.card_type == "visa" %}
                   <div class="r-4 border-none horizontal-listview-item item gradient-primary">
-                    <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_visacard.png' %}" width="32px" class="right"> </div> </div>
+                    <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_credit_card_white.png' %}" width="32px" class="right"> </div> </div>
                     <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
                     <div class="form-row">
-                      <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
-                      <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
+                      <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{cards.expiration}}</p></div>
+                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{cards.cvv}}</p></div>
                     </div>
                     <div class="form-row text-white container p">
                       <p class="col-12 btn-opacity p">NAME</p>
-                      <p class="col-12 p">{{card.card_name}}</p>
+                      <p class="col-12 p">{{cards.name_on_card}}</p>
                     </div>
                   </div>
               {% endif %}
-              {% if card.card_type == "unknown" %}
+              {% if cards.card_type == "unknown" %}
                 <div class="r-4 border-none horizontal-listview-item item gradient-orange">
-                  <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_credit_card_white.png' %}" width="24px" class="right"> </div> </div>
-                  <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
-                  <div class="form-row">
-                    <div class="col-6 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
-                    <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
-                  </div>
-                  <div class="form-row text-white container p">
-                    <p class="col-12 btn-opacity p">NAME</p>
-                    <p class="col-12 p">{{card.card_name}}</p>
-                  </div>
+                  <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_credit_card_white.png' %}" width="32px" class="right"> </div> </div>
+                    <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
+                    <div class="form-row">
+                      <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{cards.expiration}}</p></div>
+                       <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{cards.cvv}}</p></div>
+                    </div>
+                    <div class="form-row text-white container p">
+                      <p class="col-12 btn-opacity p">NAME</p>
+                      <p class="col-12 p">{{cards.name_on_card}}</p>
+                    </div>
                 </div>
              {% endif %}
-             {% if card.card_type == "" %}
+             {% if cards.card_type == "mastercard" %}
                <div class="r-4 border-none horizontal-listview-item item gradient-purple">
-                 <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_unknowncard.png' %}" width="32px" class="right filter-orange-2"> </div> </div>
-                 <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
-                 <div class="form-row">
-                   <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{card.expiry_date}}</p></div>
-                   <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{card.cvv}}</p></div>
-                 </div>
-                 <div class="form-row text-white container p">
-                   <p class="col-12 btn-opacity p">NAME</p>
-                   <p class="col-12 p">{{card.card_name}}</p>
-                 </div>
+                <div class="w-100 mb-8 form-row"><div class="col-12"> <img src="{% static 'img/ic_mastercard.png' %}" width="32px" class="right"> </div> </div>
+                <p class="monospace text-center text-24 p text-white">{{card_number}}</p>
+                <div class="form-row">
+                  <div class="col-3 text-white ml-8"><p class="p btn-opacity">EXPIRE</p><p class="p">{{cards.expiration}}</p></div>
+                   <div class="col-3 text-white ml-8"><p class="p btn-opacity">CVV</p><p class="p">{{cards.cvv}}</p></div>
+                </div>
+                <div class="form-row text-white container p">
+                  <p class="col-12 btn-opacity p">NAME</p>
+                  <p class="col-12 p">{{cards.name_on_card}}</p>
+                </div>
               </div>
             {% endif %}
     {% empty %}

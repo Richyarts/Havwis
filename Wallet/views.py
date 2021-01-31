@@ -71,14 +71,14 @@ class PaymentView(View):
 #>>>List all user credit cards
 class CreditCardView(View):
   def get(self , request , *args , **kwargs):
-    card = []
+    card_list = []
     if request.user.is_authenticated:
       if WalletModel.objects.get(user = request.user).credit_card.filter(label="trade").exists:
-        card_id =  WalletModel.objects.get(user = request.user).credit_card.all()
-        for id in card_id:
-          card.append(flutterwave.GetCard(card_id))
-      card = None
-      return render(request , "wallet/form/CardActivity.html" , {"card": card})
+        cards =  WalletModel.objects.get(user = request.user).credit_card.all()
+        for card in cards:
+          card_list.append(flutterwave.GetCard(card.card_id)["data"])
+      #card_list = None
+      return render(request , "wallet/form/CardActivity.html" , {"card": card_list})
     return redirect("/auth/login/")
  
   def post(self , request , *args , **kwargs):
