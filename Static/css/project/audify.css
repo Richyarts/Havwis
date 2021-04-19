@@ -31,6 +31,7 @@ body{font-size: 14px;}
 .bg-opacity{background: linear-gradient(rgb(0,0,0,0.5), rgb(0,0,0));}
 .border-1{border-bottom: 0.5px solid #212121;}
 .text-opacity{color: white; opacity: 0.8;}
+.card{border-radius: 10px!important;}
 .rounded-0{border-radius: 0!important;}
 .tab-active{border-bottom: 1px solid black;}
 .bg-black{background: black;}
@@ -50,11 +51,10 @@ img{object-fit: cover;}
 html,body { overscroll-behavior-y: contain;}
 .form-control:hover{border-color: #E0E0E0!important;}
 .center{text-align: left;}
-.rounded-top-8{border-radius: 8px 8px 0 0;}
+.rounded-top-8{border-radius: 8px 8px 0 0!important;}
 .rounded-8{border-radius: 8px;}
-a{color: purple!important;}
-a:focus{color: purple!important;}
-.fixed-bottom{position: absolute!important; bottom: 0; left: 0; right: 0;}
+/*a{color: purple!important;}
+a:focus{color: purple!important;}*/
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before{background-color: #6f42c1; border-color: #6f42c1;}
 .custom-checkbox .custom-control-input:checked~.custom-control-label:focus{background-color: #6f42c1; border-color: #6f42c1;}
 .bg-default{background: #6f42c1; color: white;}
@@ -73,4 +73,8 @@ a:focus{color: purple!important;}
 .tab-indicator span {display: inline-block!important; width: 10px; height: 2px;}
 .opacity-5{opacity: 0.5;}
 .shadow-n-sm{box-shadow: 1px 0.5px 8px #E0E0E0;}
-.card{border-radius: 10px!important;}
+.border-light-2{border: 2px solid #F9F9F9;}
+
+
+/* Dark mode */
+.bg-dark .card{border: 0!important;}

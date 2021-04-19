@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block body %}
+  <div class="body p-3 pb-5 mb-5">
+    <header class="form-row mb-2">
+      <div class="col">
+        <p class="m-0 rulerly text-header font-weight-bold">Oguntunde, </p>
+        <p class="m-0 text-16 text-dark font-weight-bold">wash your hand, it's lunch time 🥪!</p>
+      </div>
+      <div class="float-right"><img class="rounded-circle" src="{% static 'img/test/bn_avatar_test.png' %}" width="40px" height="40px"></div>
+    </header>
+    <section id="plans-horizontal-listview">
+      {% include 'v_1_0/activity/home/sub/plans.html' %}
+    </section>
+    <section id="feed" class="mt-5">
+      <div id="is-complete-profile">
+        <p class="text-dark font-weight-bold">COMPLETE YOUR SETUP </p>
+        <img class="rounded-8" src="{% static 'img/icon/hv_complete_setup.png' %}" width="100%" height="100%">
+      </div>
+      <div id="feed-illustration" class="mt-4">
+        {% include 'v_1_0/activity/home/sub/items.html' %}
+      </div>
+      <div id="feed-recent-activity" class="mt-4 mb-4">
+         <p class="text-20 m-0 mb-2 font-weight-bold">Recent activity</p>
+        {% include 'v_1_0/activity/home/sub/activity.html' %}
+      </div>
+      <div id="added-profile">
+        <div class="card rounded-8 shadow-n-sm">
+           <div class="card-body rounded-top-8 pb-5" style="background: url('{% static 'img/icon/hv_add_photo.png' %}') no-repeat center;">
+             <p class="text-20 rulerly text-white t-22 font-weight-bold">Lets others know they got the right account</p>
+           </div>
+           <div class="card-footer border-0 p-2 bg-none">
+             <p class="m-0 text-16 rulerly font-weight-bold text-primary">Add your photo</p>
+           </div>
+         </div>
+       </div>
+    </section>
+  </div>
+{% endblock %}

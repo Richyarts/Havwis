@@ -1,0 +1,17 @@
+{% load static %}
+  <div id="bottomNavigation" class="bg-white container pt-1 pb-0 shadow shadow-sm form-row fixed-bottom">
+    <div data-id="bottom-nav-item" class="col text-center"><p class="m-1"><img src="{% static 'img/icon/hv_savings.png' %}" width="24px" height="24px"></p> <p class="m-0 small font-weight-bold">Home</p><img class="filter-danger" src="{% static 'img/icon/hv_tab_indicator_black.png' %}" height="12px" width="12px"></div>
+    <div data-id="bottom-nav-item" class="col text-center text-muted"><p class="m-1"><img src="{% static 'img/icon/hv_rocket.png' %}" width="24px" height="24px"></p> <p class="m-0 small font-weight-bold">Invest</p> <img class="filter-warning d-none" src="{% static 'img/icon/hv_tab_indicator_black.png' %}" height="12px" width="12px"></div>
+    <div data-id="bottom-nav-item" class="col text-center text-muted"><p class="m-1 text-muted"><img class="filter-success" src="{% static 'img/icon/hv_dice.png' %}" width="24px" height="24px"></p> <p class="m-0 small font-weight-bold">Apps</p> <img class="d-none filter-success" src="{% static 'img/icon/hv_tab_indicator_black.png' %}" height="12px" width="12px"></div>
+    <div data-id="bottom-nav-item" class="col text-center text-muted"><p class="m-1"><img class="filter-danger" src="{% static 'img/icon/hv_person_black.png' %}" width="24px" height="24px"></p> <p class="m-0 small font-weight-bold">Account</p> <img class="filter-muted d-none" src="{% static 'img/icon/hv_tab_indicator_black.png' %}" height="12px" width="12px"></div>
+  </div>
+  <script>
+    $(`div[data-id="bottom-nav-item"]`).on("click", function(event){
+      for(let element of $(`div[data-id="bottom-nav-item"]`)){
+        $(element).addClass("text-muted");
+        element.children[2].classList.add("d-none");
+      }
+      $(this).removeClass("text-muted");
+       this.children[2].classList.remove("d-none");
+    });
+  </script>

@@ -3,102 +3,45 @@
   <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/project/audify.css" rel="stylesheet" type="text/css">
   <script src="src/jquery/jquery.js" type="text/javascript"></script>
+  <script src="sc/bootstrap/bootstrap.min.js" type="text/javascript"></script>
 </head>
 <body class="">
-  <section class="p-3">
-    <header class="form-row">
+  <header class="mb-3 text-primary p-2">
+    <img class="filter-dark mb-1" src="img/icon/ay_cancel_black.png" width="24px" height="24px">
+  </header>
+  <section class="p-2">
+    <div class="form-row">
       <div class="col">
-        <p class="m-0 rulerly text-header font-weight-bold">Oguntunde, </p>
-        <p class="m-0 text-16 text-dark font-weight-bold">wash your hand, it's lunch time 🥪!</p>
+        <p class="m-0 font-weight-bold text-secondary">Total Balance</p>
+        <p class="mb-2 text-20 font-weight-bold">$22, 983.96</p>
+        <p class=""><span class="text-success font-weight-bold">+$686.78 (3.78%)</span> <span class="text-secondary"> 24 hrs</span></p>
       </div>
-      <div class="float-right"><img class="rounded-circle" src="img/test/bn_avatar_test.png" width="40px" height="40px"></div>
-    </header>
-  </section>
-  <section class="p-3">
-      <div id="horizontal-listview" class="flex-row flex-nowrap h-25">
-        <div class="card bg-primary text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2 filter-white" src="img/icon/hv_safe_lock_black.png" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Total Crypto</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-        <div class="card bg-doge text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2 bg-doge rounded-circle" src="img/logo/hv_doge.png" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Flex Dogecoin</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-        <div class="card bg-ltc text-opacity text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-          <div class="card-body form-row p-0 pt-3">
-            <div class="col-1 mr-3"><img class="mt-2 rounded-circle" src="img/logo/hv_lite.png" width="32px" height="32px"></div>
-            <div class="col">
-              <p class="rulerly font-weight-bold text-16 m-1">Flex Litecoin</p>
-              <p class="font-weight-bold text-20">$40.00</p>
+      <div class="float-right">
+        
+      </div>
+    </div>
+    <div class="">
+      <p class="text-20 font-weight-bold">Assets</p>
+      <div class="form-row">
+        <div class="col-2 mt-2"> <img src="img/logo/hv_btc.png" height="32px" width="32px"></div>
+        <div class="col rounded-0 card border-left-0 border-right-0 border-top-0 border-light-2">
+          <div class="card-body p-0 pt-2 pb-2 p-1">
+            <div class="float-left">
+              <p class="text-16 text-dark font-weight-bold m-0">Bitcoin</p>
+              <p class="mt-1 mb-1 font-weight-bold">$7890.96</p>
+              <p class="text-secondary small mb-2 font-weight-bold">0.89999089 BTC</p>
+            </div>
+            <div class="float-right mt-3">
+              <p class="font-weight-bold m-0">$52,988.98</p>
+              <p class="text-success font-weight-bold"> <img class="filter-success" src="img/icon/hv_arrow_drop_up_black.png" width="24px" height="24px">+1.24%</p>
             </div>
           </div>
-       </div>
-       <div class="card bg-btc text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2" src="img/logo/hv_btc.png" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Flex Bitcoin</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-       <div class="card bg-dash text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2 rounded-circle" src="img/logo/hv_dash.png" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Flex Dash</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-     </div>
-      <div class="tab-indicator text-center">
-        <span class="r-100 small pl-2 pr-2 bg-primary"></span>
-        <span class="r-100 opacity-5 pl-2 pr-2 small bg-primary"></span>
-        <span class="r-100 opacity-5 p-0 small pl-2 pr-2 bg-primary"></span>
-        <span class="r-100 opacity-5 p-0 small pl-2 pr-2 bg-primary"></span>
-        <span class="r-100 opacity-5 p-0 small pl-2 pr-2 bg-primary"></span>
-     </div>
-    </section>
-  <section class="p-3">
-    <p class="text-dark font-weight-bold">COMPLETE YOUR SETUP </p>
-    <img class="rounded-8" src="img/icon/hv_complete_setup.png" width="100%" height="100%">
-  </section>
-  <section class="p-3">
-    <p class="text-20 m-0 mb-2 font-weight-bold">Recent activity</p>
-    <div class="card bg-light">
-      <div class="card-body p-2 form-row">
-        <div class="col-1 mt-1 mr-4"><img src="img/logo/hv_btc.png" height="40px" width="40px"></div>
-        <div class="col mt-1">
-          <p class="m-0 font-weight-bold text-16">Send Bitcoin</p>
-          <p class="m-0 small text-dark">20 sat, 2020</p>
-        </div>
-        <div class="float-right p-1">
-          <p class="text-success m-0">+0.35 BTC</p>
-          <p class="float-right m-0"><img class="rounded-circle" src="img/test/bn_avatar_test.png" width="14px" height="14px"></p>
         </div>
       </div>
     </div>
   </section>
-  <section class="p-3">
-    <div class="card rounded-8 shadow-ln-sm">
-      <div class="card-body rounded-8 pb-5" style="background: url('img/icon/refer.png') no-repeat center;">
-        <p class="text-20 text-white t-22 font-weight-bold">Lets others know they got the right account</p>
-      </div>
-      <div class="card-footer border-0 p-2 bg-none">
-        <p class="m-0 text-16 font-weight-bold text-primary">Add your photo</p>
-      </div>
-    </div>
-  </section>
+<script>
+
+</script>
 </body>
 </html>
