@@ -124,3 +124,9 @@ STATIC_URL = '/static/'
 
 #project settings configuration
 AUTH_USER_MODEL = "Authentication.User"
+STATIC_URL = "/Static/"
+STATIC_ROOT = "/Static/"
+
+STATICFILES_DIRS = [
+  BASE_DIR/"static/",
+]

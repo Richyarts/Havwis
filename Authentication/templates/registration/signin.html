@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% include 'default_header.html' %}
+  <section class="p-3">
+    <form action="{% url 'login' %}" method="POST" class="text-center">
+      <button type="submit" class="btn btn-warning btn-block font-weight-bold">Create account</button>
+      <p class="rulerly text-dark">Already have an account? <a class="text-warning" href="#">Log In</a></p>
+    </form>
+  </section>
+  {% include 'default_footer.html' %}
+{% endblock %}

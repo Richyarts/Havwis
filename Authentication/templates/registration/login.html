@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  {% include 'toolbar/default_header.html' %}
+  <section class="p-3">
+    {% if form.errors %}
+      {% include 'toast/default_error_toast.html' %}
+    {% endif %}
+    <div class="text-center">
+      <p class="text-20 font-weight-bold">Log In</p>
+      <p class="text-muted">Please check whether your are visiting the right URL</p>
+      <div class="ml-5 mr-5"><p class="border w-100 p-1 r-100"><span class="text-success">https://</span>accounts.havwis.com</p></div>
+    </div>
+    <form action="{% url 'login' %}" method="POST" class="mb-2">
+      {% csrf_token %}
+      <label>Username or Email</label>
+      <div class="form-control"> {{form.username}} </div>
+      <label>Password</label>
+      <div class="form-control"> {{form.password}} </div>
+      <div class="custom-control shadow-none custom-checkbox container pl-2" style="margin-left: 12px;">
+        <input id="check-box" class="shadow-none custom-control-input" type="checkbox"><label class="custom-control-label" for="check-box">By logging in , you accept and have read Havwis <b>Terms of service</b> and <b> Privacy policy.</b></label>
+      </div>
+      <button type="button" class="mb-3 mt-4 btn bg-default btn-block font-weight-bold shadow">Login</button>
+      <p class="mt-4 rulerly small text-dark text-center"><a href="{% url 'password_reset' %}" class="text-dark mr-3" style="text-decoration: underline;"> Forgotten password</a> <a class="text-default mr-3" href="#"> Scan to login</a> <a class="text-default mr-3" href="#">Free registration</a></p>
+    </form>
+  </section>
+  {% include 'footer/default_footer.html' %}
+  <style>
+    label{margin-top: 16px;}
+    input{background: none; border: 0; outline: none; width: 100%;}
+  </style>
+  <script type="text/javascript">
+    $("button[type='button']").on("click", function(){
+      let data = {"csrfmiddlewaretoken":"{{csrf_token}}", "username":$("input").eq(1).val(), "password":$("input").eq(2).val()};
+      $(this).html("<span class='spinner-grow text-light'></span>").addClass("p-1");
+      $.post(window.location.pathname, data, (data, status)=>{
+        $("body").html(data);
+      });
+    });
+  </script>
+{% endblock %}

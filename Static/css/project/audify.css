@@ -1,0 +1,76 @@
+.tab-item{display: inline; border-radius: 100%; padding: -4.5 4.5px;}
+.bg-muted{background: #E0E0E0;}
+.bg-none{background: none;}
+.filter-primary{filter: invert(31%) sepia(94%) saturate(2346%) hue-rotate(198deg) brightness(100%) contrast(109%);}
+.filter-secondary{filter: invert(50%) sepia(6%) saturate(637%) hue-rotate(167deg) brightness(88%) contrast(85%);}
+.filter-dark{filter: invert(20%) sepia(12%) saturate(491%) hue-rotate(169deg) brightness(98%) contrast(92%);}
+.filter-light{filter: invert(99%) sepia(1%) saturate(141%) hue-rotate(170deg) brightness(99%) contrast(98%);}
+.filter-white{filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(205deg) brightness(103%) contrast(102%);}
+.filter-success{filter: invert(52%) sepia(20%) saturate(1566%) hue-rotate(81deg) brightness(96%) contrast(89%);}
+.filter-danger{filter: invert(25%) sepia(84%) saturate(2173%) hue-rotate(336deg) brightness(91%) contrast(88%);}
+.filter-warning{filter: invert(70%) sepia(65%) saturate(941%) hue-rotate(354deg) brightness(104%) contrast(101%);}
+.filter-muted{filter: invert(86%) sepia(19%) saturate(153%) hue-rotate(155deg) brightness(86%) contrast(86%);}
+.filter-muted-2{filter: invert(97%) sepia(4%) saturate(575%) hue-rotate(167deg) brightness(92%) contrast(86%);}
+.filter-muted-3{filter: invert(85%) sepia(9%) saturate(9%) hue-rotate(321deg) brightness(105%) contrast(91%);}
+@font-face{font-family: rulerly; src: url("fonts/Rulerly.ttf"); }
+@font-face{font-family: bundle; src: url("fonts/Bundle.ttf"); }
+@font-face{font-family: allred; src: url("fonts/Allred.ttf"); }
+.bundle{font-family: bundle;}
+.rulerly{font-family: rulerly;}
+.allred{font-family: allred;}
+.text-16{font-size: 16px;}
+body{font-size: 14px;}
+#horizontal-listview{display: flex; overflow-y: hidden; height: 200px; white-space: nowrap; overflow-x: auto; width: 100%;}
+#horizontal-listview-item{margin: 4px 0 4px 0; flex-shrink: 1 0 auto; flex-basis: 100%; width: 100%; display: inline;}
+.r-100{border-radius: 100px!important;}
+.text-20{font-size: 20px;}
+.img-round{padding: 12px 8px;}
+.img-round-lg{padding: 18px 10px;}
+.bg-black{background: rgb(0,0,0,0.8);}
+.bg-body{background: #212121;}
+.bg-opacity{background: linear-gradient(rgb(0,0,0,0.5), rgb(0,0,0));}
+.border-1{border-bottom: 0.5px solid #212121;}
+.text-opacity{color: white; opacity: 0.8;}
+.rounded-0{border-radius: 0!important;}
+.tab-active{border-bottom: 1px solid black;}
+.bg-black{background: black;}
+.bg-dark{background: rgb(25,25,25)!important;}
+.outline-none{outline: 0;}
+.w-input{width: 85%;}
+.bg-gradient{background: linear-gradient(#1E88E5, #1976D2);}
+.pn-1{padding: 0.5px 2.5px;}
+.cover{object-fit: cover;}
+.text-dark{color: #616161!important;}
+body{font-family: allred;}
+.bg-light .shadow-n-sm{box-shadow: 1px 1px 1px #E0E0E0!important;}
+.text-default{color: #9E9E9E;}
+img{object-fit: cover;}
+.fixed{position: fixed; top: 0px!important;}
+.circle-img{width: 28px; height: 28px;}
+html,body { overscroll-behavior-y: contain;}
+.form-control:hover{border-color: #E0E0E0!important;}
+.center{text-align: left;}
+.rounded-top-8{border-radius: 8px 8px 0 0;}
+.rounded-8{border-radius: 8px;}
+a{color: purple!important;}
+a:focus{color: purple!important;}
+.fixed-bottom{position: absolute!important; bottom: 0; left: 0; right: 0;}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{background-color: #6f42c1; border-color: #6f42c1;}
+.custom-checkbox .custom-control-input:checked~.custom-control-label:focus{background-color: #6f42c1; border-color: #6f42c1;}
+.bg-default{background: #6f42c1; color: white;}
+.text-default{color: #6f42c1;}
+.bottom-nav-indicator{width: 8px; height: 8px; border: solid 1px #6f42c1; background: #6f42c1; border-radius: 100%;}
+.text-header{font-size: 32px;}
+.text-brown{color: brown;}
+.w-100{width: 1000px!important;}
+.h-25{height: 95px!important;}
+.border-light{border-color: #E0E0E0!important; box-shadow: 0.5px 0.5px 0.5px #E0E0E0;}
+.rounded-custom-8{border-radius: 16px 16px 16px 4px!important;}
+.bg-btc{background: #f7931a;}
+.bg-ltc{background: #345c98;}
+.bg-dash{background: #1B73BB;}
+.bg-doge{background: #c0a74c;}
+.tab-indicator span {display: inline-block!important; width: 10px; height: 2px;}
+.opacity-5{opacity: 0.5;}
+.shadow-n-sm{box-shadow: 1px 0.5px 8px #E0E0E0;}
+.card{border-radius: 10px!important;}
