@@ -4,11 +4,15 @@ from Wallet.models import NetworkDefinition
 
 from Havwis.utils import binance
 
+from bitcoinlib.wallets import Wallet
+
 register = template.Library()
 
 @register.simple_tag
-def update_price(network, current_price):
-  network_definition = NetworkDefinition.objects.get(network=network)
-  network_definition.last_price = network_definition.recent_price
-  network_definition.recent_price = current_price
-  return binance.calculate_interest(float(current_price), network_definition.last_price)
+def get_coin_info(request, networks):
+  network_info = []
+  network_definition = NetworkDefinition.objects.all()
+  wallet = Wallet(request.user.wallet_id)
+  for network in networks:
+    network_info.append({"network":network["network"], "balance":wallet.balance(network=network["network"])})
+  return network_info

@@ -14,9 +14,8 @@
             <div class="float-right mt-3">
               {% for price in prices %}
                 {% if price.symbol == network.symbol|upper|add:"USDT" %}
-                  <p class="font-weight-bold m-0">${{price.price}}</p>
-                  {% update_price network.network price.price as percentage %}
-                  <p class="text-success float-right font-weight-bold"> <img class="filter-success" src="{% static 'img/icon/hv_arrow_drop_up_black.png' %}" width="24px" height="24px">{{percentage|floatformat:"2"}}%</p>
+                  <p class="font-weight-bold m-0">${{price.lastPrice}}</p>
+                  <p class="text-success float-right font-weight-bold"> <img class="filter-success" src="{% static 'img/icon/hv_arrow_drop_up_black.png' %}" width="24px" height="24px">{{price.priceChangePercent|floatformat:"2"}}%</p>
                 {% endif %}
               {% endfor %}
             </div>

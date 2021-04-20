@@ -4,7 +4,19 @@
   {% block body %}
   
   {% endblock %}
+  {% block loading %}
+    {% include 'loading.html' %}
+  {% endblock %}
   {% block footer %}
     {% include 'footer/default_bottom_navigation.html' %}
   {% endblock %}
+  <script>
+    /*$(document).ajaxError(function(error){
+      
+    }).ajaxStart(function(){
+      $(".modal").modal("show");
+    }).ajaxStop(function(){
+      $(".modal").modal("hide");
+    });*/
+  </script>
 {% endblock %}

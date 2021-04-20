@@ -11,8 +11,8 @@
         <p class="mb-2 text-20 font-weight-bold">$22, 983.96</p>
         <p class=""><span class="text-success font-weight-bold">+$686.78 (3.78%)</span> <span class="text-secondary"> 24 hrs</span></p>
       </div>
-      <div class="float-right">
-        
+      <div class="float-right col-4">
+        {% include 'v_1_0/fragments/wallet/sub/chart.html' %}
       </div>
     </div>
     <div id="network-definitions">
@@ -20,4 +20,9 @@
       {% include 'v_1_0/fragments/wallet/sub/wallet_list.html' %}
     </div>
   </section>
+  <script>
+    setInterval(function(){
+      $("body").load("/activity/wallet/");
+    }, 5000);
+  </script>
 {% endblock %}

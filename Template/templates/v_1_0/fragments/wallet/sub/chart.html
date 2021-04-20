@@ -1,0 +1,29 @@
+{% load custom_tags %}
+{% get_coin_info request networks as coin_info %}
+{{coin_info}}
+<canvas></canvas>
+<script>
+  let chart = new Chart(document.querySelector("canvas").getContext("2d"), {
+    type:"doughnut",
+    data:{
+      labels:["{% for info in coin_info %} {{info.network}}, {% endfor %}"],
+      datasets:[{
+        data:[0.1, 0.789, 0.00001, 0.8905],
+        backgroundColor:["#f7931a", "#345c98", "#1B73BB", "#c0a74c"],
+      }],
+    },
+    options:{
+      cutoutPercentage:80,
+      animation: false,
+      legend:{
+        display: false,
+      },
+      elements:{
+        arc:{
+          animation: false,
+          borderWidth: 0,
+        }
+      }
+    }
+  });
+</script>

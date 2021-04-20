@@ -1,6 +1,8 @@
 #last update by @lyonkvalid
 
 from binance.client import Client
+from binance.websockets import BinanceSocketManager
+
 import time
 import requests
 
@@ -40,11 +42,11 @@ network_symbols = ["BTC", "LTC", "DASH", "DOGE"]
 class Binance():
   def __init__(self):
     self.client = Client("hziRqaoLzBRMlfwULTS66dm527DMVWjF3rQlPJlH5h9kdJwPg4T9MOgeLXYtjhX1", "syLnOpemHBzlyTo2xZEs9vaILt3RNikpdbTHijLFvqaow7HoddxfR3lXgpvRSgVw")
-    self.infos = self.client.get_all_tickers()
 
   def get_price(self):
+    infos = self.client.get_ticker()
     final_result = []
-    for info in self.infos:
+    for info in infos:
       for symbol in network_symbols:
         if info["symbol"] == "{}USDT".format(symbol):
           final_result.append(info)
@@ -58,11 +60,16 @@ class Binance():
       final_result.append(price)
     return final_result
 	  
-  def calculate_interest(self, current_price , last_price):
-    return (current_price - last_price)
-
   def get_kline(self, network):
     return binance.client.get_klines(symbol="%sUSDT"%network, interval="1m")
 
+def process_message(msg):
+  print(msg)
+  
 #initialize Binance
-binance = Binance()
+try:
+  binance = Binance()
+  manager = BinanceSocketManager(binance.client)
+  manager.start_ticker_socket(process_message)
+except:
+  binance = None
