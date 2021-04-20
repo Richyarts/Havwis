@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Authentication.apps.AuthenticationConfig',
     'Template.apps.TemplateConfig',
+    'Wallet.apps.WalletConfig',
     'bitcoinlib',
+    'binance',
 ]
 
 MIDDLEWARE = [

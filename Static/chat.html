@@ -22,18 +22,18 @@
     </div>
     <div class="">
       <p class="text-20 font-weight-bold">Assets</p>
-      <div class="form-row">
-        <div class="col-2 mt-2"> <img src="img/logo/hv_btc.png" height="32px" width="32px"></div>
+       <div class="form-row">
+        <div class="col-2 mt-2"> <img src="{{network.avatar.url}}" height="32px" width="32px"></div>
         <div class="col rounded-0 card border-left-0 border-right-0 border-top-0 border-light-2">
           <div class="card-body p-0 pt-2 pb-2 p-1">
             <div class="float-left">
-              <p class="text-16 text-dark font-weight-bold m-0">Bitcoin</p>
+              <p class="text-16 text-dark font-weight-bold m-0">{{network.network}}</p>
               <p class="mt-1 mb-1 font-weight-bold">$7890.96</p>
-              <p class="text-secondary small mb-2 font-weight-bold">0.89999089 BTC</p>
+              <p class="text-secondary small mb-2 font-weight-bold">0.89999089 {{network.symbol|upper}}</p>
             </div>
             <div class="float-right mt-3">
               <p class="font-weight-bold m-0">$52,988.98</p>
-              <p class="text-success font-weight-bold"> <img class="filter-success" src="img/icon/hv_arrow_drop_up_black.png" width="24px" height="24px">+1.24%</p>
+              <p class="text-success font-weight-bold"> <img class="filter-success" src="{% static 'img/icon/hv_arrow_drop_up_black.png' %}" width="24px" height="24px">+1.24%</p>
             </div>
           </div>
         </div>
