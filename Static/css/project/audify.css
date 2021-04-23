@@ -74,7 +74,7 @@ a:focus{color: purple!important;}*/
 .opacity-5{opacity: 0.5;}
 .shadow-n-sm{box-shadow: 1px 0.5px 8px #E0E0E0;}
 .border-light-2{border: 2px solid #F9F9F9;}
-
+.text-14{font-size: 14px!important;}
 
 /* Dark mode */
 .bg-dark .card{border: 0!important;}

@@ -1,0 +1,46 @@
+  <div class="p-2 text-center mb-2">
+    <img id="back" src="img/icon/ay_cancel_black.png" class="mb-1 float-left"  width="24px">
+    <span class="text-16 font-weight-bold margin-center mb-8">Receive Bitcoin</span>
+  </div>
+  <div class="container pl-4 pr-4">
+  <div class="bg-none card shadow-sm">
+    <div class="card-body p-0">
+      <img src="img/icon/hs_qr_black.png" width="100%" height="100%">
+    </div>
+    <div class="card-footer bg-none p-2">
+      <div class="form-row">
+        <div class="col-10">
+          <p class="m-0 text-muted">Wallet Address</p>
+          <p id="address" class="m-0 text-16 font-weight-bold">{{address}}</p>
+        </div>
+        <div class="col-2">
+          <button id="copy_to_clipboard" class="btn shadow-none border mt-16 btn-sm float-right">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shadow-sm border border-light rounded p-2 form-row mb-5 mt-5">
+    <div class="col-1"><img src="img/logo/hv_btc.png" width="32px" height="32px"></div>
+    <div class="col mt-1 ml-3 font-weight-bold"><span class="text-16">BTC Wallet</span></div>
+    <div class="float-right">
+      <p class="m-0 font-weight-bold">NGN 0.00</p>
+      <p class="m-0 float-right">0 BTC</p>
+    </div>
+  </div>
+  <button class="btn mt-32 shadow-none text-14 font-weight-bold btn-lg btn-primary btn-block">Share address</button>
+</div>
+{% block js %}
+  <script>
+  function copyDivToClipboard(element) {
+    var range = document.createRange();
+    range.selectNode(document.querySelector(element));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+  }
+    $("#copy_to_clipboard").on("click", function(){
+       copyDivToClipboard("#address");
+       $(this).addClass("bg-success text-white").removeClass("border").html("Copied!");
+    });
+  </script>

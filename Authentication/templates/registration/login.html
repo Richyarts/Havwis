@@ -9,7 +9,7 @@
     <div class="text-center">
       <p class="text-20 font-weight-bold">Log In</p>
       <p class="text-muted">Please check whether your are visiting the right URL</p>
-      <div class="ml-5 mr-5"><p class="border w-100 p-1 r-100"><span class="text-success">https://</span>accounts.havwis.com</p></div>
+      <div class="ml-5 mr-5"><p class="border w-95 p-1 r-100"><span class="text-success">https://</span>accounts.havwis.com</p></div>
     </div>
     <form action="{% url 'login' %}" method="POST" class="mb-2">
       {% csrf_token %}
@@ -34,6 +34,9 @@
       let data = {"csrfmiddlewaretoken":"{{csrf_token}}", "username":$("input").eq(1).val(), "password":$("input").eq(2).val()};
       $(this).html("<span class='spinner-grow text-light'></span>").addClass("p-1");
       $.post(window.location.pathname, data, (data, status)=>{
+        if(status == "success"){
+          history.pushState(null, null, "/activity/home/");
+        }
         $("body").html(data);
       });
     });

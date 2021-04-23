@@ -43,7 +43,7 @@ network_symbols = ["BTC", "LTC", "DASH", "DOGE"]
 def manager(msg):
   print(msg)
 
-#process_message = manager()
+process_message = manager()
 
 class Binance():
   def __init__(self):

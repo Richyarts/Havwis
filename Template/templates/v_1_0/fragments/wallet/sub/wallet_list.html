@@ -2,24 +2,25 @@
 {% load custom_tags %}
 
 {% for network in networks %}
-    <div class="form-row">
+  {% for info in currency_infos %}
+    {% get_balance_network_usd request network.network info.priceUsd as balance %}
+    {% if info.symbol == network.symbol|upper %}
+      <div class="form-row">
         <div class="col-2 mt-2"> <img src="{{network.avatar.url}}" height="32px" width="32px"></div>
         <div class="col rounded-0 card border-left-0 border-right-0 border-top-0 border-light-2">
           <div class="card-body p-0 pt-2 pb-2 p-1">
             <div class="float-left">
               <p class="text-16 text-dark font-weight-bold m-0">{{network.network}}</p>
-              <p class="mt-1 mb-1 font-weight-bold">$7890.96</p>
-              <p class="text-secondary small mb-2 font-weight-bold">0.89999089 {{network.symbol|upper}}</p>
+              <p class="mt-1 mb-1 font-weight-bold">${{balance.priceUSD}}</p>
+              <p class="text-secondary small mb-2 font-weight-bold">{{balance.balanceBTC}}</p>
             </div>
             <div class="float-right mt-3">
-              {% for price in prices %}
-                {% if price.symbol == network.symbol|upper|add:"USDT" %}
-                  <p class="font-weight-bold m-0">${{price.lastPrice}}</p>
-                  <p class="text-success float-right font-weight-bold"> <img class="filter-success" src="{% static 'img/icon/hv_arrow_drop_up_black.png' %}" width="24px" height="24px">{{price.priceChangePercent|floatformat:"2"}}%</p>
-                {% endif %}
-              {% endfor %}
+              <p class="font-weight-bold m-0">${{info.priceUsd}}</p>
+              <p class="{% if info.percentChange24hUsd > 0 %} text-success {% else %} text-danger {% endif %} float-right font-weight-bold"> <img class="{% if info.percentChange24hUsd > 0 %} filter-success {% else %} filter-danger {% endif %}" src="{% if info.percentChange24hUsd > 0 %} {% static 'img/icon/hv_arrow_drop_up_black.png' %} {% else %} {% static 'img/icon/hs_arrow_drop_down_black.png' %} {% endif %}" width="24px" height="24px">{{info.percentChange24hUsd|floatformat:"2"}}%</p>
             </div>
           </div>
         </div>
       </div>
+    {% endif %}
+  {% endfor %}
 {% endfor %}

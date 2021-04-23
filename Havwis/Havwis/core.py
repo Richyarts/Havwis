@@ -2,25 +2,21 @@
 
 #check the Authentication models , updated the custom User object 
 #>>>might be deprecated in future
-
-#from Authentication.models import User
+from Authentication.models import User
 
 #import bitcoinlib module 
 #>>>check bitcoinlib documentation for reference
 from bitcoinlib.wallets import Wallet, wallet_delete, wallet_exists
-from bitcoinlib.networks import NETWORK_DEFINITIONS
 
-#from .settings import DEBUG
+from .settings import DEBUG
 
-NETWORKS = ["bitcoin", "litecoin", "dash", "dogecoin"]
+NETWORK = ["bitcoin", "litecoin", "dash", "dogecoin"]
 NETWORK_TEST = ["testnet", "litecoin_testnet", "dash_testnet", "dogecoin_testnet", ]
-
-NETWORKS_SYMBOL = list(map(lambda network: NETWORK_DEFINITIONS[network]["currency_code"], NETWORKS))
 
 class HavwisCryptoWallet():
   def __init__(self, request=None, user=None):
     self.user = request.user if request is not None else user
-    self.networks = NETWORKS if not DEBUG else NETWORK_TEST
+    self.networks = NETWORK if not DEBUG else NETWORK_TEST
     
   def get_wallet(self):
     wallet_id = self.user.wallet_id
@@ -37,8 +33,8 @@ class HavwisCryptoWallet():
   def update_wallet(self):
     wallet = self.get_wallet()
     for network in self.networks:
-      wallet.utxos_update(network=network)
-      wallet.transaction_update(network=network)
+      wallet.utxos_update()
+      wallet.scan(network=network)
     return {"status": True}
   
   def get_address(self, network):
@@ -67,25 +63,3 @@ class HavwisTransaction():
       return {"status":True, "data":{"fee":tx_object.fee}}
     except exception as e:
       return {"status":False, "data":{"err":e}}
-
-from Havwis import havwis
-
-# Get wallet and dashboard getaway utils
-class HavwisWalletUtils():
-  def __init__(self):
-    self.networks = NETWORKS
-    self.symbols = NETWORKS_SYMBOL
-  
-  '''
-    method getWalletPrice: return current price of networks defined on havwis,
-    returns dict: prices and network infos
-  '''
-  def getNetworkDefinitionsInfos(self):
-    final_info = []
-    shrimpy_getaway = havwis.HavwisShrimpyGetaway()
-    currency_infos = shrimpy_getaway.getCryptoPrices()
-    for symbol in self.symbols:
-      for info in currency_infos:
-        if info["symbol"] == symbol:
-          final_info.append(info)
-    return final_info

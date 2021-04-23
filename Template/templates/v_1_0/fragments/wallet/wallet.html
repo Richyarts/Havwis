@@ -1,17 +1,21 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% load static %}
 {% block content %}
   <header class="mb-3 text-primary p-2">
     <img class="filter-dark mb-1" src="{% static 'img/icon/ay_cancel_black.png' %}" width="24px" height="24px">
   </header>
+  {% total_balance request currency_infos as balanceUSD %}
+  {% get_balance_differ request currency_infos as balanceDiffer %}
+  {{balanceDiffer}}
   <section class="p-2">
     <div class="form-row">
       <div class="col">
         <p class="m-0 font-weight-bold text-secondary">Total Balance</p>
-        <p class="mb-2 text-20 font-weight-bold">$22, 983.96</p>
+        <p class="mb-2 text-20 font-weight-bold">${{balanceUSD}}</p>
         <p class=""><span class="text-success font-weight-bold">+$686.78 (3.78%)</span> <span class="text-secondary"> 24 hrs</span></p>
       </div>
-      <div class="float-right col-4">
+      <div class="float-right col-5">
         {% include 'v_1_0/fragments/wallet/sub/chart.html' %}
       </div>
     </div>
@@ -23,6 +27,6 @@
   <script>
     setInterval(function(){
       $("body").load("/activity/wallet/");
-    }, 5000);
+    }, 50000000);
   </script>
 {% endblock %}

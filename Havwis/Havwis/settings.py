@@ -133,5 +133,3 @@ STATIC_ROOT = "/Static/"
 STATICFILES_DIRS = [
   BASE_DIR/"static/",
 ]
-
-LOGIN_REDIRECT_URL = "/activity/home/"
