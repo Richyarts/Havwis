@@ -10,7 +10,7 @@
 from bitcoinlib.wallets import Wallet, wallet_delete, wallet_exists
 from bitcoinlib.networks import NETWORK_DEFINITIONS
 
-#from .settings import DEBUG
+from .settings import DEBUG
 
 NETWORKS = ["bitcoin", "litecoin", "dash", "dogecoin"]
 NETWORK_TEST = ["testnet", "litecoin_testnet", "dash_testnet", "dogecoin_testnet", ]
@@ -19,7 +19,7 @@ NETWORKS_SYMBOL = list(map(lambda network: NETWORK_DEFINITIONS[network]["currenc
 
 class HavwisCryptoWallet():
   def __init__(self, request=None, user=None):
-    self.user = request.user if request is not None else user
+    self.user = request.user if user is None else user
     self.networks = NETWORKS if not DEBUG else NETWORK_TEST
     
   def get_wallet(self):

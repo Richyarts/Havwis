@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'qr_code',
     'Authentication.apps.AuthenticationConfig',
     'Template.apps.TemplateConfig',
     'Wallet.apps.WalletConfig',
     'bitcoinlib',
     'binance',
+    'shrimpy',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +130,7 @@ STATIC_URL = '/static/'
 #project settings configuration
 AUTH_USER_MODEL = "Authentication.User"
 STATIC_URL = "/Static/"
-STATIC_ROOT = "/Static/"
+STATIC_ROOT = "Static/"
 
 STATICFILES_DIRS = [
   BASE_DIR/"static/",

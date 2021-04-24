@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from django.https import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest
 
 from Havwis.core import HavwisWalletUtils, HavwisCryptoWallet
 from Havwis import settings
@@ -29,11 +29,11 @@ class WalletView(View):
  
 class WalletIntentReceiveView(View):
   def __init__(self):
-    self.template_name = "v_1_0/fragments/sub/receive.html"
+    self.template_name = "v_1_0/fragments/wallet/sub/receive.html"
   def get(self, request, *args, **kwargs):
-    network = request.GET.get()
-    if networks is not None:
-      address = HavwisCryptoWallet().get_address(network=network)
+    network = request.GET.get("network")
+    if network is not None:
+      address = HavwisCryptoWallet(request).get_address(network=network)
       return render(request, self.template_name, {"network":network, "address":address})
     else:
       return HttpResponseBadRequest()

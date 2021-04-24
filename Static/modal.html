@@ -1,0 +1,33 @@
+  <div class="modal r-0 fade">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rb-0-rt-16 fixed-bottom">
+        <div class="modal-header border-0"> </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="col-1"><img class="filter-primary" src="img/icon/hs_send_black.png" width="24px" height="24px"></div>
+            <div class="col ml-2">
+              <p class="font-weight-bold text-16 m-0">Send</p>
+              <p>Send crypto to another wallet</p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-1"><img class="filter-primary" src="img/icon/hs_receive_black.png" width="24px" height="24px"></div>
+            <div class="col ml-2">
+              <p class="font-weight-bold text-16 m-0">Receive</p>
+              <p>Receive crypto from another wallet</p>
+            </div>
+          </div>
+        </div>
+        <div id="modal-close" class="modal-footer border-0"><button class="btn bg-muted btn-block shadow-none r-100">Close</button></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(".modal").modal("show");
+    $("#modal-close").on("click", function(){
+      $(".modal").modal("hide");
+    });
+  </script>
+  <style>
+    .rb-0-rt-16{border-radius: 16px 16px 0 0!important;}
+  </style>
