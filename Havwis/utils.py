@@ -79,7 +79,26 @@ class Binance():
 #initialize Binance
 try:
   binance = Binance()
-  manager = BinanceSocketManager(binance.client)
-  manager.start_ticker_socket(process_message)
 except:
   binance = None
+
+from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+class HavwisEmail():
+  def __init__(self, html_path, context):
+    self.html_path = html_path
+    self.context = context
+  
+  def send_html_mail(self, subject, to, from_):
+    subject = subject
+    html_message = render_to_string(self.html_path, context)
+    plain_message = strip_tags(html_message)
+    from_ = from_
+    to = to
+    try:
+      mail.send_mail(subject, plain_message, from_, [to], html_message=html_message)
+      return {"status":True, "msg":"Code sent to {}".format(to)}
+    except exception as e:
+      return {"status":False, "msg":{"error":e}}

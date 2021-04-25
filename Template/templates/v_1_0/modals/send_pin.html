@@ -1,0 +1,41 @@
+  <div class="modal d-none">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="rb-0-rt-16 modal-content fixed-bottom">
+        <div class="modal-header">
+          <span class="text-16 font-weight-bold">Confirm Transaction</span>
+          <span class="text-20 close">&times;</span>
+        </div>
+        <div class="card-body p-0 pb-4">
+          <p class="mt-2 border-bottom p-2 ml-2 mr-2 text-dark text-center">You are about to send BTC Worth <b>$400</b>.</p>
+          <div class="container">
+            <p class="m-0 p-2 font-weight-bold text-center">ENTER PIN TO CONTINUE</p>
+            <div id="form" class="text-center">
+              <input class="border border-dark text-center text-16 font-weight-bold rounded" type="number" maxlength="1" style="width: 32px; height: 40px;">
+              <input class="border border-dark text-center text-16 font-weight-bold rounded" type="number" maxlength="1" style="width: 32px; height: 40px;">
+              <input class="border border-dark text-center text-16 font-weight-bold rounded" type="number" maxlength="1" style="width: 32px; height: 40px;">
+              <input class="border border-dark text-center text-16 font-weight-bold rounded" type="number" maxlength="1" style="width: 32px; height: 40px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $("input").on("keyup", function(event){
+      var key = event.keyCode || event.charCode;
+       if(key == 8 || key == 8){
+         this.previousElementSibling.focus();
+         return false;
+       }else{
+         if(this.value.trim().length > 0){
+           this.nextElementSibling.focus();
+         }
+       }
+    });
+    setInterval(function(){
+      if($("input").eq(0).val().trim().length > 0 && $("input").eq(1).val().trim().length > 0 && $("input").eq(2).val().trim().length > 0 && $("input").eq(3).val().trim().length > 0){
+        $("input").hide();
+        $("#form").html("<span class='spinner-grow text-danger'></span>");
+      }
+    }, 0.1);
+  </script>

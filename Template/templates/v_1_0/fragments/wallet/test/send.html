@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div id="toolbar" class="p-2">
+    <img class="float-left" src="{% static 'img/icon/hs_arrow_back_black.png' %}" width="24px" height="24px">
+    <span class="ml-4 font-weight-bold text-16">Send payouk.mystre@gmail.com</span>
+  </div>
+  <div class="mt-2 p-3 border-bottom border-primary" style="border-width: 2px!important;">
+    <div class="form-row">
+      <img class="mr-2" src="{% static 'img/icon/hs_search_black.png' %}" width="24px" height="24px">
+      <input class="text-body font-weight-bold outline-none col border-0" placeholder="Address or Email">
+      <img class="ml-2 filter-primary" src="{% static 'img/icon/hs_qr_black.png' %}" width="24px" height="24px">
+    </div>
+    <div class="fixed-bottom p-3">
+      <button class="float-right btn btn-primary r-100">Next</button>
+    </div>
+  </div>
+  <div class="d-none">
+    <div class="mt-3 text-center">
+      <div class="fom-row">
+        <span class="text-20 font-weight-bold">$</span><input class="w-25 border-0 font-weight-bold text-32 outline-none" type="number" placeholder="0.00">
+      </div>
+      <span class="r-100 bg-primary-light pt-1 pb-1 pl-2 pr-2">USD</span>
+    </div>
+    <div class="fixed-bottom p-3 form-row">
+      <input class="r-100 border outline-none col mr-2 pl-2 font-weight-bold" placeholder="Add a message"> <button class="border-0 outline-none text-14 font-weight-bold text-white r-100 bg-primary" style="padding: 12px 40px;">Next</button>
+    </div>
+  </div>
+  <style>
+    .bg-primary-light{background: #BBDEFB;}
+  </style>
+{% endblock %}

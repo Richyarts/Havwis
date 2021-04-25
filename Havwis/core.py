@@ -10,7 +10,7 @@
 from bitcoinlib.wallets import Wallet, wallet_delete, wallet_exists
 from bitcoinlib.networks import NETWORK_DEFINITIONS
 
-from .settings import DEBUG
+#from .settings import DEBUG
 
 NETWORKS = ["bitcoin", "litecoin", "dash", "dogecoin"]
 NETWORK_TEST = ["testnet", "litecoin_testnet", "dash_testnet", "dogecoin_testnet", ]
@@ -51,24 +51,31 @@ class HavwisTransaction():
   def __init__(self, wallet, network, amount, address):
     self.wallet = wallet
     self.network = network
-    self.amount = amount
+    self.amount = float(amount)*1000000
     self.address = address
   
   def send(self):
     try:
-      tx_object = self.wallet.send_to(self.address, self.amount, network=self.network)
-      return {"status":True, "data":{"tx_id":str(tx_object)}}
+      if self.amount <= self.wallet.balance(network=self.network):
+         try:
+           tx_object = self.wallet.send_to(self.address, self.amount, network=self.network)
+           return {"status":True, "data":{"tx_id":str(tx_object)}}
+         except Exception as e:
+           return {"status": False, "data":{"error": str(e)}}
+      else:
+        return {"status":False, "data":{"error":"Low balance, send more {} to complete transaction".format(self.network)}}
     except:
-      return {"status":False, "data":{"err":e}}
+      return {"status":False, "data":{"err": str(e)}}
 
-  def get_transaction_fee(self):
+  def get_transaction_fee(self, request):
+    wallet = Wallet(request.user.wallet_id)
     try:
       tx_object = self.wallet.send_to(self.address, self.amount, network=self.network, offline=True)
       return {"status":True, "data":{"fee":tx_object.fee}}
-    except exception as e:
-      return {"status":False, "data":{"err":e}}
+    except Exception as e:
+      return {"status":False, "data":{"err": str(e)}}
 
-from Havwis import havwis
+#from Havwis import havwis
 
 # Get wallet and dashboard getaway utils
 class HavwisWalletUtils():
