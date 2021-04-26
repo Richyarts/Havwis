@@ -74,13 +74,6 @@ class Binance():
     binance = Binance()
     binance_socket= BinanceSocketManager(binance.client)
     binance_socket.start_ticker_socket(process_message)
-    
-  
-#initialize Binance
-try:
-  binance = Binance()
-except:
-  binance = None
 
 from django.core import mail
 from django.template.loader import render_to_string

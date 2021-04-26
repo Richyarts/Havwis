@@ -7,6 +7,7 @@ class NetworkDefinition(models.Model):
   network = models.TextField()
   symbol = models.TextField()
   avatar = models.ImageField(upload_to="Static/network/.thumbnails/")
+  fee = models.FloatField()
 
 class SendModel(models.Model):
   sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")

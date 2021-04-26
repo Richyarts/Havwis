@@ -1,0 +1,87 @@
+  <div id="modal_tx_pin" class="modal">
+    {% include "v_1_0/toasts/error_toast.html" %}
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="rb-0-rt-16 modal-content fixed-bottom">
+        <div class="modal-header">
+          <span class="text-16 font-weight-bold">Confirm Transaction</span>
+          <span class="text-20 close">&times;</span>
+        </div>
+        <div class="card-body p-0 pb-4">
+          <p class="mt-2 border-bottom p-2 ml-2 mr-2 text-dark text-center">You are about to send BTC Worth <b>$400</b>.</p>
+          <div class="container">
+            <div id="form" class="text-center">
+              <p id="hide_if_success" class="m-0 p-2 font-weight-bold text-center">ENTER PIN TO CONTINUE</p>
+              <p id="pin-loading" class='d-none text-center spinner-grow text-primary'></p>
+              <input id="pin_1" class="border border-dark text-center text-16 font-weight-bold rounded" type="number" pattern="\d*" maxlength="1" size="1" style="width: 32px; height: 40px;" autocomplete="off">
+              <input id="pin_2" class="border border-dark text-center text-16 font-weight-bold rounded" type="number" pattern="\d*" maxlength="1" style="width: 32px; height: 40px;" autocomplete="off">
+              <input id="pin_3" class="border border-dark text-center text-16 font-weight-bold rounded" type="number" pattern="\d*" maxlength="1" style="width: 32px; height: 40px;" autocomplete="off">
+              <input id="pin_4" class="border border-dark text-center text-16 font-weight-bold rounded" type="number" pattern="\d*" maxlength="1" style="width: 32px; height: 40px;" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $("#error_toast").hide();
+    for(let x = 1; x < 5; x++){
+      $(`#pin_${x}`).on("keyup", function(event){
+        var key = event.keyCode || event.charCode;
+         if(key == 8 || key == 8){
+           this.previousElementSibling.focus();
+           return false;
+         }else{
+           if(this.value.trim().length > 0){
+             this.nextElementSibling.focus();
+           }
+         }
+      });
+    }
+    
+    /* for reference check SendView Class in Wallet/views.py */
+    setInterval(function(){
+        if($("#pin_1").val().trim().length > 0 && $("#pin_2").val().trim().length > 0 && $("#pin_3").val().trim().length > 0 && $("#pin_4").val().trim().length > 0){
+          $("#form input").hide();
+          $("#pin-loading").removeClass("d-none");
+          let pin = "";
+          for(let x =1; x < 5; x++){
+            pin += $(`#pin_${x}`).val().toString();
+          }
+          $.post("/activity/wallet/send/?network={{network}}&next=pin", {"pin":pin, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
+            if(data.status){
+              for(let x =1; x < 5; x++){
+                document.querySelector(`#pin_${x}`).value = null;
+              }       
+              $("#hide_if_success").html("Transaction in progress wait for some seconds.");
+              try{
+                let global_tx_fee = parseFloat(localStorage.fee);
+                $.post("/activity/wallet/send/?network={{network}}&next=save", {"fee":global_tx_fee, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
+                  if(data.status){
+                    alert(JSON.stringify(data));
+                  }else{
+                    alert(JSON.stringify(data));
+                    toast(false, message=`${data.data_1.data.error}, ${data.data_2.data.error}`);
+                    $("#form input").show();
+                    $("#pin-loading").addClass("d-none");
+                  }
+                }).error(function(){
+                    $("#form input").show();
+                    $("#pin-loading").addClass("d-none");
+                    toast(false);
+                  });
+              }catch(e){
+                alert(e)
+              }
+            }else{
+              for(let x =1; x < 5; x++){
+                document.querySelector(`#pin_${x}`).value = null;
+              }
+               toast(false, data.data.error);
+               $("#form input").show();
+               $("#pin-loading").addClass("d-none");
+            }
+          });
+        }
+    }, 1000);
+
+  </script>

@@ -2,7 +2,7 @@
 {% for errors in form.errors %}
   <div id="toast-error-{{forloop.counter0}}" class="border border-light rounded shadow-sm w-100 form-row">
     <span class="bg-danger border">&nbsp;</span>
-    <div class="col p-2"><img class="filter-danger" src="{% static 'img/icon/hs_unavailable_black.png' %}" width="16px" height="16px"> <span class="small text-center ml-2">{% block error %}  Please enter a correct username and password. Note that both fields may be case-sensitive. {% endblock %}</span> <button class="btn-outline-light float-right text-dark btn btn-sm">Ok</button></div>
+    <div class="col p-2"><img class="filter-danger" src="{% static 'img/icon/hs_cancel_black.png' %}" width="16px" height="16px"> <span class="small text-center ml-2">{% block error %}  Please enter a correct username and password. Note that both fields may be case-sensitive. {% endblock %}</span> <button class="btn-outline-light float-right text-dark btn btn-sm">Ok</button></div>
   </div>
   <script>
     let show = setTimeout(()=>{

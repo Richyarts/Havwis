@@ -6,73 +6,31 @@
   <script src="src/popper/popper.js" type="text/javascript"></script>
   <script src="src/bootstrap/bootstrap.min.js" type="text/javascript"></script>
 </head>
-<body class="">
-  <div class="bg-dark text-white p-2">
-    <img class="filter-white" src="img/icon/hv_clear_black.png" width="24px" height="24px">
-    <span class="ml-3 text-16">Send BTC</span>
-  </div> 
-  <div class="p-2 pt-2 mt-4">
-    <div class="border-bottom border-dark">
-      <input class="col p-2 border-0" type="text" placeholder="BTC wallet Address">
-    </div>
-    <div>
-      <div class="form-row p-2 mt-4">
-        <input id="btc-input" class="col float-left border border-dark rounded" placeholder="BTC amount">
-        <span class="p-2">=</span>
-        <input id="usd-input" class="col float-right border border-dark rounded" placeholder="USD amount">
+<body class="pl-4 pr-4 pt-2">
+  <div class="card" style="border-radius: 4px 4px!important; border-bottom: 0!important;">
+    <div class="card-body p-2 form-row">
+      <div class="col">
+        <b class="text-16 font-weight-bold">Error</b>
+        <p class="mt-2 mb-0 font-weight-bold text-dark">Wrong Pin</p>
       </div>
-      <span class="small text-primary ml-1">Balance: 0.0000000 BTC ~ 0.00 USD</span>
-    </div>
-    <div class="m-3">
-      <div class="form-row mt-4 border border-light alert shadow-sm p-2 pl-3 pl-3 rounded">
-        <div class="col custom-control custom-switch ml-4">
-          <input type="checkbox" class="custom-control-input" id="switch1">
-          <label class="text-center custom-control-label font-weight-bold" for="switch1">Include Transaction Fee</label>
-         </div>
-         <span id="load-fee" class="d-none float-right spinner-border spinner-border-sm text-primary"></span>
+      <div class="float-right pt-1 pr-2">
+        <img class="filter-danger" src="img/icon/hs_cancel_black.png" width="24px" height="24px">
       </div>
     </div>
-    <div class="p-4"><button id="process" class="btn-block text-white text-14 btn bg-primary shadow-none rounded" disabled>Proceed</button></div>
-  </div>
-  <div class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="rb-0-rt-16 modal-content fixed-bottom">
-        <div class="modal-body">
-           <p class="p-2 alert alert-warning text-enter">A fee of $100 would be deducted from your send Amount</p>
-           <p class="text-dark m-0 font-weight-bold">Amount Send</p>
-           <p class="text-dark font-weight-bold text-20">$2000 <span class="texf-14 text-danger">-$2300 (-2.0%)</span></p>
-        </div>
-        <div class="modal-footer">
-          <button id="confirm" class="btn btn-block shadow-none bg-muted r-100"> Confirm </button>
-        </div>
-      </div>
+    <div class="card-footer border-0 p-0">
+      <div id="toast-timer" class="progress rounded-top-0" style="height: 4px; border-radius: 0 0 4px 4px!important;"><div class="progress-bar bg-danger" style="width: 100%;"></div></div>
     </div>
   </div>
   <script>
-    $(".custom-control-input").on("click", ()=>{
-      if($(".custom-control-input").prop("checked")){
-        $("#load-fee").removeClass("d-none");
-         setTimeout(function(){
-           $(".modal").modal("show");
-           $("#load-fee").addClass("d-none");
-         }, 3000);
-       }else{
-         $("#process").prop("disabled", true);
-       }
-     });
-     const one_btc_one_usd = 556000.96
-     
-     $("#btc-input").on("keyup", function(){
-       $("#usd-input").val(parseFloat(one_btc_one_usd * $("#btc-input").val()));
-     });
-     $("#usd-input").on("keyup", function(){
-       $("#btc-input").val(parseFloat($("#usd-input").val()/one_btc_one_usd));
-     });
-     $("#confirm").on("click", function(){
-       $("#process").prop("disabled", false);
-       $(".modal").modal("hide");
-     });
-     console.log($.post("/", () => alert("data")).progress(()=>console.log("Error")))
+    function toast(){
+      setInterval(function(){
+        console.log($(".progress-bar").css("width", "-=100px"));
+      }, 100);
+    }
+   toast();
+    setTimeout(function (){
+      $(".card").hide();
+    }, 2000);
   </script>
 </body>
 </html>

@@ -2,10 +2,10 @@ from django import template
 
 from Wallet.models import NetworkDefinition
 
-from Havwis.utils import binance
+from Havwis.utils import Binance
 
 from bitcoinlib.wallets import Wallet
-from bitcoinlib.networks import print_value
+from bitcoinlib.networks import print_value, NETWORK_DEFINITIONS
 
 register = template.Library()
 
@@ -62,3 +62,11 @@ def get_balance_differ(request, infos):
       return {"interest":"-{}".format(interest), "percentInterest": interest/last_balance*100}
   else:
     file = open("/Static/price_differ_{}.txt".format(request.user.username), "w")
+
+@register.simple_tag
+def print_network_value(network, value):
+  return print_value(value, network=network)
+
+@register.filter(name="code")
+def code(network):
+  return NETWORK_DEFINITIONS[network]["currency_code"]

@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block content %}
   <div class="bg-dark text-white p-2">
     <img class="filter-white" src="{% static 'img/icon/hv_clear_black.png' %}" width="24px" height="24px">
     <span class="ml-3 text-16">Send BTC</span>
   </div> 
+  {% include "v_1_0/toasts/error_toast.html" %}
   <div class="p-2 pt-2 mt-4">
     <div class="border-bottom border-dark">
       <input id="address" class="col p-2 border-0" type="text" placeholder="BTC wallet Address">
@@ -15,7 +17,7 @@
         <span class="p-2">=</span>
         <input id="usd-input" class="col float-right border border-dark rounded" type="number" placeholder="USD amount">
       </div>
-      <span class="small text-primary ml-1">Balance: {{balance}} ~ 0.00 USD</span>
+      <span class="small text-primary ml-1">Balance: {% print_network_value network balance %} ~ 0.00 USD</span>
     </div>
     <div class="m-3">
       <div class="form-row mt-4 border border-light alert shadow-sm p-2 pl-3 pl-3 rounded">
@@ -28,65 +30,10 @@
     </div>
     <div class="p-4"><button id="process" class="btn-block text-white text-14 btn bg-primary shadow-none rounded" disabled>Proceed</button></div>
   </div>
-  <div class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="rb-0-rt-16 modal-content fixed-bottom">
-        <div class="modal-body">
-           <p class="p-2 alert alert-warning text-enter">A fee of <span class="tx-fee"> </span>would be deducted from your send Amount</p>
-           <p class="text-dark m-0 font-weight-bold">Amount Send</p>
-           <p class="text-dark font-weight-bold text-20">$2000 <span class="texf-14 text-danger"><span class="tx-fee"> </span> (<span class="tx-percent"></span>%)</span></p>
-        </div>
-        <div class="modal-footer">
-          <button id="confirm" class="btn btn-block shadow-none bg-muted r-100"> Confirm </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    {% if info %}
-      let info = eval("{{info|safe}}")
-      const one_btc_one_usd = info[0]["lastPrice"]
-    {% else %}
-      const one_btc_one_usd = 50000
-    {% endif %}
-    $(".custom-control-input").on("click", ()=>{
-      if($(".custom-control-input").prop("checked")){
-         $("#process").prop("disabled", false);
-       }else{
-         $("#process").prop("disabled", true);
-       }
-     });
-    $("#btc-input").on("keyup", function(){
-       $("#usd-input").val(parseFloat(one_btc_one_usd * $("#btc-input").val()));
-     });
-     $("#usd-input").on("keyup", function(){
-       $("#btc-input").val(parseFloat($("#usd-input").val()/one_btc_one_usd));
-     });
-     $("#confirm").on("click", function(){
-       $("#process").prop("disabled", false);
-       $(".modal").modal("hide");
-     });
-     $("#process").on("click", function(){
-       $("#process").html("<span class='spinner-grow spinner-grow-sm text-white'></span>");
-       $.post("/activity/wallet/send/?network={{network}}&next=fee", {"csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val() , "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
-         if(data.status){
-           let fee = parseFloat(data.data.fee / 1000000);
-           let fee_usd = one_btc_one_usd * fee;
-           alert(data.data.fee);
-           let fee_percent_1 = parseFloat($("#usd-input").val()) - fee_usd
-           let fee_percent_2 = fee_percent_1 / parseFloat($("#usd-input").val())
-           let fee_percent = (Math.round(fee_percent_2*100 * 10)/10).toFixed(2)
-           $(".tx-fee").html(`$${fee_usd}`);
-           $(".tx-percent").html(`${fee_percent}`);
-           $(".modal").modal("show");
-         }else{
-           alert(JSON.stringify(data))
-         }
-       }).success(function(){
-         $("#process").html("Proceed");
-       }).error(function(){
-         alert("error")
-       });
-     });
-  </script>
+  {% include "v_1_0/modals/send_tx_fee.html" %}
+  {% include "v_1_0/script/send_tx_fee_script.html" %}
+  {% include "v_1_0/modals/send_tx_pin.html" %}
+  <style>
+    input:focus{background: none!important; border 1px solid #1E88E5!important; outline: none;}
+  </style>
 {% endblock %}

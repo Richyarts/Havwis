@@ -8,9 +8,11 @@
 #import bitcoinlib module 
 #>>>check bitcoinlib documentation for reference
 from bitcoinlib.wallets import Wallet, wallet_delete, wallet_exists
-from bitcoinlib.networks import NETWORK_DEFINITIONS
+from bitcoinlib.networks import NETWORK_DEFINITIONS, print_value
 
-#from .settings import DEBUG
+from .settings import DEBUG
+
+from Wallet.models import NetworkDefinition
 
 NETWORKS = ["bitcoin", "litecoin", "dash", "dogecoin"]
 NETWORK_TEST = ["testnet", "litecoin_testnet", "dash_testnet", "dogecoin_testnet", ]
@@ -51,29 +53,38 @@ class HavwisTransaction():
   def __init__(self, wallet, network, amount, address):
     self.wallet = wallet
     self.network = network
-    self.amount = float(amount)*1000000
+    self.amount = float(amount)*100000000
     self.address = address
-  
-  def send(self):
+    self.symbol = NETWORK_DEFINITIONS[self.network]["currency_code"]
+    self.network_definition = NetworkDefinition.objects.get(network=self.network)
+
+  def send(self, address, fee=None):
     try:
       if self.amount <= self.wallet.balance(network=self.network):
          try:
-           tx_object = self.wallet.send_to(self.address, self.amount, network=self.network)
+           if fee is None:
+             tx_object = self.wallet.send_to(address, self.amount, network=self.network, offline=True)
+           else:
+             tx_object = self.wallet.send_to(address, self.amount, network=self.network, fee=fee, offline=True)
            return {"status":True, "data":{"tx_id":str(tx_object)}}
          except Exception as e:
-           return {"status": False, "data":{"error": str(e)}}
+           return {"status": False, "data":{"error": e.args[0]}}
       else:
         return {"status":False, "data":{"error":"Low balance, send more {} to complete transaction".format(self.network)}}
     except:
-      return {"status":False, "data":{"err": str(e)}}
+      return {"status":False, "data":{"err": e.args[0]}}
 
   def get_transaction_fee(self, request):
     wallet = Wallet(request.user.wallet_id)
     try:
       tx_object = self.wallet.send_to(self.address, self.amount, network=self.network, offline=True)
-      return {"status":True, "data":{"fee":tx_object.fee}}
+      tx_fee = float(tx_object.fee)
+      return {"status":True, "data":{"fee":print_value(tx_fee, network=self.network).replace(self.symbol, "")}}
     except Exception as e:
-      return {"status":False, "data":{"err": str(e)}}
+      if e.args[0] == "Not enough unspent transaction outputs found":
+        return {"status":False, "data":{"error": "Balance to low for transaction 😁."}}
+      else:
+        return {"status":False, "data":{"error": "An error occurs❗."}}
 
 #from Havwis import havwis
 

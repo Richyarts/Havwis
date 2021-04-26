@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.views import View
-from django.http import Http404, HttpResponseBadRequest, JsonResponse
+from django.http import Http404, HttpResponseBadRequest, JsonResponse, HttpResponse
 
 from .forms import SendForm
 from .models import SendModel
@@ -8,7 +8,7 @@ from .models import SendModel
 from bitcoinlib.wallets import Wallet
 from bitcoinlib.networks import NETWORK_DEFINITIONS
 
-from Havwis.utils import binance
+from Havwis.utils import Binance
 from Havwis.core import HavwisTransaction
 
 #Dummy send view to upgrade later @lyonkvalid
@@ -18,6 +18,10 @@ class SendView(View):
   
   def get(self, request, *args, **kwargs):
     network = request.GET.get("network")
+    try:
+      binance = Binance()
+    except:
+      binance = None
     if network is not None:
       if binance is not None:
         info = list(filter(lambda info: info["symbol"] == NETWORK_DEFINITIONS[network]["currency_code"], binance.pure_price()))
@@ -45,22 +49,35 @@ class SendView(View):
           if float(amount) > 0:
             try:
               havwis_transaction = HavwisTransaction(wallet=wallet, amount=amount, network=network, address=address)
-              return JsonResponse(havwis_transaction.get_transaction_fee(request))
+              json_fee_result = havwis_transaction.get_transaction_fee(request)
+              return JsonResponse(json_fee_result)
             except Exception as e:
               return JsonResponse({"status":False, "data":{"error": str(e)}})
           else:
             return JsonResponse({"status":False, "data":{"error":"Low balance, fund wallet to continue transaction"}})
         if next == "save":
-          send_model_object = SendModel(user=request.user, address=address, amount=amount, network=next)
-          send_model_object.save(commit=False)
-          return JsonResponse({"status":True, "data":{"msg":{"next":"pin"}}})
-        elif next == "pin":
-          pin = request.POST.get("pin")
-          if pin == user.transaction_pin:
+          havwis_transaction = HavwisTransaction(wallet=wallet, amount=amount, network=network, address=address)
+          #todo encapsulate this in a function
+          tx_fee = float(request.POST["fee"])
+          havwis_percentage = tx_fee - 450
+          response = havwis_transaction.send(address, fee=300)
+          havwis_reponse = havwis_transaction.send(address, fee=150)
+          if response["status"] and havwis_reponse["status"]:
+            send_model_object = SendModel(sender=request.user, address=address, amount=amount, network=next)
+            send_model_object.save()
             return JsonResponse({"status":True, "data":{"msg":{"next":"success"}}})
           else:
+            return JsonResponse({"status":False, "data_1":response, "data_2":havwis_reponse})
+        elif next == "pin":
+          pin = request.POST.get("pin")
+          if int(pin) == user.transaction_pin:
+            return JsonResponse({"status":True, "data":{"msg":{"next":"success"}}})
+          elif pin is None:
+            return JsonResponse({"status":False, "data":{"error":"Pin is not provided"}})
+          else:
+            print(pin, user.transaction_pin)
             return JsonResponse({"status":False, "data":{"error":"Invalid pin"}})
       else:
         return HttpResponseBadRequest()
     else:
-      return JsonResponse({"status":False, "data":{"error":form_data.errors}})
+      return JsonResponse({"status":False,"type":"form", "data":{"error":form_data.errors}})
