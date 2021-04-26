@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% block body %}
-  
-  {% endblock %}
-  {% block loading %}
-    {% include 'loading.html' %}
-  {% endblock %}
+  <div class="error-toast">
+    {% include 'v_1_0/toasts/error_toast.html' %}
+  </div>
+  <div class="body">
+    {% block body %}  {% endblock %}
+  </div>
+  <div class="loading">
+    {% block loading %} {% include 'loading.html' %} {% endblock %}
+  </div>
   {% block footer %}
     {% include 'footer/default_bottom_navigation.html' %}
   {% endblock %}

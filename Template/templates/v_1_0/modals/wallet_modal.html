@@ -1,16 +1,16 @@
-  <div class="modal r-0 fade">
+  <div id="wallet_modal" class="modal r-0 fade">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rb-0-rt-16 fixed-bottom">
         <div class="modal-header border-0"> </div>
         <div class="modal-body">
-          <div class="form-row">
+          <div id="send_button" class="form-row">
             <div class="col-1"><img class="filter-primary" src="img/icon/hs_send_black.png" width="24px" height="24px"></div>
             <div class="col ml-2">
               <p class="font-weight-bold text-16 m-0">Send</p>
               <p>Send crypto to another wallet</p>
             </div>
           </div>
-          <div class="form-row">
+          <div id="receive_button" class="form-row">
             <div class="col-1"><img class="filter-primary" src="img/icon/hs_receive_black.png" width="24px" height="24px"></div>
             <div class="col ml-2">
               <p class="font-weight-bold text-16 m-0">Receive</p>
@@ -23,7 +23,6 @@
     </div>
   </div>
   <script>
-    $(".modal").modal("show");
     $("#modal-close").on("click", function(){
       $(".modal").modal("hide");
     });

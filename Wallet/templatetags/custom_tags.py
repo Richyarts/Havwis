@@ -37,7 +37,6 @@ def total_balance(request, infos):
   for info in infos:
     for network in networks:
       if info["symbol"] == network.symbol:
-        print(info["symbol"])
         balance += float(info["priceUsd"]) * float(wallet.balance(network=network.network))
   return balance
 
@@ -46,22 +45,20 @@ import os , sys
 @register.simple_tag
 def get_balance_differ(request, infos):
   new_balance = total_balance(request, infos)
-  last_balance = 0
-  path ="/Static/price_differ_{}".format(request.user.username)
-  if os.path.exists(path):
-    with open(path, "r") as file:
-      last_balance = float(file.read())
-      file.close()
-    with open(path, "w") as file:
-      file.write(new_balance)
-      file.close()
+  last_balance = request.session.get("last_balance")
+  if last_balance is not None:
     interest = new_balance - last_balance
+    request.session["last_balance"] = new_balance
     if interest > 0:
-      return {"interest":"+{}".format(interest), "percentInterest": interest/last_balance*100}
+      return {"interest":interest, "percentInterest": interest/last_balance}
     else:
-      return {"interest":"-{}".format(interest), "percentInterest": interest/last_balance*100}
+      try:
+        return {"interest":interest, "percentInterest": interest/last_balance}
+      except:
+        return {"interest":interest, "percentInterest": "0.00"}
   else:
-    file = open("/Static/price_differ_{}.txt".format(request.user.username), "w")
+    request.session["last_balance"] = new_balance
+    return {"interest":new_balance, "percentInterest":0.00 }
 
 @register.simple_tag
 def print_network_value(network, value):
@@ -70,3 +67,7 @@ def print_network_value(network, value):
 @register.filter(name="code")
 def code(network):
   return NETWORK_DEFINITIONS[network]["currency_code"]
+
+@register.filter(name="to_float")
+def to_float(value):
+  return float(value)

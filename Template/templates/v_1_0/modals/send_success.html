@@ -1,4 +1,5 @@
-  <div class="modal">
+{% load static %}
+  <div id="modal_send_success" class="modal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="rb-0-rt-16 modal-content fixed-bottom">
         <div class="modal-header">
@@ -7,11 +8,16 @@
         </div>
         <div class="card-body pb-4">
           <p class="mt-2 p-2 ml-2 mr-2 text-dark text-center">Your transaction is completed wait for some minutes it suppose to be confirmed.</p>
-          <p class="filter-success text-center"><img src="img/icon/hs_check_circle_black.png" width="56px" height="56px"></p>
+          <p class="filter-success text-center"><img src="{% static 'img/icon/hs_check_circle_black.png' %}" width="56px" height="56px"></p>
         </div>
         <div class="card-footer border-0 bg-none">
-          <button class="btn btn-block border font-weight-bold shadow-none">CLOSE</button>
+          <button class="close btn btn-block border font-weight-bold shadow-none">CLOSE</button>
         </div>
       </div>
     </div>
   </div>
+  <script>
+    $(".close").on("click", function (){
+      $(".modal").modal("close");
+    });
+  </script>

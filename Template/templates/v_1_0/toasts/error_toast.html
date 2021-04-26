@@ -16,9 +16,9 @@
   <script>
     $(".progress-bar").css("width", "345px");
     $(".error_toast").hide();
-    function toast(is_home=false, message=null){
+    function toast(is_home=false, message=null, top="50px"){
       $(".progress-bar").css("width", "345px");
-      $(".error_toast").css({"left":"16px", "right":"16px", "top":"50px"});
+      $(".error_toast").css({"left":"16px", "right":"16px", "top":top});
       if(message != null){
         $(".message").html(message);
       }

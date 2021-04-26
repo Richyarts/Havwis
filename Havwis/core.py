@@ -86,7 +86,7 @@ class HavwisTransaction():
       else:
         return {"status":False, "data":{"error": "An error occurs❗."}}
 
-#from Havwis import havwis
+from Havwis import havwis
 
 # Get wallet and dashboard getaway utils
 class HavwisWalletUtils():

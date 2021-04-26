@@ -12,6 +12,8 @@
 .filter-muted{filter: invert(86%) sepia(19%) saturate(153%) hue-rotate(155deg) brightness(86%) contrast(86%);}
 .filter-muted-2{filter: invert(97%) sepia(4%) saturate(575%) hue-rotate(167deg) brightness(92%) contrast(86%);}
 .filter-muted-3{filter: invert(85%) sepia(9%) saturate(9%) hue-rotate(321deg) brightness(105%) contrast(91%);}
+.filter-amber{filter: invert(80%) sepia(92%) saturate(292%) hue-rotate(329deg) brightness(102%) contrast(101%);}
+.filter-amber-2{filter: invert(74%) sepia(40%) saturate(1588%) hue-rotate(353deg) brightness(104%) contrast(103%);}
 @font-face{font-family: rulerly; src: url("fonts/Rulerly.ttf"); }
 @font-face{font-family: bundle; src: url("fonts/Bundle.ttf"); }
 @font-face{font-family: allred; src: url("fonts/Allred.ttf"); }

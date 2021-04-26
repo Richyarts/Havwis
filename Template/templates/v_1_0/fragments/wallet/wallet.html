@@ -1,22 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'main.html' %}
 {% load custom_tags %}
 {% load static %}
-{% block content %}
+{% block body %}
+<div class="body p-1">
   <header class="mb-3 text-primary p-2">
-    <img class="filter-dark mb-1" src="{% static 'img/icon/ay_cancel_black.png' %}" width="24px" height="24px">
+    <img class="filter-dark mb-1" src="{% static 'img/icon/hs_cancel_black.png' %}" width="24px" height="24px">
   </header>
   {% total_balance request currency_infos as balanceUSD %}
   {% get_balance_differ request currency_infos as balanceDiffer %}
-  {{balanceDiffer}}
   <section class="p-2">
     <div class="form-row">
       <div class="col">
         <p class="m-0 font-weight-bold text-secondary">Total Balance</p>
         <p class="mb-2 text-20 font-weight-bold">${{balanceUSD}}</p>
-        <p class=""><span class="text-success font-weight-bold">+$686.78 (3.78%)</span> <span class="text-secondary"> 24 hrs</span></p>
+        {% if balanceDiffer.interest > 0 %}
+          <p class=""><span class="text-success font-weight-bold">+${{balanceDiffer.interest}} ({{balanceDiffer.percentInterest}}%)</span> <span class="text-secondary">24 hrs</span></p>
+        {% else %}
+          <p class=""><span class="text-danger font-weight-bold">+${{balanceDiffer.interest}} ({{balanceDiffer.percentInterest}}%)</span> <span class="text-secondary"> 24 hrs</span></p>
+        {% endif %}
       </div>
       <div class="float-right col-5">
-        {% include 'v_1_0/fragments/wallet/sub/chart.html' %}
+         {% include 'v_1_0/fragments/wallet/sub/chart.html' %} 
       </div>
     </div>
     <div id="network-definitions">
@@ -24,9 +28,18 @@
       {% include 'v_1_0/fragments/wallet/sub/wallet_list.html' %}
     </div>
   </section>
+  {% include 'v_1_0/modals/wallet_modal.html' %}
   <script>
-    setInterval(function(){
-      $("body").load("/activity/wallet/");
-    }, 50000000);
+    function formatDuration(ms) {
+      var minutes = Math.floor(ms / 60000);
+      var seconds = ((ms % 60000) / 1000).toFixed(0);
+      return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
+    }
+  /*  setInterval(function(){
+      $.get("/activity/wallet/", (data)=>{
+        $(".listview").html($(data).find(".listview").html());
+      });
+    }, 9000); */
   </script>
+  </div>
 {% endblock %}

@@ -1,11 +1,11 @@
 {% load static %}
 {% load custom_tags %}
-
+<div class="listview mb-5">
 {% for network in networks %}
   {% for info in currency_infos %}
     {% get_balance_network_usd request network.network info.priceUsd as balance %}
     {% if info.symbol == network.symbol|upper %}
-      <div class="form-row">
+      <div network="{{network.network}}" class="wallet_modal_open form-row">
         <div class="col-2 mt-2"> <img src="{{network.avatar.url}}" height="32px" width="32px"></div>
         <div class="col rounded-0 card border-left-0 border-right-0 border-top-0 border-light-2">
           <div class="card-body p-0 pt-2 pb-2 p-1">
@@ -15,8 +15,12 @@
               <p class="text-secondary small mb-2 font-weight-bold">{{balance.balanceBTC}}</p>
             </div>
             <div class="float-right mt-3">
-              <p class="font-weight-bold m-0">${{info.priceUsd}}</p>
-              <p class="{% if info.percentChange24hUsd > 0 %} text-success {% else %} text-danger {% endif %} float-right font-weight-bold"> <img class="{% if info.percentChange24hUsd > 0 %} filter-success {% else %} filter-danger {% endif %}" src="{% if info.percentChange24hUsd > 0 %} {% static 'img/icon/hv_arrow_drop_up_black.png' %} {% else %} {% static 'img/icon/hs_arrow_drop_down_black.png' %} {% endif %}" width="24px" height="24px">{{info.percentChange24hUsd|floatformat:"2"}}%</p>
+              <p class="font-weight-bold m-0">${{info.priceUsd|floatformat:"8"}}</p>
+               {% if info.percentChange24hUsd|to_float > 0 %}
+                 <p class="text-success float-right font-weight-bold"> <img class="filter-success" src="{% static 'img/icon/hv_arrow_drop_up_black.png' %}" width="24px" height="24px">{{info.percentChange24hUsd|floatformat:"2"}}%</p>
+               {% else %}
+                 <p class="text-danger float-right font-weight-bold"> <img class="filter-danger" src="{% static 'img/icon/hs_arrow_drop_down_black.png' %}" width="24px" height="24px">{{info.percentChange24hUsd|floatformat:"2"}}%</p>
+               {% endif %}
             </div>
           </div>
         </div>
@@ -24,3 +28,16 @@
     {% endif %}
   {% endfor %}
 {% endfor %}
+<script>
+  $(".wallet_modal_open").on("click", function(event){
+    let network = $(this).attr("network");
+    $("#wallet_modal").modal("show");
+    $("#send_button").on("click", function(){
+      window.location.href = `/activity/wallet/intent/send/?network=${network.toLowerCase()}`;
+    });
+    $("#recieve_button").on("click", function(){
+      window.location.href = `/activity/wallet/intent/receive/?network=${network.toLowerCase()}`;
+    });
+  });
+</script>
+</div>

@@ -1,3 +1,4 @@
+{% load custom_tags %}
   <div id="modal_tx_pin" class="modal">
     {% include "v_1_0/toasts/error_toast.html" %}
     <div class="modal-dialog modal-dialog-centered">
@@ -7,7 +8,7 @@
           <span class="text-20 close">&times;</span>
         </div>
         <div class="card-body p-0 pb-4">
-          <p class="mt-2 border-bottom p-2 ml-2 mr-2 text-dark text-center">You are about to send BTC Worth <b>$400</b>.</p>
+          <p class="mt-2 border-bottom p-2 ml-2 mr-2 text-dark text-center">You are about to send {{network|code}} Worth <b class="usd_amount"></b>.</p>
           <div class="container">
             <div id="form" class="text-center">
               <p id="hide_if_success" class="m-0 p-2 font-weight-bold text-center">ENTER PIN TO CONTINUE</p>
@@ -47,7 +48,7 @@
           for(let x =1; x < 5; x++){
             pin += $(`#pin_${x}`).val().toString();
           }
-          $.post("/activity/wallet/send/?network={{network}}&next=pin", {"pin":pin, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
+          $.post("/activity/wallet/intent/send/?network={{network}}&next=pin", {"pin":pin, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
             if(data.status){
               for(let x =1; x < 5; x++){
                 document.querySelector(`#pin_${x}`).value = null;
@@ -55,9 +56,10 @@
               $("#hide_if_success").html("Transaction in progress wait for some seconds.");
               try{
                 let global_tx_fee = parseFloat(localStorage.fee);
-                $.post("/activity/wallet/send/?network={{network}}&next=save", {"fee":global_tx_fee, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
+                $.post("/activity/wallet/intent/send/?network={{network}}&next=save", {"fee":global_tx_fee, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
                   if(data.status){
-                    alert(JSON.stringify(data));
+                    $("#modal_tx_pin").modal("hide");
+                    $("#modal_send_success").modal("show");
                   }else{
                     alert(JSON.stringify(data));
                     toast(false, message=`${data.data_1.data.error}, ${data.data_2.data.error}`);
@@ -67,7 +69,7 @@
                 }).error(function(){
                     $("#form input").show();
                     $("#pin-loading").addClass("d-none");
-                    toast(false);
+                    toast(false, "An Error occurs❗.");
                   });
               }catch(e){
                 alert(e)

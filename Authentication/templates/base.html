@@ -9,9 +9,9 @@
   <script src="{% static 'src/chart/dist/Chart.min.js' %}" type="text/javascript"></script>
   {% block js %} {% endblock %}
 </head>
-<body class="">
-  {% block content %}
-  
-  {% endblock %}
+<body>
+  <div class="content">
+    {% block content %} {% endblock %}
+  </div>
 </body>
 </html>
