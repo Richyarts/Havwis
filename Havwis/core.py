@@ -10,6 +10,8 @@
 from bitcoinlib.wallets import Wallet, wallet_delete, wallet_exists
 from bitcoinlib.networks import NETWORK_DEFINITIONS, print_value
 
+#python-notification-hr 
+#>>> check python-notification-hr documentation for reference
 from .settings import DEBUG
 
 from Wallet.models import NetworkDefinition

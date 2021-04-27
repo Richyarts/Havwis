@@ -4,7 +4,7 @@
 {% block content %}
   <div class="bg-dark text-white p-2">
     <img class="filter-white" src="{% static 'img/icon/hv_clear_black.png' %}" width="24px" height="24px">
-    <span class="ml-3 text-16">Send BTC</span>
+    <span class="ml-3 text-16">Send {{network|code}}</span>
   </div> 
   {% include "v_1_0/toasts/error_toast.html" %}
   <div class="p-2 pt-2 mt-4">
@@ -13,7 +13,7 @@
     </div>
     <div>
       <div class="form-row p-2 mt-4">
-        <input id="btc-input" class="col float-left border border-dark rounded" type="number" placeholder="BTC amount">
+        <input id="btc-input" class="col float-left border border-dark rounded" type="number" placeholder="{{network|code}} amount">
         <span class="p-2">=</span>
         <input id="usd-input" class="col float-right border border-dark rounded" type="number" placeholder="USD amount">
       </div>

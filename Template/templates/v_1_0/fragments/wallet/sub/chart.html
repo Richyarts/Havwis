@@ -1,5 +1,5 @@
 {% load custom_tags %}
-<canvas width="100px" height="100px"></canvas>
+<canvas class="p-0 ml-2"></canvas>
 <script>
   try {
   let chart = new Chart(document.querySelector("canvas").getContext("2d"), {
@@ -7,13 +7,12 @@
     data:{
       labels:[{% for network in networks %} '{{network.network}}', {% endfor %}],
       datasets:[{
-        data:[1,2,3,4],
-       // data:[{% for network in networks %} {% get_balance request network.network as balance %} {{balance}}+1, {% endfor %}],
-        backgroundColor:["#f7931a", "#345c98", "#1B73BB", "#c0a74c"],
+        data:[{% for network in networks %} {% get_balance request network.network as balance %} {{balance}}, {% endfor %}],
+        backgroundColor:["#f7931a", "#345c98", "#c0a74c", "#1B73BB"],
       }],
     },
     options:{
-      cutoutPercentage:80,
+      cutoutPercentage:85,
       animation: false,
       legend:{
         display: false,
@@ -26,7 +25,6 @@
       }
     }
   });
-  //alert(chart)
   }catch(e){
     alert(e)
   }

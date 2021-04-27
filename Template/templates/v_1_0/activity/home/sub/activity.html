@@ -1,10 +1,15 @@
 {% load static %}
-      <div class="card border-light rounded-custom-8">
+{% load humanize %}
+  {% for notification in notifications %}
+    <div class="card mb-2 border-light rounded-custom-8">
       <div class="card-body p-2 form-row">
         <div class="col-1 mt-1 mr-2"><img class="rounded-circle" src="{% static 'img/logo/logo_v_1_1.png' %}" height="24px" width="24px"></div>
         <div class="col mt-1">
-          <p class="m-0 small font-weight-bold">Just registered.</p>
-          <p class="m-0 small font-weight-bold text-dark">3 minutes ago</p>
+          <p class="m-0 small font-weight-bold">{{notification.text|safe|truncatechars:"32"}}.</p>
+          <p class="m-0 small font-weight-bold text-dark">{{notification.date_added|naturaltime}}</p>
         </div>
       </div>
     </div>
+  {% empty %}
+    <p class="mt-2 text-center text-16">No recent activities.</p>
+  {% endfor %}

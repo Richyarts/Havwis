@@ -1,55 +1,34 @@
 {% load static %}
-      <div id="horizontal-listview" class="flex-row flex-nowrap h-25">
+{% load custom_tags %}
+  <div id="horizontal-listview" class="flex-row flex-nowrap h-25">
         <div class="card bg-primary text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
          <div class="card-body form-row p-0 pt-3">
            <div class="col-1 mr-3"><img class="mt-2 filter-white" src="{% static 'img/icon/hv_safe_lock_black.png' %}" width="32px" height="32px"></div>
            <div class="col">
              <p class="rulerly font-weight-bold text-16 m-1">Total Crypto</p>
-             <p class="font-weight-bold text-20">$40.00</p>
+             <p class="font-weight-bold text-20">{% total_balance request currency_infos as total_balance%} ${{total_balance|floatformat:"2"}}</p>
            </div>
          </div>
        </div>
-        <div class="card bg-doge text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2 bg-doge rounded-circle" src="{% static 'img/logo/hv_doge.png' %}" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Flex Dogecoin</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-        <div class="card bg-ltc text-opacity text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-          <div class="card-body form-row p-0 pt-3">
-            <div class="col-1 mr-3"><img class="mt-2 rounded-circle" src="{% static 'img/logo/hv_lite.png' %}" width="32px" height="32px"></div>
-            <div class="col">
-              <p class="rulerly font-weight-bold text-16 m-1">Flex Litecoin</p>
-              <p class="font-weight-bold text-20">$40.00</p>
+    {% for network in networks %}
+      {% for info in currency_infos %}
+        {% if info.name == network.network|capfirst %}
+          <div class="card bg-{{network.symbol|lower}} text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
+            <div class="card-body form-row p-0 pt-3">
+              <div class="col-1 mr-3"><img class="mt-2 bg-doge rounded-circle" src="{{network.avatar.url}}" width="32px" height="32px"></div>
+              <div class="col">
+                <p class="rulerly font-weight-bold text-16 m-1">Flex {{network.network|capfirst}}</p>
+                <p class="font-weight-bold text-20">${% get_balance_network_usd request network.network info.priceUsd as price %} {{price.priceUSD|floatformat:"2"}}</p>
+              </div>
             </div>
           </div>
-       </div>
-       <div class="card bg-btc text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2" src="{% static 'img/logo/hv_btc.png' %}" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Flex Bitcoin</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-       <div class="card bg-dash text-white rounded-custom-8 border-light col-12 h-25 w-100 mr-2">
-         <div class="card-body form-row p-0 pt-3">
-           <div class="col-1 mr-3"><img class="mt-2 rounded-circle" src="{% static 'img/logo/hv_dash.png' %}" width="32px" height="32px"></div>
-           <div class="col">
-             <p class="rulerly font-weight-bold text-16 m-1">Flex Dash</p>
-             <p class="font-weight-bold text-20">$40.00</p>
-           </div>
-         </div>
-       </div>
-     </div>
-      <div class="tab-indicator text-center">
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+  
+  <div class="tab-indicator text-center">
+    {% for network in networks %}
         <span class="r-100 small pl-2 pr-2 bg-primary"></span>
-        <span class="r-100 opacity-5 pl-2 pr-2 small bg-primary"></span>
-        <span class="r-100 opacity-5 p-0 small pl-2 pr-2 bg-primary"></span>
-        <span class="r-100 opacity-5 p-0 small pl-2 pr-2 bg-primary"></span>
-        <span class="r-100 opacity-5 p-0 small pl-2 pr-2 bg-primary"></span>
-     </div>
+    {% endfor %}
+  </div>

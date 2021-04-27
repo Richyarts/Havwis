@@ -1,13 +1,14 @@
 {% extends 'main.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block body %}
   <div class="body p-3 pb-5 mb-5">
     <header class="form-row mb-2">
       <div class="col">
-        <p class="m-0 rulerly text-header font-weight-bold">Oguntunde, </p>
+        <p class="m-0 rulerly text-header font-weight-bold">{{request.user.last_name}}, </p>
         <p class="m-0 text-16 text-dark font-weight-bold">wash your hand, it's lunch time 🥪!</p>
       </div>
-      <div class="float-right"><img class="rounded-circle" src="{% static 'img/test/bn_avatar_test.png' %}" width="40px" height="40px"></div>
+      <div class="float-right"><img class="rounded-circle" src="{% if request.user.avatar %} {{request.user.avatar.url}} {% else %} {% static 'img/logo/logo_v_1_0.png' %} {% endif %}" width="40px" height="40px"></div>
     </header>
     <section id="plans-horizontal-listview">
       {% include 'v_1_0/activity/home/sub/plans.html' %}
@@ -24,8 +25,10 @@
          <p class="text-20 m-0 mb-2 font-weight-bold">Recent activity</p>
         {% include 'v_1_0/activity/home/sub/activity.html' %}
       </div>
+    {% if not request.user.avatar %}
       <div id="added-profile">
-        <div class="card rounded-8 shadow-n-sm">
+        <input class="d-none" type="file" accept="image/*" id="intentFile">
+        <div class="card rounded-8 shadow-n-sm" onclick="document.querySelector('#intentFile').click();">
            <div class="card-body rounded-top-8 pb-5" style="background: url('{% static 'img/icon/hv_add_photo.png' %}') no-repeat center;">
              <p class="text-20 rulerly text-white t-22 font-weight-bold">Lets others know they got the right account</p>
            </div>
@@ -34,6 +37,36 @@
            </div>
          </div>
        </div>
+     {% endif %}
     </section>
   </div>
+  <script>
+    $("#intentFile").on("change", function(event){
+      if(this.files.length > 0){
+        let form_data = new FormData();
+        form_data.append("csrfmiddlewaretoken", "{{csrf_token}}");
+        form_data.append("avatar", this.files[0]);
+        form_data.append("next", "toast");
+        $("#modal_loading").modal("show");
+        $.ajax({
+          url:"/account/update/avatar/",
+          type:"POST",
+          data: form_data,
+          cache: false,
+          contentType:false, 
+          processData:false,
+          success:function(){
+            $("#modal_loading").modal("hide");
+            success_toast(true, "Avatar successful updated.");
+            this.value = null;
+            $("body").load(window.location.href);
+          },
+          error:function(){
+            $("#modal_loading").modal("hide");
+            this.value = null;
+          }
+        });
+      }
+    });
+  </script>
 {% endblock %}

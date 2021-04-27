@@ -1,11 +1,13 @@
 {% load static %}
 {% load custom_tags %}
 <div class="listview mb-5">
+  {% include 'v_1_0/modals/wallet_modal.html' %}
+
 {% for network in networks %}
   {% for info in currency_infos %}
     {% get_balance_network_usd request network.network info.priceUsd as balance %}
     {% if info.symbol == network.symbol|upper %}
-      <div network="{{network.network}}" class="wallet_modal_open form-row">
+      <div network="{{network.network}}" class="wallet_modal_open form-row" onclick="let url = $(this).attr('network'); $('#wallet_modal').modal('show'); $('#send_button').click(()=> window.location.href=url); $('#receive_button).click(()=> window.location.href=url);">
         <div class="col-2 mt-2"> <img src="{{network.avatar.url}}" height="32px" width="32px"></div>
         <div class="col rounded-0 card border-left-0 border-right-0 border-top-0 border-light-2">
           <div class="card-body p-0 pt-2 pb-2 p-1">
@@ -35,7 +37,7 @@
     $("#send_button").on("click", function(){
       window.location.href = `/activity/wallet/intent/send/?network=${network.toLowerCase()}`;
     });
-    $("#recieve_button").on("click", function(){
+    $("#receive_button").on("click", function(){
       window.location.href = `/activity/wallet/intent/receive/?network=${network.toLowerCase()}`;
     });
   });

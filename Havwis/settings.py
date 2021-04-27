@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'qr_code',
     'Authentication.apps.AuthenticationConfig',
     'Template.apps.TemplateConfig',

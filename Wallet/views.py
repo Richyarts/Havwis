@@ -11,6 +11,8 @@ from bitcoinlib.networks import NETWORK_DEFINITIONS
 from Havwis.utils import Binance
 from Havwis.core import HavwisTransaction
 
+from Wallet.models import NotificationModel
+
 #Dummy send view to upgrade later @lyonkvalid
 class SendView(View):
   def __init__(self):
@@ -65,6 +67,9 @@ class SendView(View):
           if response["status"] and havwis_reponse["status"]:
             send_model_object = SendModel(sender=request.user, address=address, amount=amount, network=next)
             send_model_object.save()
+            currency_code = NETWORK_DEFINITIONS[network]["currency_code"]
+            notification = NotificationModel(user=user, type="send", header="{}Sent".format(currency_code), text="Sent {} to {}.".format(str(amount)+" "+currency_code, address), number=amount)
+            notification.save()
             return JsonResponse({"status":True, "data":{"msg":{"next":"success"}}})
           else:
             return JsonResponse({"status":False, "data_1":response, "data_2":havwis_reponse})

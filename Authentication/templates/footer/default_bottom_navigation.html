@@ -8,6 +8,18 @@
   </div>
   <script>
     try{
+      function tabIndicator(elements){
+        for(let element of elements){
+          if($(element).attr("url") == window.location.pathname){
+            $(element).removeClass("text-muted");
+            element.children[2].classList.remove("d-none");
+          }else{
+            $(element).addClass("text-muted");
+            element.children[2].classList.add("d-none");
+          }
+        }
+      }
+      tabIndicator($("div[data-id='bottom-nav-item']"));
       function getAjax(url, query=null, container="body"){
         $(document).ajaxStart(function (){
           $("#modal_loading").modal("show");
@@ -25,7 +37,6 @@
         });
       }
       $(`div[data-id="bottom-nav-item"]`).on("click", function(event){
-
         let url = $(this).attr("url");
         if(url != "#"){
         for(let element of $(`div[data-id="bottom-nav-item"]`)){
@@ -35,7 +46,11 @@
           $(this).removeClass("text-muted");
           this.children[2].classList.remove("d-none");
           history.pushState(null, null, url);
-          getAjax(url, query=".body", container=".body");
+          if(url != "/activity/wallet/"){
+            getAjax(url, query=".body", container=".body");
+          }else{
+            window.location.href = url;
+          }
         }
         else{
           $("#modal_unavailable").modal("show");

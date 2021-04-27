@@ -19,7 +19,7 @@
           <p class=""><span class="text-danger font-weight-bold">+${{balanceDiffer.interest}} ({{balanceDiffer.percentInterest}}%)</span> <span class="text-secondary"> 24 hrs</span></p>
         {% endif %}
       </div>
-      <div class="float-right col-5">
+      <div class="float-right col-5 p-0 m-0">
          {% include 'v_1_0/fragments/wallet/sub/chart.html' %} 
       </div>
     </div>
@@ -28,18 +28,14 @@
       {% include 'v_1_0/fragments/wallet/sub/wallet_list.html' %}
     </div>
   </section>
-  {% include 'v_1_0/modals/wallet_modal.html' %}
+  {% block script %}
   <script>
     function formatDuration(ms) {
       var minutes = Math.floor(ms / 60000);
       var seconds = ((ms % 60000) / 1000).toFixed(0);
       return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
     }
-  /*  setInterval(function(){
-      $.get("/activity/wallet/", (data)=>{
-        $(".listview").html($(data).find(".listview").html());
-      });
-    }, 9000); */
   </script>
+  {% endblock %}
   </div>
 {% endblock %}

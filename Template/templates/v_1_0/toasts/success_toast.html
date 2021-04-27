@@ -1,0 +1,33 @@
+{% load static %}
+  <div class="allred  shadow success_toast fixed-top card hide" style="border-radius: 4px 4px!important; border-bottom: 0!important;">
+    <div class="card-body p-2 form-row">
+      <div class="col">
+        <b class="text-16 font-weight-bold">success</b>
+        <p class="mt-2 mb-0 font-weight-bold text-dark message">Avatar update successfully</p>
+      </div>
+      <div class="float-right pt-1 pr-2">
+        <img class="filter-success" src="{% static 'img/icon/hs_cancel_black.png' %}" width="24px" height="24px">
+      </div>
+    </div>
+    <div class="card-footer border-0 p-0">
+      <div id="toast-timer" class="progress rounded-top-0" style="height: 4px; border-radius: 0 0 4px 4px!important;"><div class="progress-bar bg-success" style="width: 100%;"></div></div>
+    </div>
+  </div>
+  <script>
+    $(".progress-bar").css("width", "345px");
+    $(".success_toast").hide();
+    function success_toast(is_home=false, message=null, top="50px"){
+      $(".progress-bar").css("width", "345px");
+      $(".success_toast").css({"left":"16px", "right":"16px", "top":top});
+      if(message != null){
+        $(".message").html(message);
+      }
+      $(".success_toast").show();
+      setInterval(function(){
+        $(".progress-bar").css("width", "-=100px");
+      }, 100);
+      setTimeout(function (){
+        $(".success_toast").hide();
+      }, 2000);
+    }
+  </script>

@@ -10,6 +10,8 @@ from Havwis.core import HavwisCryptoWallet
 from .models import User
 from .forms import SignUpForm
 
+from Wallet.models import NotificationModel
+
 class SignUpView(View):
   template_name = "registration/signup.html"
   def get(self, request, *args, **kwargs):
@@ -31,8 +33,9 @@ class SignUpView(View):
       except Exception as e:
         return JsonResponse({"status":False, "errors":{"error":e.args[0]}})
       user = authenticate(request, username=email, password=password)
-      print(user)
       if user is not None:
+        notification = NotificationModel(user=user, text="Just registered." , type="security")
+        notification.save()
         return JsonResponse({"status":True, "user": True})
       else:
         return JsonResponse({"status":True, "user":None})
@@ -41,12 +44,17 @@ class SignUpView(View):
 
 def updateData(request, *args, **kwargs):
   user = request.user
+  next = request.POST.get("next")
   if request.method == 'POST':
     if kwargs["type"] == "tx_pin":
       pin = request.POST.get("pin")
-      next = request.POST.get("next")
       if pin is not None:
         user.transaction_pin = pin 
         user.save()
         return JsonResponse({"status":True, "data":{"next":next}})
       return JsonResponse({"status":False, "data":{"errors":"You don't provide a pin"}})
+    if kwargs["type"] == 'avatar':
+      file = request.FILES["avatar"]
+      user.avatar = file
+      user.save()
+      return JsonResponse({"status":True, "data":{"next":next}})
