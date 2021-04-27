@@ -25,14 +25,21 @@
         });
       }
       $(`div[data-id="bottom-nav-item"]`).on("click", function(event){
+
+        let url = $(this).attr("url");
+        if(url != "#"){
         for(let element of $(`div[data-id="bottom-nav-item"]`)){
           $(element).addClass("text-muted");
           element.children[2].classList.add("d-none");
         }
-        $(this).removeClass("text-muted");
-        this.children[2].classList.remove("d-none");
-        let url = $(this).attr("url");
-        getAjax(url, query=".body", container=".body");
+          $(this).removeClass("text-muted");
+          this.children[2].classList.remove("d-none");
+          history.pushState(null, null, url);
+          getAjax(url, query=".body", container=".body");
+        }
+        else{
+          $("#modal_unavailable").modal("show");
+        }
       });
     }catch(e){
       alert(e);

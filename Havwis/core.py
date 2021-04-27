@@ -22,7 +22,7 @@ NETWORKS_SYMBOL = list(map(lambda network: NETWORK_DEFINITIONS[network]["currenc
 class HavwisCryptoWallet():
   def __init__(self, request=None, user=None):
     self.user = request.user if user is None else user
-    self.networks = NETWORKS if not DEBUG else NETWORK_TEST
+    self.networks = NETWORKS #if not DEBUG else NETWORK_TEST
     
   def get_wallet(self):
     wallet_id = self.user.wallet_id
@@ -34,7 +34,7 @@ class HavwisCryptoWallet():
       for network in self.networks:
         if network != self.networks[0]:
           wallet.new_account("%s wallet"%network, network=network)
-      return wallet
+      return create_wallet_id
         
   def update_wallet(self):
     wallet = self.get_wallet()

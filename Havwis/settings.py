@@ -137,3 +137,5 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = "/activity/home/"
+
+AUTHENTICATION_BACKENDS = ['Authentication.backends.EmailBackend']

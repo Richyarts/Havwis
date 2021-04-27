@@ -10,8 +10,15 @@
   <div class="loading">
     {% block loading %} {% include 'loading.html' %} {% endblock %}
   </div>
+  <div class="unavailable">
+    {% block unavailable %} {% include 'v_1_0/modals/unavailable.html' %} {% endblock %}
+  </div>
   {% block footer %}
     {% include 'footer/default_bottom_navigation.html' %}
   {% endblock %}
-  <script> </script>
+  <script> 
+    window.onpopstate = function(){
+      $(".body").load(window.location.href);
+    }
+  </script>
 {% endblock %}

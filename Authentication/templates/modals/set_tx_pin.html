@@ -1,13 +1,4 @@
-<!Doctype html>
-<head>
-  <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="css/project/audify.css" rel="stylesheet" type="text/css">
-  <script src="src/jquery/jquery.js" type="text/javascript"></script>
-  <script src="src/popper/popper.js" type="text/javascript"></script>
-  <script src="src/bootstrap/bootstrap.min.js" type="text/javascript"></script>
-</head>
-<body class="pl-2 pr-2 pt-2">
-  <div id="modal_tx_pin" class="moal">
+  <div id="modal_tx_pin" class="modal text-body">
     {% include "v_1_0/toasts/error_toast.html" %}
     <div class="modal-dialog modal-dialog-centered">
       <div class="rb-0-rt-16 modal-content fixed-bottom">
@@ -32,7 +23,6 @@
     </div>
   </div>
   <script>
-    $("#error_toast").hide();
     for(let x = 1; x < 5; x++){
       $(`#pin_${x}`).on("keyup", function(event){
         var key = event.keyCode || event.charCode;
@@ -54,40 +44,14 @@
           for(let x =1; x < 5; x++){
             pin += $(`#pin_${x}`).val().toString();
           }
-          $.post("/activity/wallet/intent/send/?network={{network}}&next=pin", {"pin":pin, "csrfmiddlewaretoken":"{{csrf_token}}"}, (data, status)=>{
+          $.post("/account/update/tx_pin/", {"pin":pin, "next":"/activity/home/", "csrfmiddlewaretoken":"{{csrf_token}}"}, (data, status)=>{
             if(data.status){
-              for(let x =1; x < 5; x++){
-                document.querySelector(`#pin_${x}`).value = null;
-              }       
-              $("#hide_if_success").html("Transaction in progress wait for some seconds.");
-              try{
-                $.post("/activity/wallet/intent/send/?network={{network}}&next=save", {"fee":global_tx_fee, "csrfmiddlewaretoken":"{{csrf_token}}", "amount":$("#btc-input").val(), "address":$("#address").val(), "network":"{{network}}"}, (data, status)=>{
-                  if(data.status){
-                    $("#modal_tx_pin").modal("hide");
-                }else{
-                    toast(false);
-                    $("#form input").show();
-                    $("#pin-loading").addClass("d-none");
-                  }
-                }).error(function(){
-                    $("#form input").show();
-                    $("#pin-loading").addClass("d-none");
-                    toast(false, "An Error occurs❗.");
-                  });
-              }catch(e){
-                alert(e)
-              }
-            }else{
+              window.location.href = data.data.next;
               for(let x =1; x < 5; x++){
                 document.querySelector(`#pin_${x}`).value = null;
               }
-               toast(false, data.data.error);
-               $("#form input").show();
-               $("#pin-loading").addClass("d-none");
             }
           });
         }
     }, 1000);
   </script>
-</body>
-</html>
