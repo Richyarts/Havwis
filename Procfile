@@ -1,0 +1,1 @@
+web: gunicorn Harvis.wsgi --log-file -
